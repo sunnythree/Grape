@@ -55,7 +55,7 @@ endif
 #objs
 OBJ_LIB := $(patsubst %.cpp, %.o, $(LIB_CPP))
 OBJ_LIB += $(patsubst %.cu, %.o, $(OBJ_CU))
-OBJ_BIN += $(patsubst %.cu, %.o, $(OBJ_CPP))
+OBJ_BIN += $(patsubst %.cpp, %.o, $(OBJ_CPP))
 EXECOBJA=javernn.o
 $(info "test......")
 $(info $(OBJ_LIB))
