@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "javernn/node.h"
-
+#include "javernn/edge.h"
 
 namespace javernn{
 
@@ -23,5 +23,28 @@ namespace javernn{
         auto it = std::find_if(next_.begin(), next_.end(),
                                 [&](edgeptr_t ep) { return ep.get() == &e; });
         return (size_t)std::distance(next_.begin(), it);
+    }
+
+    std::vector<Node *> Node::PrevNodes() const 
+    {
+        std::vector<Node *> vecs;
+        for (auto &e : prev_) {
+            if (e && e->Prev()) {
+                vecs.insert(vecs.end(), e->Prev());
+            }
+        }
+    return vecs;
+    }
+
+    std::vector<Node *> Node::NextNodes() const 
+    {
+        std::vector<Node *> vecs;
+        for (auto &e : next_) {
+            if (e) {
+                auto n = e->Next();
+                vecs.insert(vecs.end(), n.begin(), n.end());
+            }
+        }
+        return vecs;
     }
 }
