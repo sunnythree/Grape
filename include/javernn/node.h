@@ -1,5 +1,5 @@
-#ifndef __node_h__
-#define __node_h__
+#ifndef __javernn_node_h__
+#define __javernn_node_h__
 
 #include <memory>
 #include <vector>

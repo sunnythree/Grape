@@ -45,8 +45,9 @@ endif
 
 
 #srcs
-LIB_CPP += $(wildcard ./src/tools/*.cpp)
-OBJ_CPP += $(wildcard ./src/javernn/*.cpp)
+LIB_CPP += $(wildcard ./src/javernn/*.cpp)
+LIB_CPP += $(wildcard ./src/javernn/util/*.cpp)
+OBJ_CPP += $(wildcard ./src/tools/*.cpp)
 ifeq ($(GPU), 1) 
 LDFLAGS += -lstdc++ 
 OBJ_CU  += $(wildcard ./src/*.cu)
@@ -66,7 +67,7 @@ OBJ_BINS = $(addprefix $(OBJDIR), $(OBJ_BIN))
 $(info $(OBJ_LIBS))
 $(info $(OBJ_BINS))
 
-DIRS := obj obj/src obj/src/tools obj/src/javernn 
+DIRS := obj obj/src obj/src/tools obj/src/javernn  obj/src/javernn/util
 DIRS += backup results 
 all: $(DIRS) $(SLIB) $(ALIB) $(EXEC)
 #all: obj  results $(SLIB) $(ALIB) $(EXEC)

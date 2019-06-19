@@ -1,5 +1,5 @@
-#ifndef __tensor_h__
-#define __tensor_h__
+#ifndef __javernn_tensor_h__
+#define __javernn_tensor_h__
 
 namespace javernn{
 

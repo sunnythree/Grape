@@ -1,5 +1,5 @@
-#ifndef __op_h__
-#define __op_h__
+#ifndef __javernn_op_h__
+#define __javernn_op_h__
 
 namespace javernn{
 

@@ -1,5 +1,5 @@
-#ifndef __sequence_h__
-#define __sequence_h__
+#ifndef __javernn_sequence_h__
+#define __javernn_sequence_h__
 
 namespace javernn{
 

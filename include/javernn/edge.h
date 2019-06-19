@@ -1,5 +1,5 @@
-#ifndef __edge_h__
-#define __edge_h__
+#ifndef __javernn_edge_h__
+#define __javernn_edge_h__
 
 #include <vector>
 

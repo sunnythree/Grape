@@ -1,5 +1,5 @@
-#ifndef __nodes_h__
-#define __nodes_h__
+#ifndef __javernn_nodes_h__
+#define __javernn_nodes_h__
 
 namespace javernn{
 
