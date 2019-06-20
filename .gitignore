@@ -1,4 +1,5 @@
 /obj
 javernn
+!javernn/
 libjavernn.a
 libjavernn.so

@@ -36,6 +36,18 @@ protected:
     mutable std::vector<tensorptr_t> next_;
 };
 
+inline void connect(Op *head,
+                    Op *tail,
+                    size_t head_index = 0,
+                    size_t tail_index = 0) {
+  tail->prev_[tail_index] = head->next_[head_index];
+  tail->prev_[tail_index]->add_next_op(tail);
+}
+
+inline layer &operator<<(layer &lhs, layer &rhs) {
+  connect(&lhs, &rhs);
+  return rhs;
+}
 
 }
 
