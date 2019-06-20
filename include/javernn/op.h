@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <vector>
-
+#include "javernn/optimizers/optimizers.h"
 
 namespace javernn{
 
@@ -23,6 +23,12 @@ public:
 
     std::vector<Op *> PrevOps() const;
     std::vector<Op *> NextOps() const;
+
+
+    virtual void backward() = 0;
+    virtual std::vector<Tensor> forward() = 0;  // NOLINT
+    virtual void update_weights(Optimizer *opt) = 0;
+    virtual void setup(bool reset_weight)= 0;
 
 protected:
     Op() = delete;
