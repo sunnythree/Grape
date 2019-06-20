@@ -4,17 +4,17 @@
 namespace javernn
 {
 /**
- * base class of optimizer
- * usesHessian : true if an optimizer uses hessian (2nd order derivative of loss
+ * base class of Optimizer
+ * usesHessian : true if an Optimizer uses hessian (2nd order derivative of loss
  *function)
  **/
 class Optimizer {
-  optimizer()                  = default;
-  optimizer(const optimizer &) = default;
-  optimizer(optimizer &&)      = default;
-  optimizer &operator=(const optimizer &) = default;
-  optimizer &operator=(optimizer &&) = default;
-  virtual ~optimizer()               = default;
+  Optimizer()                  = default;
+  Optimizer(const Optimizer &) = default;
+  Optimizer(Optimizer &&)      = default;
+  Optimizer &operator=(const Optimizer &) = default;
+  Optimizer &operator=(Optimizer &&) = default;
+  virtual ~Optimizer()               = default;
   virtual void update(const vec_t &dW, vec_t &W, bool parallelize) = 0;
   virtual void reset() {}  // override to implement pre-learning action
 };
@@ -84,7 +84,7 @@ class RMSprop : public StatefulOptimizer<1> {
 };
 
 /**
- * @brief [a new optimizer (2015)]
+ * @brief [a new Optimizer (2015)]
  * @details [see Adam: A Method for Stochastic Optimization (Algorithm 1)
  *               http://arxiv.org/abs/1412.6980]
  *
@@ -126,7 +126,7 @@ class Adam : public StatefulOptimizer<2> {
 };
 
 /**
- * @brief [a new optimizer (2015)]
+ * @brief [a new Optimizer (2015)]
  * @details [see Adam: A Method for Stochastic Optimization (Algorithm 2)
  *               http://arxiv.org/abs/1412.6980]
  *

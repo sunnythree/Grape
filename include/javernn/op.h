@@ -25,10 +25,10 @@ public:
     std::vector<Op *> NextOps() const;
 
 
-    virtual void backward() = 0;
-    virtual std::vector<Tensor> forward() = 0;  // NOLINT
-    virtual void update_weights(Optimizer *opt) = 0;
-    virtual void setup(bool reset_weight)= 0;
+    virtual void Backward() = 0;
+    virtual std::vector<Tensor> Forward() = 0;  // NOLINT
+    virtual void UpdateWeights(Optimizer *opt) = 0;
+    virtual void Setup(bool reset_weight)= 0;
 
 protected:
     Op() = delete;
@@ -50,7 +50,7 @@ inline void connect(Op *head,
   tail->prev_[tail_index]->add_next_op(tail);
 }
 
-inline layer &operator<<(layer &lhs, layer &rhs) {
+inline Op &operator<<(Op &lhs, Op &rhs) {
   connect(&lhs, &rhs);
   return rhs;
 }

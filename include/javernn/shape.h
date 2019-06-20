@@ -9,7 +9,7 @@ namespace javernn{
         inline int count(int start_axis, int end_axis) const {
             int count = 1;
             for (int i = start_axis; i < end_axis; ++i) {
-                count *= shape_size_(i);
+                count *= shape_size_[i];
             }
             return count;
         }
