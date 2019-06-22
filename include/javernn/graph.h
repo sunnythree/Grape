@@ -18,7 +18,6 @@ namespace javernn{
         std::vector<Op *> input_layers_;
         std::vector<Op *> output_layers_;
     };
-
 }
 
 #endif

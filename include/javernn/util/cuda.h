@@ -1,5 +1,5 @@
-#ifndef __javernn_cuda_h__
-#define __javernn_cuda_h__
+#ifndef __JAVERNN_CUDA_H__
+#define __JAVERNN_CUDA_H__
 
 
 #ifdef GPU

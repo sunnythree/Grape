@@ -20,7 +20,7 @@ namespace javernn{
         inline uint32_t count(uint32_t start_axis) const {
             return count(start_axis, num_axes());
         }
-        inline uint32_t index(uint32_t i) const {return shape_size_[i]};
+        inline uint32_t index(uint32_t i) const {return shape_size_[i];};
     private:
         std::vector<uint32_t> shape_size_;
 

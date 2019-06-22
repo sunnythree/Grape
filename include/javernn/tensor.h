@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "javernn/synced_memory.h"
+#include "javernn/shape.h"
 
 namespace javernn{
     enum  TENSOR_TYPE{
@@ -16,7 +17,7 @@ namespace javernn{
     class Op;
     class Tensor {
     public:
-        Tensor(Op *prev,std::vector<uint32_t> shape,TENSOR_TYPE type)
+        Tensor(Op *prev,Shape shape,TENSOR_TYPE type)
         : prev_(prev),shape_(shape),type_(type){}
         virtual ~Tensor() {};
 
@@ -24,12 +25,13 @@ namespace javernn{
         inline Op *prev() { return prev_; }
         inline const Op *prev() const { return prev_; }
         inline void add_next_op(Op *next) { next_.push_back(next); }
-
+        const Shape &shape() const { return shape_; }
+        TENSOR_TYPE vtype() const { return type_; }
     private:
         std::shared_ptr<SyncedMemory> data_;
         std::shared_ptr<SyncedMemory> diff_;
         Op *prev_;                // previous node, "producer" of this tensor
-        std::vector<uint32_t> shape_;
+        Shape shape_;
         TENSOR_TYPE type_;
         std::vector<Op *> next_;  // next nodes, "consumers" of this tensor
     };
