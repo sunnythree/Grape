@@ -1,5 +1,5 @@
-#ifndef __javernn_graph_h__
-#define __javernn_graph_h__
+#ifndef __JAVERNN_GRAPH_H__
+#define __JAVERNN_GRAPH_H__
 
 #include "javernn/ops.h"
 

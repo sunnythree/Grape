@@ -17,8 +17,11 @@ namespace javernn{
     class Op;
     class Tensor {
     public:
-        Tensor(Op *prev,Shape shape,TENSOR_TYPE type)
-        : prev_(prev),shape_(shape),type_(type){}
+        Tensor(Op *prev,Shape shape,TENSOR_TYPE type,CAL_MODE mode)
+        : prev_(prev),shape_(shape),type_(type),mode_(mode){
+            data_ = std::make_shared<SyncedMemory>(shape_.count(),mode_);
+            diff_ = std::make_shared<SyncedMemory>(shape_.count(),mode_);
+        }
         virtual ~Tensor() {};
 
         inline const std::vector<Op *> &next() const { return next_; }
@@ -33,6 +36,7 @@ namespace javernn{
         Op *prev_;                // previous node, "producer" of this tensor
         Shape shape_;
         TENSOR_TYPE type_;
+        CAL_MODE mode_;
         std::vector<Op *> next_;  // next nodes, "consumers" of this tensor
     };
 }
