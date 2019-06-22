@@ -6,6 +6,7 @@
 namespace javernn{
     class Ops{
     public:
+        virtual ~Ops(){};
         virtual void BackwardCpu() = 0;
         virtual void BackwardGpu() = 0;
         virtual std::vector<Tensor> ForwardCpu() = 0;  // NOLINT
