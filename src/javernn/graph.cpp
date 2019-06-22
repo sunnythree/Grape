@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include "javernn/graph.h"
-#include "javernn/nn_error.h"
+#include "javernn/error.h"
 
 namespace javernn{
     
@@ -18,9 +18,11 @@ void Graph::Backward()
 }
 std::vector<Tensor> Graph::Forward()
 {
+    std::vector<Tensor> cost;
     for(auto o:ops_){
         o->Forward();
     }
+    return cost;
 } 
 void Graph::UpdateWeights(Optimizer *opt)
 {

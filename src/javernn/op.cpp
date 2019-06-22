@@ -28,8 +28,8 @@ namespace javernn{
     {
         std::vector<Op *> vecs;
         for (auto &e : prev_) {
-            if (e && e->Prev()) {
-                vecs.insert(vecs.end(), e->Prev());
+            if (e && e->prev()) {
+                vecs.insert(vecs.end(), e->prev());
             }
         }
     return vecs;
@@ -40,10 +40,30 @@ namespace javernn{
         std::vector<Op *> vecs;
         for (auto &e : next_) {
             if (e) {
-                auto n = e->Next();
+                auto n = e->next();
                 vecs.insert(vecs.end(), n.begin(), n.end());
             }
         }
         return vecs;
+    }
+    void Op::Backward()
+    {
+
+    }
+
+    std::vector<Tensor> Op::Forward()
+    {
+        std::vector<Tensor> cost;
+        return cost;
+    }
+
+    void Op::UpdateWeights(Optimizer *opt)
+    {
+
+    }
+
+    void Op::Setup(bool reset_weight)
+    {
+
     }
 }

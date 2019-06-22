@@ -9,9 +9,11 @@ namespace javernn{
     }
     std::vector<Tensor> Sequence::Forward()
     {
+        std::vector<Tensor> cost;
         for(auto o:ops_){
             o->Forward();
         }
+        return cost;
     } 
     void Sequence::UpdateWeights(Optimizer *opt)
     {

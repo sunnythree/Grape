@@ -1,7 +1,7 @@
 #ifndef _javernn_synced_memory_h_
 #define _javernn_synced_memory_h_
 
-#include <cstdlib>
+#include <cstdint>
 #include "javernn/util/cuda.h"
 
 namespace javernn {
@@ -14,7 +14,7 @@ namespace javernn {
 class SyncedMemory {
 public:
     SyncedMemory();
-    explicit SyncedMemory(size_t size);
+    explicit SyncedMemory(uint32_t size);
     ~SyncedMemory();
     const void* cpu_data();
     void set_cpu_data(void* data);
@@ -24,7 +24,7 @@ public:
     void* mutable_gpu_data();
     enum SyncedHead { UNINITIALIZED, JAVERNN_CPU, JAVERNN_GPU, SYNCED };
     SyncedHead head() const { return head_; }
-    size_t size() const { return size_; }
+    uint32_t size() const { return size_; }
 
 #ifdef GPU
   void async_gpu_push(const cudaStream_t& stream);
