@@ -11,7 +11,7 @@
 
 namespace javernn{
     
-    void Graph::Backward()
+    void Graph::Backward(const std::vector<Tensor> &cost)
     {
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
@@ -23,7 +23,7 @@ namespace javernn{
             }
         }
     }
-    std::vector<Tensor> Graph::Forward()
+    std::vector<Tensor> Graph::Forward(const std::vector<Tensor> &inputs)
     {
         std::vector<Tensor> cost;
         for(auto o:ops_){
@@ -37,7 +37,7 @@ namespace javernn{
         }
         return cost;
     } 
-    void Graph::UpdateWeights(Optimizer *opt)
+    void Graph::UpdateWeights(Optimizer &opt)
     {
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
@@ -103,9 +103,9 @@ namespace javernn{
         Setup(false);
     }
 
-    size_t FindIndex(const std::vector<Op *> &ops, Op *target) 
+    int32_t Graph::FindIndex(const std::vector<Op *> &ops, Op *target) 
     {
-        for (size_t i = 0; i < ops.size(); i++) {
+        for (int32_t i = 0; i < ops.size(); i++) {
             if (ops[i] == static_cast<Op *>(&*target)) return i;
         }
         throw Error("invalid connection");

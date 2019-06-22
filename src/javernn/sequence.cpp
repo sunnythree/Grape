@@ -1,7 +1,7 @@
 #include "javernn/sequence.h"
 
 namespace javernn{
-    void Sequence::Backward()
+    void Sequence::Backward(const std::vector<Tensor> &cost)
     {
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
@@ -13,7 +13,7 @@ namespace javernn{
             }
         }
     }
-    std::vector<Tensor> Sequence::Forward()
+    std::vector<Tensor> Sequence::Forward(const std::vector<Tensor> &inputs)
     {
         std::vector<Tensor> cost;
         for(auto o:ops_){
@@ -27,7 +27,7 @@ namespace javernn{
         }
         return cost;
     } 
-    void Sequence::UpdateWeights(Optimizer *opt)
+    void Sequence::UpdateWeights(Optimizer &opt)
     {
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){

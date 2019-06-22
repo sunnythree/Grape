@@ -11,7 +11,7 @@ namespace javernn{
     {
 
     }
-    
+
     Op::~Op() 
     {
 
@@ -65,7 +65,7 @@ namespace javernn{
         tail->prev_[tail_index]->add_next_op(tail);
     }
 
-    inline Op &operator<<(Op &lhs, Op &rhs) {
+    Op &operator<<(Op &lhs, Op &rhs) {
         connect_op(&lhs, &rhs);
         return rhs;
     }

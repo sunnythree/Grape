@@ -18,7 +18,8 @@ typedef std::shared_ptr<Tensor> tensorptr_t;
 
 class Op{
 public:
-    Op(const std::vector<TENSOR_TYPE> &in_type,
+    Op() = delete;
+    explicit Op(const std::vector<TENSOR_TYPE> &in_type,
         const std::vector<TENSOR_TYPE> &out_type);
     virtual ~Op();
 
@@ -37,18 +38,17 @@ public:
     virtual void SetupCpu(bool reset_weight) = 0;
     virtual std::vector<Tensor> ForwardCpu() = 0; 
     virtual void BackwardCpu() = 0;
-    virtual void UpdateWeightsCpu(Optimizer *opt) = 0;
+    virtual void UpdateWeightsCpu(Optimizer &opt) = 0;
 
 #ifdef GPU
     virtual void SetupGpu(bool reset_weight) = 0;
     virtual std::vector<Tensor> ForwardGpu() = 0; 
     virtual void BackwardGpu() = 0;
-    virtual void UpdateWeightsGpu(Optimizer *opt) = 0;
+    virtual void UpdateWeightsGpu(Optimizer &opt) = 0;
 #endif
 
 
 protected:
-    Op() = delete;
     friend void connect_op(Op *head,Op *tail,int32_t head_index,int32_t tail_index);
     mutable std::vector<tensorptr_t> prev_;
     mutable std::vector<tensorptr_t> next_;

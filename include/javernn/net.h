@@ -17,8 +17,8 @@ namespace javernn{
             const std::vector<Tensor> &class_labels,
             int32_t batch_size,
             int32_t epoch);
-        void Test(const std::vector<Tensor> &in,
-            const std::vector<Tensor> &t);
+        void Test(const std::vector<Tensor> &inputs,
+            const std::vector<Tensor> &class_labels);
     private:
         std::shared_ptr<Ops> ops_;
     };

@@ -7,12 +7,10 @@ namespace javernn{
     class Ops{
     public:
         virtual ~Ops(){};
-        virtual void BackwardCpu() = 0;
-        virtual void BackwardGpu() = 0;
-        virtual std::vector<Tensor> ForwardCpu() = 0;  // NOLINT
-        virtual std::vector<Tensor> ForwardGpu() = 0;  // NOLINT
-        virtual void UpdateWeights(Optimizer *opt) = 0;
-        virtual void Setup(bool reset_weight)= 0;
+        virtual void Backward(const std::vector<Tensor> &cost) = 0;
+        virtual std::vector<Tensor> Forward(const std::vector<Tensor> &inputs) = 0;  
+        virtual void UpdateWeights(Optimizer &opt) = 0;
+        virtual void Setup(bool reset_weight) = 0;
 
     };
 }

@@ -1,5 +1,5 @@
-#ifndef __JAVERNN_EDGE_H__
-#define __JAVERNN_EDGE_H__
+#ifndef __JAVERNN_TENSOR_H__
+#define __JAVERNN_TENSOR_H__
 
 #include <vector>
 #include <memory>

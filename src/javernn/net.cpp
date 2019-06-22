@@ -17,18 +17,20 @@ namespace javernn{
 
     }
 
+
     void Net::Train(Optimizer &optimizer,
         const std::vector<Tensor> &inputs,
         const std::vector<Tensor> &class_labels,
         int32_t batch_size,
         int32_t epoch)
     {
-
+        ops_->Backward(ops_->Forward(inputs));
+        ops_->UpdateWeights(optimizer);
     }
 
-    void Net::Test(const std::vector<Tensor> &in,
-        const std::vector<Tensor> &t)
+    void Net::Test(const std::vector<Tensor> &inputs,
+        const std::vector<Tensor> &class_labels)
     {
-
+        ops_->Forward(inputs);
     }
 }
