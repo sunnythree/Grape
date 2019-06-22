@@ -11,16 +11,6 @@ namespace javernn{
     out_dim_(out_dim),
     has_bias_(has_bias)
     {
-        //create input tensor,only weights and bias
-        for(int i=0;i<prev_.size();i++){
-            if(in_type_[i] == WEIGHTS){
-                prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({in_dim_,out_dim_}),DATA,gNetMode);
-            }else if(in_type_[i] == BIAS && has_bias_){
-                prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({out_dim_}),DATA,gNetMode);
-            }
-        }
         //create output tensor,only data
         for(int i=0;i<next_.size();i++){
             if(out_type_[i] == DATA){
@@ -37,7 +27,16 @@ namespace javernn{
 
     void Fc::SetupCpu(bool reset_weight)
     {
-        
+        //create input tensor,only weights and bias
+        for(int i=0;i<prev_.size();i++){
+            if(in_type_[i] == WEIGHTS){
+                prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
+                Shape({in_dim_,out_dim_}),DATA,gNetMode);
+            }else if(in_type_[i] == BIAS && has_bias_){
+                prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
+                Shape({out_dim_}),DATA,gNetMode);
+            }
+        }
     }
 
     std::vector<Tensor> Fc::ForwardCpu()

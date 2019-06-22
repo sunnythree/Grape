@@ -8,9 +8,10 @@
 #include "javernn/graph.h"
 #include "javernn/error.h"
 #include "javernn/global_config.h"
+#include "javernn/log.h"
 
 namespace javernn{
-    
+    static std::string TAG = "Graph";
     void Graph::Backward(const std::vector<Tensor> &cost)
     {
         for(auto o:ops_){
@@ -79,8 +80,8 @@ namespace javernn{
                 if (!next[i]) continue;
                 // remove edge between next[i] and current
                 if (removed_edge.find(next[i]) == removed_edge.end()) {
-                removed_edge[next[i]] =
-                    std::vector<uint8_t>(next[i]->PrevOps().size(), 0);
+                    removed_edge[next[i]] =
+                        std::vector<uint8_t>(next[i]->PrevOps().size(), 0);
                 }
 
                 std::vector<uint8_t> &removed = removed_edge[next[i]];
@@ -88,13 +89,14 @@ namespace javernn{
 
                 if (std::all_of(removed.begin(), removed.end(),
                                 [](uint8_t x) { return x == 1; })) {
-                input_nodes.push_back(next[i]);
+                    input_nodes.push_back(next[i]);
                 }
             }
         }
-
+        int num = 0;
         for (auto &n : sorted) {
-        ops_.push_back(n);
+            ops_.push_back(n);
+            Log::v(TAG,"num "+std::to_string(++num));
         }
 
         input_layers_  = input;
