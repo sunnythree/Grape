@@ -1,0 +1,8 @@
+{
+    "net": {
+        "net_type_": "sequence",
+        "cal_type_": "gpu",
+        "optimizer_type_": "sgd",
+        "device_id_": 100
+    }
+}

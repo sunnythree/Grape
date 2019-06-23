@@ -1,0 +1,8 @@
+{
+    "net": {
+        "net_type_": "graph",
+        "cal_type_": "cpu",
+        "optimizer_type_": "sgd",
+        "device_id_": 1000
+    }
+}

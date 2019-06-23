@@ -5,16 +5,15 @@
 #include <cstdint>
 
 namespace javernn{
-    class OpParams{
+    class FcParams{
     public:
-        std::string name;
-        std::string connect_to;
-        std::string params;
+        uint32_t in_dim;
+        uint32_t out_dim;
 
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar( name, connect_to, params );
+            ar( in_dim, out_dim );
         }
     };
 }

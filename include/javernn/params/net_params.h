@@ -4,19 +4,27 @@
 #include <cstdint>
 #include <string>
 #include "javernn/global_config.h"
+#include "cereal/archives/json.hpp"
 
 namespace javernn{
 
     class NetParams{
     public:
-        NET_TYPE net_type_;
-        CAL_MODE cal_type_;
-        OPTIMIZER_TYPE optimizer_type_;
+        std::string net_type_;
+        std::string cal_type_;
+        std::string optimizer_type_;
         uint32_t device_id_;
-    private:
-        std::string str_net_type_;
-        std::string str_cal_mode_;
-        std::string str_optimizer_type_;
+
+        template <class Archive>
+        void serialize( Archive & ar )
+        {
+            ar( 
+                cereal::make_nvp("net_type_",net_type_),
+                cereal::make_nvp("cal_type_",cal_type_),
+                cereal::make_nvp("optimizer_type_",optimizer_type_),
+                cereal::make_nvp("device_id_",device_id_)
+            );
+        }
     };
 }
 

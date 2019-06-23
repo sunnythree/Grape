@@ -5,7 +5,7 @@
 namespace javernn{
     Net::Net(NetParams &net_params)
     {
-        if(net_params.net_type_ == NET_GRAPH){
+        if(net_params.net_type_ == "graph"){
             ops_ = std::make_shared<Graph>();
         }else{
             ops_ = std::make_shared<Sequence>();
