@@ -3,14 +3,14 @@
 
 #include "javernn/optimizers/optimizers.h"
 #include "javernn/ops.h"
+#include "javernn/params/net_params.h"
+
+
 namespace javernn{
-    enum NET_TYPE{
-        NET_SEQUENCE,
-        NET_GRAPH
-    };
+
     class Net{
     public:
-        explicit Net(NET_TYPE net_type);
+        explicit Net(NetParams &net_params);
         ~Net();
         void Train(Optimizer &optimizer,
             const std::vector<Tensor> &inputs,

@@ -6,6 +6,18 @@ namespace javernn{
         CPU_MODE,
         GPU_MODE
     };
+
+    enum NET_TYPE{
+        NET_SEQUENCE,
+        NET_GRAPH
+    };
+
+    enum OPTIMIZER_TYPE{
+        SGD,
+        SGDM,
+        ADAM
+    };
+
     static CAL_MODE gNetMode = CPU_MODE;
     static uint32_t gDeviceId = 0;
 }

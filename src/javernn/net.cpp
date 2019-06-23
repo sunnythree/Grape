@@ -3,9 +3,9 @@
 #include "javernn/sequence.h"
 
 namespace javernn{
-    Net::Net(NET_TYPE net_type)
+    Net::Net(NetParams &net_params)
     {
-        if(net_type == NET_GRAPH){
+        if(net_params.net_type_ == NET_GRAPH){
             ops_ = std::make_shared<Graph>();
         }else{
             ops_ = std::make_shared<Sequence>();
