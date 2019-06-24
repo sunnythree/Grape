@@ -35,13 +35,13 @@ public:
     inline int32_t in_size() const { return in_size_; }
     inline int32_t out_size() const { return out_size_; }
 
-    virtual void SetupCpu(bool reset_weight) = 0;
+    virtual void Setup() = 0;
+    
     virtual std::vector<Tensor> ForwardCpu() = 0; 
     virtual void BackwardCpu() = 0;
     virtual void UpdateWeightsCpu(Optimizer &opt) = 0;
 
 #ifdef GPU
-    virtual void SetupGpu(bool reset_weight) = 0;
     virtual std::vector<Tensor> ForwardGpu() = 0; 
     virtual void BackwardGpu() = 0;
     virtual void UpdateWeightsGpu(Optimizer &opt) = 0;

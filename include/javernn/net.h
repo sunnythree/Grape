@@ -12,6 +12,9 @@ namespace javernn{
     public:
         explicit Net(NetParams &net_params);
         ~Net();
+        void Construct();
+        void Construct(const std::vector<Op *> &input,
+                 const std::vector<Op *> &output);
         void Train(Optimizer &optimizer,
             const std::vector<Tensor> &inputs,
             const std::vector<Tensor> &class_labels,

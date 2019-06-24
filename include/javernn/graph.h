@@ -9,7 +9,7 @@ namespace javernn{
         void Backward(const std::vector<Tensor> &cost);
         std::vector<Tensor> Forward(const std::vector<Tensor> &inputs);  
         void UpdateWeights(Optimizer &opt);
-        void Setup(bool reset_weight);
+        void Setup();
         void Construct(const std::vector<Op *> &input,
                  const std::vector<Op *> &output);
         int32_t FindIndex(const std::vector<Op *> &ops, Op *target);

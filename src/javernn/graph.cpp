@@ -50,16 +50,10 @@ namespace javernn{
             }
         }
     }
-    void Graph::Setup(bool reset_weight)
+    void Graph::Setup()
     {
         for(auto o:ops_){
-            if(gNetMode == CPU_MODE){
-                o->SetupCpu(reset_weight);
-            }else{
-#ifdef GPU
-                o->SetupCpu(reset_weight);
-#endif
-            }
+            o->Setup();
         }
     }
     void Graph::Construct(const std::vector<Op *> &input,
@@ -102,7 +96,7 @@ namespace javernn{
         input_layers_  = input;
         output_layers_ = output;
 
-        Setup(false);
+        Setup();
     }
 
     int32_t Graph::FindIndex(const std::vector<Op *> &ops, Op *target) 

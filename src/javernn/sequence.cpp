@@ -39,20 +39,19 @@ namespace javernn{
             }
         }
     }
-    void Sequence::Setup(bool reset_weight)
+    void Sequence::Setup()
     {
         for(auto o:ops_){
-            if(gNetMode == CPU_MODE){
-                o->SetupCpu(reset_weight);
-            }else{
-#ifdef GPU
-                o->SetupCpu(reset_weight);
-#endif
-            }
+                o->Setup();
         }
     }
     void Sequence::Add(Op* op)
     {
         ops_.push_back(op);
+    }
+
+    void Sequence::Construct()
+    {
+        Setup();
     }
 }

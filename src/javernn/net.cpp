@@ -1,3 +1,4 @@
+#include <memory>
 #include "javernn/net.h"
 #include "javernn/graph.h"
 #include "javernn/sequence.h"
@@ -17,6 +18,18 @@ namespace javernn{
 
     }
 
+    //build sequence 
+    void Net::Construct()
+    {
+        dynamic_cast<Sequence *>(ops_.get())->Construct();
+    }
+
+    //build graph
+    void Net::Construct(const std::vector<Op *> &input,
+                const std::vector<Op *> &output)
+    {
+        dynamic_cast<Graph *>(ops_.get())->Construct(input,output);
+    }
 
     void Net::Train(Optimizer &optimizer,
         const std::vector<Tensor> &inputs,
@@ -33,4 +46,6 @@ namespace javernn{
     {
         ops_->Forward(inputs);
     }
+
+    
 }

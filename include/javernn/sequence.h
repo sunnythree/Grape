@@ -9,8 +9,9 @@ namespace javernn{
         void Backward(const std::vector<Tensor> &cost);
         std::vector<Tensor> Forward(const std::vector<Tensor> &inputs);  
         void UpdateWeights(Optimizer &opt);
-        void Setup(bool reset_weight);
+        void Setup();
         void Add(Op* op);
+        void Construct();
     private:
         std::vector<Op *> ops_;
     };

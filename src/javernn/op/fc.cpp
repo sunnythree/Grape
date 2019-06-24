@@ -25,16 +25,21 @@ namespace javernn{
 
     }
 
-    void Fc::SetupCpu(bool reset_weight)
+    void Fc::Setup()
     {
         //create input tensor,only weights and bias
-        for(int i=0;i<prev_.size();i++){
-            if(in_type_[i] == WEIGHTS){
-                prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({in_dim_,out_dim_}),DATA,gNetMode);
-            }else if(in_type_[i] == BIAS && has_bias_){
-                prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({out_dim_}),DATA,gNetMode);
+        if(prev_.size()>0){
+            Log::i(TAG,"skip init weights");
+        }else{
+            for(int i=0;i<prev_.size();i++){
+                if(in_type_[i] == WEIGHTS){
+                    prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
+                    Shape({in_dim_,out_dim_}),DATA,gNetMode);
+                    
+                }else if(in_type_[i] == BIAS && has_bias_){
+                    prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
+                    Shape({out_dim_}),DATA,gNetMode);
+                }
             }
         }
     }
@@ -57,10 +62,6 @@ namespace javernn{
     }
 
 #ifdef GPU
-    void Fc::SetupGpu(bool reset_weight)
-    {
-
-    }
 
     std::vector<Tensor> Fc::ForwardGpu()
     {
