@@ -1,8 +1,12 @@
-#include "gemm.h"
-#include "cuda.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string>
+#include "javernn/util/gemm.h"
+#include "javernn/util/cuda.h"
+#include "javernn/log.h"
+
+static std::string TAG = "gemm";
 
 void gemm_bin(int M, int N, int K, float ALPHA, 
         char  *A, int lda, 
@@ -29,7 +33,7 @@ void gemm_bin(int M, int N, int K, float ALPHA,
 float *random_matrix(int rows, int cols)
 {
     int i;
-    float *m = calloc(rows*cols, sizeof(float));
+    float *m = (float *) calloc(rows*cols, sizeof(float));
     for(i = 0; i < rows*cols; ++i){
         m[i] = (float)rand()/RAND_MAX;
     }
@@ -169,10 +173,12 @@ void gemm_gpu(int TA, int TB, int M, int N, int K, float ALPHA,
         float BETA,
         float *C_gpu, int ldc)
 {
-    cublasHandle_t handle = blas_handle();
-    cudaError_t status = cublasSgemm(handle, (TB ? CUBLAS_OP_T : CUBLAS_OP_N), 
+    cublasHandle_t handle = cuda_blas_handle();
+    cublasStatus_t status = cublasSgemm(handle, (TB ? CUBLAS_OP_T : CUBLAS_OP_N), 
             (TA ? CUBLAS_OP_T : CUBLAS_OP_N), N, M, K, &ALPHA, B_gpu, ldb, A_gpu, lda, &BETA, C_gpu, ldc);
-    check_error(status);
+    if(status != CUBLAS_STATUS_SUCCESS){
+        //Log::e(TAG,"cublasSgemm errors");
+    }
 }
 #endif
 

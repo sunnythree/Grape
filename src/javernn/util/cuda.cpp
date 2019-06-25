@@ -105,5 +105,30 @@ void cuda_pointer_get_attributes(cudaPointerAttributes* attr,void* x_gpu)
     cuda_check_error(cudaPointerGetAttributes(attr, x_gpu));
 }
 
+#ifdef CUDNN
+cudnnHandle_t cudnn_handle()
+{
+    static int init[16] = {0};
+    static cudnnHandle_t handle[16];
+    int i = cuda_get_device();
+    if(!init[i]) {
+        cudnnCreate(&handle[i]);
+        init[i] = 1;
+    }
+    return handle[i];
+}
+#endif
+
+cublasHandle_t cuda_blas_handle()
+{
+    static int init[16] = {0};
+    static cublasHandle_t handle[16];
+    int i = cuda_get_device();
+    if(!init[i]) {
+        cublasCreate(&handle[i]);
+        init[i] = 1;
+    }
+    return handle[i];
+}
 
 #endif

@@ -22,5 +22,9 @@
     void cuda_push_array(void *x_gpu, void *x, size_t n);
     void cuda_async_push_array(void *x_gpu, void *x, size_t n,const cudaStream_t& stream);
     void cuda_pointer_get_attributes(cudaPointerAttributes* attr,void* x_gpu);
+    #ifdef CUDNN
+    cudnnHandle_t cudnn_handle();
+    #endif
+    cublasHandle_t cuda_blas_handle();
 #endif
 #endif

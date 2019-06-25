@@ -1,5 +1,6 @@
-#include "im2col.h"
 #include <stdio.h>
+#include "javernn/util/im2col.h"
+
 float im2col_get_pixel(float *im, int height, int width, int channels,
                         int row, int col, int channel, int pad)
 {
