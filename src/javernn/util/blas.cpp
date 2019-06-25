@@ -50,15 +50,10 @@ void mult_add_into_cpu(int N, float *X, float *Y, float *Z)
     for(i = 0; i < N; ++i) Z[i] += X[i]*Y[i];
 }
 
-
-float dot_cpu(int N, float *X, int INCX, float *Y, int INCY)
+void add_cpu(int N, float *X, int INCX, float *Y, int INCY)
 {
     int i;
-    float dot = 0;
-    for(i = 0; i < N; ++i) dot += X[i*INCX] * Y[i*INCY];
-    return dot;
+    for(i = 0; i < N; ++i) Y[i*INCY] += X[i*INCX];
 }
-
-
 
 

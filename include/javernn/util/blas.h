@@ -8,7 +8,7 @@ void scal_cpu(int N, float ALPHA, float *X, int INCX);
 void fill_cpu(int N, float ALPHA, float * X, int INCX);
 void copy_cpu(int N, float *X, int INCX, float *Y, int INCY);
 void mult_add_into_cpu(int N, float *X, float *Y, float *Z);
-
+void add_cpu(int N, float *X, int INCX, float *Y, int INCY);
 
 #ifdef GPU
 #include "javernn/util/cuda.h"

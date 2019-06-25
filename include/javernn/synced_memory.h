@@ -15,11 +15,11 @@ namespace javernn {
         void* mutable_cpu_data();
         void* mutable_gpu_data();
         uint32_t size() const { return size_; }
-
-    private:
-        SyncedMemory() = delete;
         void to_cpu();
         void to_gpu();
+    private:
+        SyncedMemory() = delete;
+
         void* cpu_ptr_;
         void* gpu_ptr_;
         uint32_t size_;
