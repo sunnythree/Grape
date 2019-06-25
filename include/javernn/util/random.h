@@ -5,6 +5,7 @@
 
 namespace javernn{
     class Random{
+    public:
         static Random GetInstance();
         Random();
         ~Random();

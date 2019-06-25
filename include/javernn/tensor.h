@@ -30,6 +30,14 @@ namespace javernn{
         inline void add_next_op(Op *next) { next_.push_back(next); }
         const Shape &shape() const { return shape_; }
         TENSOR_TYPE vtype() const { return type_; }
+        inline const void *cpu_data(){return data_->cpu_data();};
+        inline const void *cpu_diff(){return diff_->cpu_data();};
+        inline const void *gpu_data(){return data_->gpu_data();};
+        inline const void *gpu_diff(){return diff_->gpu_data();};
+        inline void *mutable_cpu_data(){return data_->mutable_cpu_data();};
+        inline void *mutable_cpu_diff(){return diff_->mutable_cpu_data();};
+        inline void *mutable_gpu_data(){return data_->mutable_gpu_data();};
+        inline void *mutable_gpu_diff(){return diff_->mutable_gpu_data();};
     private:
         std::shared_ptr<SyncedMemory> data_;
         std::shared_ptr<SyncedMemory> diff_;

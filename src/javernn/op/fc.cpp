@@ -1,6 +1,9 @@
+
+#include <memory>
 #include "javernn/op/fc.h"
 #include "javernn/log.h"
-#include <memory>
+#include "javernn/util/random.h"
+#include "javernn/util/blas.h"
 
 namespace javernn{
     static std::string TAG = "Fc";
@@ -35,10 +38,12 @@ namespace javernn{
                 if(in_type_[i] == WEIGHTS){
                     prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
                     Shape({in_dim_,out_dim_}),DATA,gNetMode);
-                    
+                    Random::GetInstance().SetNormalFloat((float *)prev_[i]->cpu_data(),
+                    prev_[i]->shape().count(),0,1);
                 }else if(in_type_[i] == BIAS && has_bias_){
                     prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
                     Shape({out_dim_}),DATA,gNetMode);
+                    fill_cpu(prev_[i]->shape().count(),0,(float *)prev_[i]->cpu_data(),1);
                 }
             }
         }
