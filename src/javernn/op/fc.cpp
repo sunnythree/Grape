@@ -40,6 +40,7 @@ namespace javernn{
                     Shape({in_dim_,out_dim_}),DATA,gNetMode);
                     Random::GetInstance().SetNormalFloat((float *)prev_[i]->cpu_data(),
                     prev_[i]->shape().count(),0,1);
+  
                 }else if(in_type_[i] == BIAS && has_bias_){
                     prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
                     Shape({out_dim_}),DATA,gNetMode);
