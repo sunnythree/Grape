@@ -38,10 +38,10 @@ namespace javernn{
         inline void *mutable_cpu_diff(){return diff_->mutable_cpu_data();};
         inline void *mutable_gpu_data(){return data_->mutable_gpu_data();};
         inline void *mutable_gpu_diff(){return diff_->mutable_gpu_data();};
-        inline void data_to_cpu();
-        inline void data_to_gpu();
-        inline void diff_to_cpu();
-        inline void diff_to_gpu();
+        inline void data_to_cpu(){data_->to_cpu();};
+        inline void data_to_gpu(){data_->to_gpu();};
+        inline void diff_to_cpu(){diff_->to_cpu();};
+        inline void diff_to_gpu(){diff_->to_gpu();};
 
     private:
         std::shared_ptr<SyncedMemory> data_;

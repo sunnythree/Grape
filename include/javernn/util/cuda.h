@@ -1,15 +1,17 @@
 #ifndef __JAVERNN_CUDA_H__
 #define __JAVERNN_CUDA_H__
 
-
 #ifdef GPU
-
     #define BLOCK 512
     #include "cuda_runtime.h"
     #include "curand.h"
     #include "cublas_v2.h"
+#endif
 
-    
+namespace javernn
+{
+#ifdef GPU
+
     void cuda_set_device(int n);
     int  cuda_get_device();
     void cuda_check_error(cudaError_t status);
@@ -22,10 +24,12 @@
     void cuda_push_array(void *x_gpu, void *x, size_t n);
     void cuda_async_push_array(void *x_gpu, void *x, size_t n,const cudaStream_t& stream);
     void cuda_pointer_get_attributes(cudaPointerAttributes* attr,void* x_gpu);
-    float *cuda_make_array(float *x, size_t n)
     #ifdef CUDNN
     cudnnHandle_t cudnn_handle();
     #endif
     cublasHandle_t cuda_blas_handle();
 #endif
+} // namespace javernn
+
+
 #endif

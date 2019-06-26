@@ -11,6 +11,7 @@ namespace javernn{
         INFO,
         ERROR
     };
+    
     class Log{
     public:
         static void log_print(std::string tag,std::string log);

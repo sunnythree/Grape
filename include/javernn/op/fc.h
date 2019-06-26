@@ -8,12 +8,12 @@ namespace javernn{
         explicit Fc(uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias = true);
         virtual ~Fc();
         void Setup();
-        std::vector<Tensor> ForwardCpu(); 
+        void ForwardCpu(); 
         void BackwardCpu();
         void UpdateWeightsCpu(Optimizer &opt);
 
 #ifdef GPU
-        std::vector<Tensor> ForwardGpu(); 
+        void ForwardGpu(); 
         void BackwardGpu();
         void UpdateWeightsGpu(Optimizer &opt);
 #endif

@@ -54,7 +54,8 @@ LIB_CPP += $(wildcard ./src/javernn/op/*.cpp)
 OBJ_CPP += $(wildcard ./src/tools/*.cpp)
 ifeq ($(GPU), 1) 
 LDFLAGS += -lstdc++ 
-OBJ_CU  += $(wildcard ./src/*.cu)
+OBJ_CU  += $(wildcard ./src/javernn/op/*.cu)
+OBJ_CU  += $(wildcard ./src/javernn/util/*.cu)
 endif
 ifeq ($(TEST), 1) 
 TEST_CPP += $(wildcard ./src/test/*.cpp)

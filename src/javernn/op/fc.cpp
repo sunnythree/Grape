@@ -56,14 +56,12 @@ namespace javernn{
         }
     }
 
-    std::vector<Tensor> Fc::ForwardCpu()
+    void Fc::ForwardCpu()
     {
-        std::vector<Tensor> out;
         Log::v(TAG," Fc ForwardCpu");
         //get data
         Tensor* data_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
-        Tensor* bias_tensor = prev_[2].get();
         Tensor* out_data_tensor = next_[0].get();
         int m = batch_size_;
         int k = in_dim_;
@@ -73,28 +71,51 @@ namespace javernn{
         float *c = (float *)out_data_tensor->mutable_cpu_data();
         gemm(0,1,m,n,k,1,a,k,b,k,1,c,n);
         if(has_bias_){
+            Tensor* bias_tensor = prev_[2].get();
             add_cpu(out_dim_,(float *)bias_tensor,1,(float *)out_data_tensor,1);
         }
-        return out;
     } 
 
     void Fc::BackwardCpu()
     {
         Log::v(TAG," Fc BackwardCpu");
+        //get data
+        Tensor* data_tensor = prev_[0].get();
+        Tensor* weight_tensor = prev_[1].get();
+        Tensor* out_data_tensor = next_[0].get();
+        int m = out_dim_;
+        int k = batch_size_;
+        int n = in_dim_;
+        float *a = (float *)data_tensor->mutable_cpu_data();
+        float *b = (float *)out_data_tensor->mutable_cpu_diff();
+        float *c = (float *)weight_tensor->mutable_cpu_diff();
+        gemm(1,0,m,n,k,1,a,m,b,n,1,c,n);
 
+        m = batch_size_;
+        k = out_dim_;
+        n = in_dim_;
+
+        a = (float *)out_data_tensor->mutable_cpu_diff();
+        b = (float *)weight_tensor->mutable_cpu_diff();
+        c = (float *)data_tensor->mutable_cpu_diff();
+
+        if(c) gemm(0,0,m,n,k,1,a,k,b,n,1,c,n);
     }
 
     void Fc::UpdateWeightsCpu(Optimizer &opt)
     {
         Log::v(TAG," Fc UpdateWeightsCpu");
+        opt.UpdateCpu( prev_[1].get());
+        if(has_bias_){
+            opt.UpdateCpu( prev_[2].get());
+        }
     }
 
 #ifdef GPU
 
-    std::vector<Tensor> Fc::ForwardGpu()
+    void Fc::ForwardGpu()
     {
-        std::vector<Tensor> out;
-        return out;
+
     }
 
     void Fc::BackwardGpu()

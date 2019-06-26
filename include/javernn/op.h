@@ -37,12 +37,12 @@ public:
 
     virtual void Setup() = 0;
     
-    virtual std::vector<Tensor> ForwardCpu() = 0; 
+    virtual void ForwardCpu() = 0; 
     virtual void BackwardCpu() = 0;
     virtual void UpdateWeightsCpu(Optimizer &opt) = 0;
 
 #ifdef GPU
-    virtual std::vector<Tensor> ForwardGpu() = 0; 
+    virtual void ForwardGpu() = 0; 
     virtual void BackwardGpu() = 0;
     virtual void UpdateWeightsGpu(Optimizer &opt) = 0;
 #endif
