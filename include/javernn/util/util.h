@@ -22,6 +22,9 @@ namespace javernn
     }
     return res;
     }
+
+    float sum_array(float *a, int n);
+
 } // namespace javernn
 
 

@@ -74,13 +74,14 @@ namespace javernn
         }
     }
 
-    void softmax_cpu(float *input, int n, int batch, int batch_offset, int groups, int group_offset, int stride, float temp, float *output)
+   void softmax_x_ent_cpu(int n, float *pred, float *truth, float *delta, float *error)
     {
-        int g, b;
-        for(b = 0; b < batch; ++b){
-            for(g = 0; g < groups; ++g){
-                softmax(input + b*batch_offset + g*group_offset, n, temp, stride, output + b*batch_offset + g*group_offset);
-            }
+        int i;
+        for(i = 0; i < n; ++i){
+            float t = truth[i];
+            float p = pred[i];
+            error[i] = (t) ? -log(p) : 0;
+            delta[i] = t-p;
         }
     }
 } // namespace javernn

@@ -177,18 +177,33 @@ namespace javernn
         }
     }
 
-    __global__ void softmax_kernel(float *input, int n, int batch, int batch_offset, int groups, int group_offset, int stride, float temp, float *output)
+    __global__ void softmax_kernel(float *input, int n, float temp, int stride, float *output)
     {
         int id = (blockIdx.x + blockIdx.y*gridDim.x) * blockDim.x + threadIdx.x;
-        if (id >= batch*groups) return;
-        int b = id / groups;
-        int g = id % groups;
-        softmax_device(input + b*batch_offset + g*group_offset, n, temp, stride, output + b*batch_offset + g*group_offset);
+        if (id >= n) return;
+        softmax_device(input, n, temp, stride, output);
     }
 
-    extern "C" void softmax_gpu(float *input, int n, int batch, int batch_offset, int groups, int group_offset, int stride, float temp, float *output)
+    extern "C" void softmax_gpu(float *input, int n, float temp, int stride, float *output)
     {
-        softmax_kernel<<<cuda_gridsize(batch*groups), BLOCK>>>(input, n, batch, batch_offset, groups, group_offset, stride, temp, output);
+        softmax_kernel<<<cuda_gridsize(n), BLOCK>>>(input, n, temp, stride ,output);
+        cuda_check_error(cudaPeekAtLastError());
+    }
+
+    __global__ void softmax_x_ent_kernel(int n, float *pred, float *truth, float *delta, float *error)
+    {
+        int i = (blockIdx.x + blockIdx.y*gridDim.x) * blockDim.x + threadIdx.x;
+        if(i < n){
+            float t = truth[i];
+            float p = pred[i];
+            error[i] = (t) ? -log(p) : 0;
+            delta[i] = t-p;
+        }
+    }
+
+    extern "C" void softmax_x_ent_gpu(int n, float *pred, float *truth, float *delta, float *error)
+    {
+        softmax_x_ent_kernel<<<cuda_gridsize(n), BLOCK>>>(n, pred, truth, delta, error);
         cuda_check_error(cudaPeekAtLastError());
     }
 }

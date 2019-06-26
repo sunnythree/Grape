@@ -15,13 +15,8 @@ namespace javernn{
     out_dim_(out_dim),
     has_bias_(has_bias)
     {
-        //create output tensor,only data
-        for(int i=0;i<next_.size();i++){
-            if(out_type_[i] == DATA){
-                next_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({batch_size_,out_dim_}),DATA,gNetMode);
-            }
-        }
+        next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
+        Shape({batch_size_,out_dim_}),DATA,gNetMode);
     }
 
     Fc::~Fc()
