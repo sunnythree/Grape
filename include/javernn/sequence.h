@@ -1,5 +1,5 @@
-#ifndef __javernn_sequence_h__
-#define __javernn_sequence_h__
+#ifndef __JAVERNN_SEQUENCE_H__
+#define __JAVERNN_SEQUENCE_H__
 
 #include "javernn/ops.h"
 

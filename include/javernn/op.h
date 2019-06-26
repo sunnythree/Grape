@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-#include "javernn/optimizers/optimizers.h"
+#include "javernn/optimizer/optimizer.h"
 #include "javernn/error.h"
 
 

@@ -17,10 +17,10 @@ namespace javernn
         Optimizer &operator=(const Optimizer &) = default;
         Optimizer &operator=(Optimizer &&) = default;
         virtual ~Optimizer()               = default;
-        virtual void reset() {}  // override to implement pre-learning action
-        virtual void UpdateCpu(const Tensor *weights) = 0;
+        virtual void reset() = 0; // override to implement pre-learning action
+        virtual void UpdateCpu(Tensor *weights) = 0;
     #ifdef GPU
-        virtual void UpdateGpu(const Tensor *weights) = 0;
+        virtual void UpdateGpu(Tensor *weights) = 0;
     #endif
     };
 }
