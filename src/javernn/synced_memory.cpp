@@ -4,8 +4,12 @@
 #include "javernn/util/cuda.h"
 #include "javernn/error.h"
 #include "javernn/global_config.h"
+#include "javernn/log.h"
 
 namespace javernn {
+
+    static std::string TAG = "SyncedMemory";
+
     SyncedMemory::SyncedMemory(uint32_t size,CAL_MODE mode)
     :size_(size),mode_(mode) {
         if(mode_ == CPU_MODE){
@@ -25,14 +29,13 @@ namespace javernn {
     }
 
     SyncedMemory::~SyncedMemory() {
-    if (cpu_ptr_ != nullptr) {
-        free(cpu_ptr_);
-    }
-
+        if (cpu_ptr_ != nullptr) {
+            free(cpu_ptr_);
+        }
     #ifdef GPU
-    if (gpu_ptr_ != nullptr) {
-        cuda_free(gpu_ptr_);
-    }
+        if (gpu_ptr_ != nullptr) {
+            cuda_free(gpu_ptr_);
+        }
     #endif  // GPU
     }
 

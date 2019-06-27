@@ -21,39 +21,37 @@ namespace javernn{
 
     Fc::~Fc()
     {
-
     }
 
     void Fc::Setup()
     {
+        Log::v(TAG," Setup");
         //create input tensor,only weights and bias
-        if(prev_.size()>0){
-            Log::i(TAG,"skip init weights");
+        if(prev_.size()==0){
+            Log::v(TAG,"skip init weights");
         }else{
-            for(int i=0;i<prev_.size();i++){
-                if(in_type_[i] == WEIGHTS){
-                    prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                    Shape({in_dim_,out_dim_}),DATA,gNetMode);
-                    Random::GetInstance().SetNormalFloat((float *)prev_[i]->cpu_data(),
-                    prev_[i]->shape().count(),0,1);
-                    if(gNetMode == GPU_MODE){
-                        prev_[i]->data_to_gpu();
-                    }
-                }else if(in_type_[i] == BIAS && has_bias_){
-                    prev_[i] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                    Shape({out_dim_}),DATA,gNetMode);
-                    fill_cpu(prev_[i]->shape().count(),0,(float *)prev_[i]->cpu_data(),1);
-                    if(gNetMode == GPU_MODE){
-                        prev_[i]->data_to_gpu();
-                    }
-                }
+            prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
+            Shape({in_dim_,out_dim_}),DATA,gNetMode);
+            Random::GetInstance().SetNormalFloat((float *)prev_[1]->cpu_data(),
+            prev_[1]->shape().count(),0,1);
+#ifdef GPU
+            prev_[1]->data_to_gpu();
+#endif
+            if(has_bias_){
+                prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
+                Shape({out_dim_}),DATA,gNetMode);
+                fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->cpu_data(),1);
+#ifdef GPU
+                prev_[2]->data_to_gpu();
+#endif
             }
+
         }
     }
 
     void Fc::ForwardCpu()
     {
-        Log::v(TAG," Fc ForwardCpu");
+        Log::v(TAG,"ForwardCpu");
         //get data
         Tensor* data_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
@@ -64,16 +62,18 @@ namespace javernn{
         float *a = (float *)data_tensor->mutable_cpu_data();
         float *b = (float *)weight_tensor->mutable_cpu_data();
         float *c = (float *)out_data_tensor->mutable_cpu_data();
+        
         gemm(0,1,m,n,k,1,a,k,b,k,1,c,n);
         if(has_bias_){
             Tensor* bias_tensor = prev_[2].get();
-            add_cpu(out_dim_,(float *)bias_tensor,1,(float *)out_data_tensor,1);
+            add_cpu(out_dim_,(float *)bias_tensor->mutable_cpu_data(),
+            1,(float *)out_data_tensor->mutable_cpu_data(),1);
         }
     } 
 
     void Fc::BackwardCpu()
     {
-        Log::v(TAG," Fc BackwardCpu");
+        Log::v(TAG,"BackwardCpu");
         //get data
         Tensor* data_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
@@ -99,7 +99,7 @@ namespace javernn{
 
     void Fc::UpdateWeightsCpu(Optimizer &opt)
     {
-        Log::v(TAG," Fc UpdateWeightsCpu");
+        Log::v(TAG,"UpdateWeightsCpu");
         opt.UpdateCpu( prev_[1].get());
         if(has_bias_){
             opt.UpdateCpu( prev_[2].get());

@@ -4,9 +4,9 @@
 #include "javernn/op.h"
 
 namespace javernn{
-    class SoftmaxWithLoss : Op{
+    class SoftmaxWithLoss :public Op{
     public:
-        SoftmaxWithLoss(int32_t batch_size, int32_t in_dim);
+        SoftmaxWithLoss(uint32_t batch_size, uint32_t in_dim);
         ~SoftmaxWithLoss();
         void Setup();
         void ForwardCpu(); 
@@ -23,6 +23,7 @@ namespace javernn{
         uint32_t in_dim_;
         uint32_t temperature_;
         std::shared_ptr<Tensor> cost_;
+        std::shared_ptr<Tensor> inner_;
     };
 }
 #endif
