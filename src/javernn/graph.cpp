@@ -77,6 +77,7 @@ namespace javernn{
                 }
 
                 std::vector<uint8_t> &removed = removed_edge[next[i]];
+                Log::v(TAG," graph i is "+std::to_string(i));
                 removed[FindIndex(next[i]->PrevOps(), curr)] = 1;
 
                 if (std::all_of(removed.begin(), removed.end(),

@@ -61,8 +61,14 @@ protected:
 
 void connection_mismatch(const Op &from, const Op &to);
 void connect_op(Op *head,Op *tail,int32_t head_index = 0,int32_t tail_index = 0);
-Op &operator<<(Op &lhs, Op &rhs);
 
+std::vector<Op *> operator,(Op &lhs, Op &rhs);
+std::vector<Op *> &operator,(std::vector<Op *> &lhs, Op &rhs);
+std::vector<Op *> &operator,(Op &lhs, std::vector<Op *> &rhs);
+std::vector<Op *> &operator,(std::vector<Op *> &lhs, std::vector<Op *> &rhs);
+Op &operator<<(Op &lhs, Op &rhs);
+Op &operator<<(std::vector<Op *> &lhs, Op &rhs);
+std::vector<Op *> &operator<<(Op &rhs, std::vector<Op *> &lhs);
 }
 
 #endif

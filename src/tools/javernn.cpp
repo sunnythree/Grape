@@ -16,9 +16,13 @@ int main()
     Input input(1,1);
     Input label(1,1);
     SoftmaxWithLoss sm(1,1);
-    input<<fc1<<fc2<<sm;
-    connect_op(&label,&sm,0,1);
+    std::vector<Op *> tuple1 = (fc2,label);
 
+
+    std::cout<<"11111"<<std::endl;
+    input<<fc1<<fc2;
+    tuple1<<sm;
+    std::cout<<"2222 "<<std::endl;
     Graph graph;
     graph.Construct({&input,&label},{&sm});
     graph.Forward();

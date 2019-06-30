@@ -2,8 +2,11 @@
 #include "javernn/op.h"
 #include "javernn/tensor.h"
 #include "javernn/util/util.h"
+#include "javernn/log.h"
 
 namespace javernn{
+    static std::string TAG = "Op";
+
     Op::Op(const std::vector<TENSOR_TYPE> &in_type,
         const std::vector<TENSOR_TYPE> &out_type) 
         : in_type_(in_type),out_type_(out_type),
@@ -65,8 +68,56 @@ namespace javernn{
         tail->prev_[tail_index]->add_next_op(tail);
     }
 
+    std::vector<Op *> operator,(Op &lhs, Op &rhs)
+    {
+        Log::v(TAG,"operator ,");
+        std::vector<Op *> vec;
+        vec.push_back(&lhs);
+        vec.push_back(&rhs);
+        Log::v(TAG,"operator ,");
+        return vec;
+    }
+
+    std::vector<Op *> &operator,(std::vector<Op *> &lhs, Op &rhs)
+    {
+        lhs.push_back(&rhs);
+        return lhs;
+    }
+
+    std::vector<Op *> &operator,(Op &lhs, std::vector<Op *> &rhs)
+    {
+        rhs.push_back(&lhs);
+        return rhs;
+    }
+
+    std::vector<Op *> &operator,(std::vector<Op *> &lhs, std::vector<Op *> &rhs)
+    {
+        for(auto tmp:lhs){
+            rhs.push_back(tmp);
+        }
+        return rhs;
+    }
+
     Op &operator<<(Op &lhs, Op &rhs) {
         connect_op(&lhs, &rhs);
+        return rhs;
+    }
+
+    Op &operator<<(std::vector<Op *> &lhs, Op &rhs)
+    {
+        Log::v(TAG,"operator << ll lhs size is "+std::to_string(lhs.size()));
+        for (int32_t i = 0; i < lhs.size(); ++i) {
+            Log::v(TAG,"i is "+std::to_string(i));
+            connect_op(lhs[i], &rhs, 0, i);
+        }
+        return rhs;
+    }
+
+    std::vector<Op *> &operator<<(Op &lhs, std::vector<Op *> &rhs)
+    {
+        for (size_t i = 0; i < rhs.size(); i++) {
+            connect_op(&lhs, rhs[i], i, 0);
+        }
         return rhs;
     }
 }
