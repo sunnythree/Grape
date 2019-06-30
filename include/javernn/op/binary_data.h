@@ -27,7 +27,7 @@ namespace javernn
         std::string file_path_;
         std::string file_size_;
         std::ifstream file_in_;
-        std::shared_ptr<char> tmp_data_;
+        std::vector<char> tmp_data_;
         uint32_t data_offset_;
     };
     

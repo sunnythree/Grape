@@ -12,11 +12,11 @@ namespace javernn {
 
     SyncedMemory::SyncedMemory(uint32_t size,CAL_MODE mode)
     :size_(size),mode_(mode) {
-        if(mode_ == CPU_MODE){
-            cpu_ptr_ = malloc(size_);
-            memset(cpu_ptr_, 0, size_ );
-        }else{
+        Log::v(TAG,"SyncedMemory");
+        cpu_ptr_ = malloc(size_);
+        memset(cpu_ptr_, 0, size_ );
     #ifdef GPU
+        if(mode_ == GPU_MODE){
             device_ = cuda_get_device();
             if(device_>0 && gDeviceId < device_){
                 cuda_set_device(gDeviceId);
@@ -24,17 +24,20 @@ namespace javernn {
                 throw new Error("no gpu device checked");
             }
             mode_ = GPU_MODE;
-    #endif
         }
+    #endif
     }
 
     SyncedMemory::~SyncedMemory() {
+        Log::v(TAG,"~SyncedMemory");
         if (cpu_ptr_ != nullptr) {
             free(cpu_ptr_);
         }
     #ifdef GPU
-        if (gpu_ptr_ != nullptr) {
-            cuda_free(gpu_ptr_);
+        if(mode_ == GPU_MODE){
+            if (gpu_ptr_ != nullptr) {
+                cuda_free(gpu_ptr_);
+            }
         }
     #endif  // GPU
     }

@@ -4,3 +4,5 @@ javernn
 !javernn/
 libjavernn.a
 libjavernn.so
+test
+/data

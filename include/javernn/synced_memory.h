@@ -9,7 +9,7 @@ namespace javernn {
     class SyncedMemory {
     public:
         explicit SyncedMemory(uint32_t size,CAL_MODE mode);
-        ~SyncedMemory();
+        virtual ~SyncedMemory();
         const void* cpu_data();
         const void* gpu_data();
         void* mutable_cpu_data();

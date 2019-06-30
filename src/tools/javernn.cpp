@@ -13,9 +13,9 @@ using namespace javernn;
 int main()
 {
     std::cout<<"hello world"<<std::endl;
+    BinaryData input("data/train-images-idx3-ubyte",20,784,16);
+    BinaryData label("data/train-labels-idx1-ubyte",20,10,8);
     Fc fc1(20,100,30),fc2(20,30,10);
-    BinaryData input("mnist_data",20,784,16);
-    BinaryData label("mnist_data",20,1,16);
     SoftmaxWithLoss sm(20,10);
     std::vector<Op *> tuple1 = (fc2,label);
 

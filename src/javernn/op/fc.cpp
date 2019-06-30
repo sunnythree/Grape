@@ -1,5 +1,6 @@
 
 #include <memory>
+#include <assert.h>
 #include "javernn/op/fc.h"
 #include "javernn/log.h"
 #include "javernn/util/random.h"
@@ -30,6 +31,8 @@ namespace javernn{
         if(prev_.size()==0){
             Log::v(TAG,"skip init weights");
         }else{
+            Log::v(TAG,"create weights");
+            assert(prev_[0].get() != nullptr);
             prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
             Shape({in_dim_,out_dim_}),DATA,gNetMode);
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->cpu_data(),
@@ -40,6 +43,7 @@ namespace javernn{
             }
 #endif
             if(has_bias_){
+                Log::v(TAG,"create bias");
                 prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
                 Shape({out_dim_}),DATA,gNetMode);
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->cpu_data(),1);
@@ -55,23 +59,34 @@ namespace javernn{
     void Fc::ForwardCpu()
     {
         Log::v(TAG,"ForwardCpu");
+        Log::v(TAG,"ForwardCpu,prev_ size "+std::to_string(prev_.size()));
+        Log::v(TAG,"ForwardCpu,next_ size "+std::to_string(next_.size()));
         //get data
         Tensor* data_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
         Tensor* out_data_tensor = next_[0].get();
+        Log::v(TAG,"ForwardCpu 0");
         int m = batch_size_;
         int k = in_dim_;
         int n = out_dim_;
+        Log::v(TAG,"ForwardCpu 1");
+        assert(data_tensor != nullptr);
+        assert(weight_tensor != nullptr);
+        assert(out_data_tensor != nullptr);
         float *a = (float *)data_tensor->mutable_cpu_data();
+        Log::v(TAG,"ForwardCpu 1");
         float *b = (float *)weight_tensor->mutable_cpu_data();
+        Log::v(TAG,"ForwardCpu 1");
         float *c = (float *)out_data_tensor->mutable_cpu_data();
-        
+        Log::v(TAG,"ForwardCpu 1");
         gemm(0,1,m,n,k,1,a,k,b,k,1,c,n);
+        Log::v(TAG,"ForwardCpu 2");
         if(has_bias_){
             Tensor* bias_tensor = prev_[2].get();
             add_cpu(out_dim_,(float *)bias_tensor->mutable_cpu_data(),
             1,(float *)out_data_tensor->mutable_cpu_data(),1);
         }
+        Log::v(TAG,"ForwardCpu 3");
     } 
 
     void Fc::BackwardCpu()

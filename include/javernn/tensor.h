@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 #include "javernn/synced_memory.h"
 #include "javernn/shape.h"
 
@@ -19,6 +20,7 @@ namespace javernn{
     public:
         Tensor(Op *prev,Shape shape,TENSOR_TYPE type,CAL_MODE mode)
         : prev_(prev),shape_(shape),type_(type),mode_(mode){
+            std::cout<<" Tensor "<<shape_.count()*sizeof(float)<<std::endl;
             data_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float),mode_);
             diff_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float),mode_);
         }

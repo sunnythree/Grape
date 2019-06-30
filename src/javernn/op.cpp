@@ -63,7 +63,7 @@ namespace javernn{
         if (!head->next_[head_index]) {
             throw Error("output edge must not be null");
         }
-
+        Log::v(TAG,"connect_op");
         tail->prev_[tail_index] = head->next_[head_index];
         tail->prev_[tail_index]->add_next_op(tail);
     }
