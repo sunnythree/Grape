@@ -35,17 +35,20 @@ namespace javernn{
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->cpu_data(),
             prev_[1]->shape().count(),0,1);
 #ifdef GPU
-            prev_[1]->data_to_gpu();
+            if(gNetMode == GPU_MODE){
+                prev_[1]->data_to_gpu();
+            }
 #endif
             if(has_bias_){
                 prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
                 Shape({out_dim_}),DATA,gNetMode);
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->cpu_data(),1);
 #ifdef GPU
-                prev_[2]->data_to_gpu();
+                if(gNetMode == GPU_MODE){
+                    prev_[2]->data_to_gpu();
+                }
 #endif
             }
-
         }
     }
 

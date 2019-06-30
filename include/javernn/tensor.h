@@ -19,8 +19,8 @@ namespace javernn{
     public:
         Tensor(Op *prev,Shape shape,TENSOR_TYPE type,CAL_MODE mode)
         : prev_(prev),shape_(shape),type_(type),mode_(mode){
-            data_ = std::make_shared<SyncedMemory>(shape_.count(),mode_);
-            diff_ = std::make_shared<SyncedMemory>(shape_.count(),mode_);
+            data_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float),mode_);
+            diff_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float),mode_);
         }
         virtual ~Tensor() {};
 

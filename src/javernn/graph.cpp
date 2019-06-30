@@ -14,18 +14,19 @@ namespace javernn{
     static std::string TAG = "Graph";
     void Graph::Backward()
     {
-        for(auto o:ops_){
+        for(int i=ops_.size()-1;i>-1;--i){
             if(gNetMode == CPU_MODE){
-                o->BackwardCpu();
+                ops_[i]->BackwardCpu();
             }else{
 #ifdef GPU
-                o->BackwardGpu();
+                ops_[i]->BackwardGpu();
 #endif
             }
         }
     }
     void Graph::Forward()
     {
+        Log::v(TAG,"Forward");
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
                 o->ForwardCpu();
@@ -77,7 +78,6 @@ namespace javernn{
                 }
 
                 std::vector<uint8_t> &removed = removed_edge[next[i]];
-                Log::v(TAG," graph i is "+std::to_string(i));
                 removed[FindIndex(next[i]->PrevOps(), curr)] = 1;
 
                 if (std::all_of(removed.begin(), removed.end(),
@@ -89,12 +89,10 @@ namespace javernn{
         int num = 0;
         for (auto &n : sorted) {
             ops_.push_back(n);
-            Log::v(TAG,"num "+std::to_string(++num));
         }
 
         input_ops_  = inputs;
         output_ops_ = outputs;
-
         Setup();
     }
 
