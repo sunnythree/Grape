@@ -13,7 +13,7 @@ int main()
     std::cout<<"hello world"<<std::endl;
 
     Fc fc1(1,1,1),fc2(1,1,1);
-    Input input(1,1);
+    Input input(1,1,1);
     SoftmaxWithLoss sm(1,1);
     Sequence s;
     s.Add(&input);

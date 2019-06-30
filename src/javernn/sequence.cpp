@@ -46,10 +46,6 @@ namespace javernn{
         for(auto o:ops_){
              o->Setup();
         }
-        auto out_tensors = ops_[ops_.size()-1]->prev();
-        Shape out_shape = out_tensors[0]->shape();
-        label_ = std::make_shared<Input>(out_shape.index(0), out_shape.count(1));
-        connect_op(label_.get(), ops_[ops_.size()-1], 0, 1);
     }
     void Sequence::Add(Op* op)
     {
