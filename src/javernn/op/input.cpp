@@ -5,13 +5,11 @@ static std::string TAG = "Input";
 
 namespace javernn
 {
-    Input::Input(uint32_t batch_size, uint32_t in_dim, uint32_t label_dim):
-    Op({},{DATA,DATA}),
+    Input::Input(uint32_t batch_size, uint32_t in_dim):
+    Op({},{DATA}),
     batch_size_(batch_size),
     in_dim_(in_dim)
     {
-        next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,in_dim_}),DATA,gNetMode);
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,in_dim_}),DATA,gNetMode);
     }
@@ -40,9 +38,9 @@ namespace javernn
 
     }
 
-    std::vector<tensorptr_t> Input::GetOutputTensor()
+    Tensor* Input::GetOutputTensor()
     {
-        return next_;
+        return next_[0].get();
     }
 
 #ifdef GPU

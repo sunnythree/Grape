@@ -6,6 +6,8 @@
 namespace javernn{
     class Graph:public Ops{
     public:
+        Graph(){};
+        virtual ~Graph(){};
         void Backward(void);
         void Forward();  
         void UpdateWeights(Optimizer &opt);

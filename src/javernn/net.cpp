@@ -1,27 +1,16 @@
 #include <memory>
 #include "javernn/net.h"
 #include "javernn/graph.h"
-#include "javernn/sequence.h"
 
 namespace javernn{
     Net::Net(NetParams &net_params)
     {
-        if(net_params.net_type_ == "graph"){
-            ops_ = std::make_shared<Graph>();
-        }else{
-            ops_ = std::make_shared<Sequence>();
-        }
+        ops_ = std::make_shared<Graph>();
     }
 
     Net::~Net()
     {
 
-    }
-
-    //build sequence 
-    void Net::Construct()
-    {
-        dynamic_cast<Sequence *>(ops_.get())->Construct();
     }
 
     //build graph

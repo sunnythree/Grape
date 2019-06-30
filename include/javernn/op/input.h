@@ -8,7 +8,7 @@ namespace javernn
     class Input: public Op
     {
     public:
-        Input(uint32_t batch_size, uint32_t data_dim_, uint32_t label_dim_);
+        Input(uint32_t batch_size, uint32_t in_dim);
         virtual ~Input();
 
         virtual void Setup();
@@ -22,11 +22,10 @@ namespace javernn
         virtual void BackwardGpu();
         virtual void UpdateWeightsGpu(Optimizer &opt);
 #endif
-        virtual std::vector<tensorptr_t> GetOutputTensor();
+        virtual Tensor* GetOutputTensor();
     protected:
         uint32_t batch_size_;
-        uint32_t data_dim_;
-        uint32_t label_dim_;
+        uint32_t in_dim_;
     };
     
 } // namespace javernn
