@@ -77,7 +77,7 @@ OBJ_TESTS += $(addprefix $(OBJDIR), $(OBJ_TEST))
 endif
 
 DIRS := obj obj/src obj/src/tools obj/src/javernn obj/src/test  
-DIRS += obj/src/javernn/util obj/src/javernn/op obj/src/javernn/optimizer
+DIRS += obj/src/javernn/util obj/src/javernn/op obj/src/javernn/optimizer 
 DIRS += backup results 
 all: $(DIRS) $(SLIB) $(ALIB) $(EXEC) $(TEST_EXE)
 #all: obj  results $(SLIB) $(ALIB) $(EXEC)

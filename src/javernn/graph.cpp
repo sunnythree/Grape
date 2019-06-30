@@ -12,7 +12,7 @@
 
 namespace javernn{
     static std::string TAG = "Graph";
-    void Graph::Backward(const std::vector<Tensor> &cost)
+    void Graph::Backward()
     {
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
@@ -24,9 +24,8 @@ namespace javernn{
             }
         }
     }
-    std::vector<Tensor> Graph::Forward(const std::vector<Tensor> &inputs)
+    void Graph::Forward()
     {
-        std::vector<Tensor> cost;
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
                 o->ForwardCpu();
@@ -36,7 +35,6 @@ namespace javernn{
 #endif
             }
         }
-        return cost;
     } 
     void Graph::UpdateWeights(Optimizer &opt)
     {
@@ -56,10 +54,10 @@ namespace javernn{
             o->Setup();
         }
     }
-    void Graph::Construct(const std::vector<Op *> &input,
-                    const std::vector<Op *> &output) {
+    void Graph::Construct(const std::vector<Op *> &inputs,
+                    const std::vector<Op *> &outputs) {
         std::vector<Op *> sorted;
-        std::vector<Op *> input_nodes(input.begin(), input.end());
+        std::vector<Op *> input_nodes(inputs.begin(), inputs.end());
         std::unordered_map<Op *, std::vector<uint8_t>> removed_edge;
 
         // topological-sorting
@@ -93,8 +91,8 @@ namespace javernn{
             Log::v(TAG,"num "+std::to_string(++num));
         }
 
-        input_layers_  = input;
-        output_layers_ = output;
+        input_ops_  = inputs;
+        output_ops_ = outputs;
 
         Setup();
     }

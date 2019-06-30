@@ -31,20 +31,15 @@ namespace javernn{
         dynamic_cast<Graph *>(ops_.get())->Construct(input,output);
     }
 
-    void Net::Train(Optimizer &optimizer,
-        const std::vector<Tensor> &inputs,
-        const std::vector<Tensor> &class_labels,
-        int32_t batch_size,
-        int32_t epoch)
+    void Net::Train()
     {
-        ops_->Backward(ops_->Forward(inputs));
-        ops_->UpdateWeights(optimizer);
+        ops_->Backward();
+        ops_->UpdateWeights(*optimizer_);
     }
 
-    void Net::Test(const std::vector<Tensor> &inputs,
-        const std::vector<Tensor> &class_labels)
+    void Net::Test()
     {
-        ops_->Forward(inputs);
+        ops_->Forward();
     }
 
     

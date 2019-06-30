@@ -15,15 +15,11 @@ namespace javernn{
         void Construct();
         void Construct(const std::vector<Op *> &input,
                  const std::vector<Op *> &output);
-        void Train(Optimizer &optimizer,
-            const std::vector<Tensor> &inputs,
-            const std::vector<Tensor> &class_labels,
-            int32_t batch_size,
-            int32_t epoch);
-        void Test(const std::vector<Tensor> &inputs,
-            const std::vector<Tensor> &class_labels);
+        void Train();
+        void Test();
     private:
         std::shared_ptr<Ops> ops_;
+        std::shared_ptr<Optimizer> optimizer_;
     };
 }
 

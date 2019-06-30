@@ -23,7 +23,7 @@ namespace javernn
         virtual void UpdateWeightsGpu(Optimizer &opt);
 #endif
         virtual Tensor* GetOutputTensor();
-    private:
+    protected:
         uint32_t batch_size_;
         uint32_t in_dim_;
     };

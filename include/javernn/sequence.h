@@ -7,8 +7,8 @@
 namespace javernn{
     class Sequence:public Ops{
     public:
-        void Backward(const std::vector<Tensor> &cost);
-        std::vector<Tensor> Forward(const std::vector<Tensor> &inputs);  
+        void Backward();
+        void Forward();  
         void UpdateWeights(Optimizer &opt);
         void Setup();
         void Add(Op* op);

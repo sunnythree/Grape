@@ -4,7 +4,7 @@
 
 namespace javernn{
     static std::string TAG = "Sequence";
-    void Sequence::Backward(const std::vector<Tensor> &cost)
+    void Sequence::Backward()
     {
         for(int i=ops_.size()-1;i>=0;--i){
             if(gNetMode == CPU_MODE){
@@ -16,9 +16,9 @@ namespace javernn{
             }
         }
     }
-    std::vector<Tensor> Sequence::Forward(const std::vector<Tensor> &inputs)
+    void Sequence::Forward()
     {
-        std::vector<Tensor> cost;
+
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
                 o->ForwardCpu();
@@ -28,7 +28,6 @@ namespace javernn{
 #endif
             }
         }
-        return cost;
     } 
     void Sequence::UpdateWeights(Optimizer &opt)
     {

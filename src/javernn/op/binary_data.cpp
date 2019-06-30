@@ -1,0 +1,77 @@
+#include "javernn/op/binary_data.h"
+#include "javernn/util/blas.h"
+#include "javernn/log.h"
+
+namespace javernn
+{
+    static std::string TAG = "BinaryData";
+    BinaryData::BinaryData(std::string file_path, uint32_t batch_size, uint32_t in_dim):
+    Input(batch_size,in_dim),
+    file_path_(file_path)
+    {
+        tmp_data_ = std::make_shared<char>(batch_size*in_dim);
+        file_in_.open(file_path_,std::ios::binary);
+        file_in_.seekg(0,std::ios::end);
+        file_size_ = file_in_.tellg();
+        file_in_.seekg(0,std::ios::beg);
+    }
+
+    BinaryData::~BinaryData()
+    {
+        file_in_.close();
+    }
+
+    void BinaryData::Setup()
+    {
+        Log::v(TAG,"Setup");
+
+    }
+
+    void BinaryData::ForwardCpu()
+    {
+        Log::v(TAG,"ForwardCpu");
+        file_in_.read(tmp_data_.get(), batch_size_*in_dim_);
+        Tensor *out_tensor = GetOutputTensor();
+        float *cpu_data = (float *)out_tensor->mutable_cpu_data();
+        fill_cpu(batch_size_*in_dim_,0,cpu_data,1);
+        for(int i=0;i<batch_size_*in_dim_;i++){
+            cpu_data[i] = (float)tmp_data_.get()[i];
+        }
+        
+    } 
+
+    void BinaryData::BackwardCpu()
+    {
+        Log::v(TAG,"BackwardCpu");
+    }
+
+    void BinaryData::UpdateWeightsCpu(Optimizer &opt)
+    {
+
+    }
+
+#ifdef GPU
+    void BinaryData::ForwardGpu()
+    {
+        file_in_.read(tmp_data_.get(), batch_size_*in_dim_);
+        Tensor *out_tensor = GetOutputTensor();
+        float *cpu_data = (float *)out_tensor->mutable_cpu_data();
+        fill_cpu(batch_size_*in_dim_,0,cpu_data,1);
+        for(int i=0;i<batch_size_*in_dim_;i++){
+            cpu_data[i] = (float)tmp_data_.get()[i];
+        }
+        out_tensor->data_to_gpu();
+    } 
+
+    void BinaryData::BackwardGpu()
+    {
+
+    }
+
+    void BinaryData::UpdateWeightsGpu(Optimizer &opt)
+    {
+
+    }
+#endif
+} // namespace javernnvoid Input::Setup()
+  

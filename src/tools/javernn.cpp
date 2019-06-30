@@ -21,9 +21,7 @@ int main()
     s.Add(&fc2);
     s.Add(&sm);
     s.Construct();
-    std::vector<Tensor> in;
-    s.Forward(in);
-    std::cout<<"end"<<std::endl;
-    //s.Backward(in);
+    s.Forward();
+    s.Backward();
     return 0;
 }
