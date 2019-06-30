@@ -43,7 +43,7 @@ namespace javernn
         softmax(intput_data, n, temperature_, 1, output_data);
         softmax_x_ent_cpu(n, output_data, label_data, output_diff, cost_data);
         float cost_sum = sum_array(cost_data,n);
-        Log::i(TAG,"cost_sum is "+ std::to_string(cost_sum));
+        Log::v(TAG,"cost_sum is "+ std::to_string(cost_sum));
     }
 
     void SoftmaxWithLoss::BackwardCpu()

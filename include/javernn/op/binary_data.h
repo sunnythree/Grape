@@ -9,7 +9,8 @@ namespace javernn
     class BinaryData: public Input
     {
     public:
-        BinaryData(std::string file_path, uint32_t batch_size, uint32_t in_dim, uint32_t data_offset);
+        BinaryData(std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t out_dim, 
+        uint32_t data_offset, bool one_hot = false);
         virtual ~BinaryData();
 
         virtual void Setup();
@@ -29,6 +30,8 @@ namespace javernn
         std::ifstream file_in_;
         std::vector<char> tmp_data_;
         uint32_t data_offset_;
+        bool one_hot_;
+        uint32_t out_dim_;
     };
     
 } // namespace javernn

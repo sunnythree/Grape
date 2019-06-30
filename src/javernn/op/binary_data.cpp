@@ -5,10 +5,13 @@
 namespace javernn
 {
     static std::string TAG = "BinaryData";
-    BinaryData::BinaryData(std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t data_offset):
-    Input(batch_size,in_dim),
+    BinaryData::BinaryData(std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t out_dim,
+    uint32_t data_offset, bool one_hot):
+    Input(batch_size,out_dim),
     file_path_(file_path),
-    data_offset_(data_offset)
+    data_offset_(data_offset),
+    one_hot_(one_hot),
+    out_dim_(out_dim)
     {
         tmp_data_.reserve(batch_size*in_dim);
         file_in_.open(file_path_,std::ios::binary);
@@ -40,11 +43,21 @@ namespace javernn
         fill_cpu(batch_size_*in_dim_,0,cpu_data,1);
         for(int i=0;i<batch_size_;i++){
             file_in_.read(tmp_data_.data(), in_dim_);
-            for(int i=0;i<in_dim_;i++){
-                cpu_data[i] = (float)(tmp_data_.data()[i]&0xff);
-                //Log::v("",std::to_string(cpu_data[i]));
+            if(one_hot_){
+                for(int i=0;i<in_dim_;i++){
+                    float tmp = (float)(tmp_data_.data()[i]&0xff);
+//                    Log::v(TAG,std::to_string(tmp));
+                    for(int j=0;j<out_dim_;j++){
+                        cpu_data[i*out_dim_+j] = tmp >0 ? 1:0;
+                    }
+                }
+            }else{
+                for(int i=0;i<in_dim_;i++){
+                    cpu_data[i] = ((float)(tmp_data_.data()[i]&0xff))/255;
+                }
             }
         }
+
     } 
 
     void BinaryData::BackwardCpu()

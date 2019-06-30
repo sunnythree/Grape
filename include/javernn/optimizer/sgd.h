@@ -6,14 +6,14 @@
 #include "javernn/tensor.h"
 namespace javernn
 {
-    class SGD:public Optimizer{
+    class SGDOptimizer:public Optimizer{
     public:
-        SGD(float lr);
-        virtual ~SGD();
+        SGDOptimizer(float lr);
+        virtual ~SGDOptimizer();
         virtual void reset(); // override to implement pre-learning action
-        virtual void UpdateCpu(Tensor *weights) = 0;
+        virtual void UpdateCpu(Tensor *weights);
     #ifdef GPU
-        virtual void UpdateGpu(Tensor *weights) = 0;
+        virtual void UpdateGpu(Tensor *weights);
     #endif
     private:
     float alpha_;   // learning rate

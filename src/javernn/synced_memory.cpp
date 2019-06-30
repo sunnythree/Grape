@@ -12,7 +12,7 @@ namespace javernn {
 
     SyncedMemory::SyncedMemory(uint32_t size,CAL_MODE mode)
     :size_(size),mode_(mode) {
-        Log::v(TAG,"SyncedMemory");
+        //Log::v(TAG,"SyncedMemory");
         cpu_ptr_ = malloc(size_);
         memset(cpu_ptr_, 0, size_ );
     #ifdef GPU
@@ -29,7 +29,7 @@ namespace javernn {
     }
 
     SyncedMemory::~SyncedMemory() {
-        Log::v(TAG,"~SyncedMemory");
+        //Log::v(TAG,"~SyncedMemory");
         if (cpu_ptr_ != nullptr) {
             free(cpu_ptr_);
         }

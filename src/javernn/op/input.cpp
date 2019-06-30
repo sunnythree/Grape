@@ -5,6 +5,7 @@
 namespace javernn
 {
     static std::string TAG = "Input";
+    
     Input::Input(uint32_t batch_size, uint32_t in_dim):
     Op({},{DATA}),
     batch_size_(batch_size),

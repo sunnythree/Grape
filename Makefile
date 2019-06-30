@@ -1,5 +1,5 @@
-GPU=1
-OPENMP=1
+GPU=0
+OPENMP=0
 DEBUG=1
 TEST=1
 
@@ -38,6 +38,7 @@ OPTS=-O0 -g
 endif
 
 CFLAGS+=$(OPTS)
+LDFLAGS += -lstdc++ 
 
 
 ifeq ($(GPU), 1) 
@@ -54,7 +55,6 @@ LIB_CPP += $(wildcard ./src/javernn/op/*.cpp)
 LIB_CPP += $(wildcard ./src/javernn/optimizer/*.cpp)
 OBJ_CPP += $(wildcard ./src/tools/*.cpp)
 ifeq ($(GPU), 1) 
-LDFLAGS += -lstdc++ 
 OBJ_CU  += $(wildcard ./src/javernn/op/*.cu)
 OBJ_CU  += $(wildcard ./src/javernn/util/*.cu)
 endif

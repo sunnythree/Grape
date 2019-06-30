@@ -2,22 +2,22 @@
 
 namespace javernn
 {
-    SGD::SGD(float lr):alpha_(float(0.01)), lambda_(float(0))
+    SGDOptimizer::SGDOptimizer(float lr):alpha_(float(0.01)), lambda_(float(0))
     {
 
     }
 
-    SGD::~SGD()
+    SGDOptimizer::~SGDOptimizer()
     {
 
     }
 
-    void SGD::reset() 
+    void SGDOptimizer::reset() 
     {
 
     }
 
-    void SGD::UpdateCpu(Tensor *weights)
+    void SGDOptimizer::UpdateCpu(Tensor *weights)
     {
         float *W = (float *)weights->mutable_cpu_data();
         float *dW = (float *)weights->mutable_cpu_diff(); 
@@ -27,7 +27,7 @@ namespace javernn
     }
 
 #ifdef GPU
-    void SGD::UpdateGpu(Tensor *weights)
+    void SGDOptimizer::UpdateGpu(Tensor *weights)
     {
 
     }
