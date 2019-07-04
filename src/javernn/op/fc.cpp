@@ -73,6 +73,7 @@ namespace javernn{
         float *a = (float *)data_tensor->mutable_cpu_data();
         float *b = (float *)weight_tensor->mutable_cpu_data();
         float *c = (float *)out_data_tensor->mutable_cpu_data();
+        fill_cpu(batch_size_*out_dim_,0,c,1);
         gemm(0,1,m,n,k,1,a,k,b,k,1,c,n);
         if(has_bias_){
             Tensor* bias_tensor = prev_[2].get();
@@ -91,8 +92,8 @@ namespace javernn{
         int m = out_dim_;
         int k = batch_size_;
         int n = in_dim_;
-        float *a = (float *)data_tensor->mutable_cpu_data();
-        float *b = (float *)out_data_tensor->mutable_cpu_diff();
+        float *a = (float *)out_data_tensor->mutable_cpu_data();
+        float *b = (float *)data_tensor->mutable_cpu_diff();
         float *c = (float *)weight_tensor->mutable_cpu_diff();
         gemm(1,0,m,n,k,1,a,m,b,n,1,c,n);
 

@@ -5,14 +5,14 @@
 namespace javernn
 {
     static std::string TAG = "Input";
-    
-    Input::Input(uint32_t batch_size, uint32_t in_dim):
+
+    Input::Input(uint32_t batch_size, uint32_t out_dim):
     Op({},{DATA}),
     batch_size_(batch_size),
-    in_dim_(in_dim)
+    out_dim_(out_dim)
     {
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,in_dim_}),DATA,gNetMode);
+        Shape({batch_size_,out_dim_}),DATA,gNetMode);
     }
     
     Input::~Input()

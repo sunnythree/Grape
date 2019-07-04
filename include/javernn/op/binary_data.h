@@ -32,6 +32,7 @@ namespace javernn
         uint32_t data_offset_;
         bool one_hot_;
         uint32_t out_dim_;
+        uint32_t in_dim_;
     };
     
 } // namespace javernn
