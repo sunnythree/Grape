@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <random>
+#include <chrono>
 #include "javernn/util/random.h"
 
 namespace javernn{
@@ -7,6 +8,8 @@ namespace javernn{
     Random Random::GetInstance()
     {
         static Random random;
+        unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+        random.SetSeed(seed);
         return random;
     }
 
@@ -18,6 +21,11 @@ namespace javernn{
     Random::~Random()
     {
 
+    }
+
+    void Random::SetSeed(uint32_t seed)
+    {
+        generator_.seed(seed);
     }
 
     int Random::GetUniformInt(int from, int to)

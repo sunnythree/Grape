@@ -19,6 +19,9 @@ namespace javernn
     void softmax_cpu(float *input, int n, int batch, int batch_offset, int groups,
                      int group_offset, int stride, float temp, float *output);
     void softmax_x_ent_cpu(int n, float *pred, float *truth, float *delta, float *error);
+    void add_bias(float *output, float *biases, int batch, int n, int size);
+    void scale_bias(float *output, float *scales, int batch, int n, int size);
+    void backward_bias(float *bias_updates, float *delta, int batch, int n, int size);
 
     #ifdef GPU
     void axpy_gpu(int N, float ALPHA, float * X, int INCX, float * Y, int INCY);
@@ -36,6 +39,11 @@ namespace javernn
     void mult_add_into_gpu(int num, float *a, float *b, float *c);
     void softmax_gpu(float *input, int n, float temp, int stride, float *output);
     void softmax_x_ent_gpu(int n, float *pred, float *truth, float *delta, float *error);
+
+    void scale_bias_gpu(float *output, float *biases, int batch, int n, int size);
+    void backward_scale_gpu(float *x_norm, float *delta, int batch, int n, int size, float *scale_updates);
+    void add_bias_gpu(float *output, float *biases, int batch, int n, int size);
+    void backward_bias_gpu(float *bias_updates, float *delta, int batch, int n, int size);
     #endif
 }
 

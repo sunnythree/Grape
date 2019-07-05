@@ -63,7 +63,7 @@ namespace javernn
             }else{
                 file_in_.read(tmp_data_.data(), out_dim_);
                 for(int i=0;i<out_dim_;i++){
-                    cpu_data[i] = ((float)(tmp_data_.data()[i]&0xff))/255;
+                    cpu_data[i] = ((float)(tmp_data_.data()[i]&0xff))/255.0;
                     // std::cout<<(cpu_data[i]?1:0)<<" ";
                     // if((i+1)%28==0){
                     //     std::cout<<std::endl;

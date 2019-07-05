@@ -15,6 +15,7 @@ namespace javernn{
         void SetUniformInt(int* data, int size, int from, int to);
         void SetUniformFloat(float* data, int size, float from, float to);
         void SetNormalFloat(float* data, int size, float mean, float stddev);
+        void SetSeed(uint32_t seed);
     private:
         std::default_random_engine generator_;
     };
