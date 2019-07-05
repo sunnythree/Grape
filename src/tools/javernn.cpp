@@ -27,7 +27,7 @@ int main()
     Graph graph;
     graph.Construct({&input,&label},{&sm});
     int i=200;
-    SGDOptimizer opt(0.01);
+    SGDOptimizer opt(0.1);
     while(--i>0){
         graph.Forward();
         graph.Backward();
