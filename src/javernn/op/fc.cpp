@@ -6,6 +6,7 @@
 #include "javernn/util/random.h"
 #include "javernn/util/blas.h"
 #include "javernn/util/gemm.h"
+#include "javernn/util/activations.h"
 
 namespace javernn{
     static std::string TAG = "Fc";
@@ -80,6 +81,7 @@ namespace javernn{
             add_cpu(out_dim_,(float *)bias_tensor->mutable_cpu_data(),
             1,(float *)out_data_tensor->mutable_cpu_data(),1);
         }
+        activate_array(c,batch_size_*out_dim_,RELU);
     } 
 
     void Fc::BackwardCpu()
@@ -95,6 +97,7 @@ namespace javernn{
         float *a = (float *)out_data_tensor->mutable_cpu_data();
         float *b = (float *)data_tensor->mutable_cpu_diff();
         float *c = (float *)weight_tensor->mutable_cpu_diff();
+        gradient_array(a,batch_size_*out_dim_,RELU,b);
         gemm(1,0,m,n,k,1,a,m,b,n,1,c,n);
 
         m = batch_size_;
