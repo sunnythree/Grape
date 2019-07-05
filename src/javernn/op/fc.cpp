@@ -167,7 +167,7 @@ namespace javernn{
         Log::v(TAG,"UpdateWeightsCpu");
         opt.UpdateCpu( prev_[1].get());
         if(has_bias_){
-            //opt.UpdateCpu( prev_[2].get());
+            opt.UpdateCpu( prev_[2].get());
         }
     }
 
