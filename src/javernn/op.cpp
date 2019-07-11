@@ -1,8 +1,10 @@
 #include <algorithm>
+#include <string>
 #include "javernn/op.h"
 #include "javernn/tensor.h"
 #include "javernn/util/util.h"
 #include "javernn/log.h"
+
 
 namespace javernn{
     static std::string TAG = "Op";
@@ -63,7 +65,8 @@ namespace javernn{
         if (!head->next_[head_index]) {
             throw Error("output edge must not be null");
         }
-        Log::v(TAG,"connect_op");
+        Log::v(TAG,head->type_+"["+std::to_string(head_index)+"] << "
+        +tail->type_+"["+std::to_string(tail_index)+"]");
         tail->prev_[tail_index] = head->next_[head_index];
         tail->prev_[tail_index]->add_next_op(tail);
     }

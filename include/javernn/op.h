@@ -40,7 +40,7 @@ public:
     virtual void ForwardCpu() = 0; 
     virtual void BackwardCpu() = 0;
     virtual void UpdateWeightsCpu(Optimizer &opt) = 0;
-
+    std::string type_;
 #ifdef GPU
     virtual void ForwardGpu() = 0; 
     virtual void BackwardGpu() = 0;
@@ -57,6 +57,7 @@ protected:
     bool initialized_;
     int32_t in_size_;
     int32_t out_size_;
+    
 };
 
 void connection_mismatch(const Op &from, const Op &to);

@@ -16,6 +16,7 @@ namespace javernn
     label_path_(label_path),
     batch_size_(batch_size)
     {
+        type_ = "MnistData";
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,784}),DATA,gNetMode);
         next_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
