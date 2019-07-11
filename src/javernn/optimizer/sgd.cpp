@@ -37,8 +37,9 @@ namespace javernn
         // }
         // std::cout<<std::endl;
         // }
-        axpy_cpu(n, -lambda_, W, 1, dW, 1);
+        //axpy_cpu(n, -lambda_, W, 1, dW, 1);
         axpy_cpu(n, alpha_, dW, 1, W, 1);
+        fill_cpu(n,0,dW,1);
         // if(n<1000){
         // std::cout<<"w update after"<<std::endl;
         // for(int i=0;i<n;i++){

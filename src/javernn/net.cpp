@@ -6,6 +6,7 @@ namespace javernn{
     Net::Net(NetParams &net_params)
     {
         ops_ = std::make_shared<Graph>();
+        max_train_iters_ = net_params.max_train_iters_;
     }
 
     Net::~Net()
@@ -22,8 +23,12 @@ namespace javernn{
 
     void Net::Train()
     {
-        ops_->Backward();
-        ops_->UpdateWeights(*optimizer_);
+        for(int i=0;i<max_train_iters_;++i){
+            ops_->Forward();
+            ops_->Backward();
+            ops_->UpdateWeights(*optimizer_);
+        }
+
     }
 
     void Net::Test()

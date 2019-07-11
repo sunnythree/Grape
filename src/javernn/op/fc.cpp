@@ -1,6 +1,7 @@
 
 #include <memory>
 #include <assert.h>
+#include <chrono>
 #include "javernn/op/fc.h"
 #include "javernn/log.h"
 #include "javernn/util/random.h"
@@ -36,6 +37,8 @@ namespace javernn{
             assert(prev_[0].get() != nullptr);
             prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
             Shape({out_dim_,in_dim_}),DATA,gNetMode);
+            unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+            Random::GetInstance().SetSeed(seed);
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
             prev_[1]->shape().count(),0,1);
             // uint32_t n = prev_[1]->shape().count(); 
@@ -132,7 +135,7 @@ namespace javernn{
         //     std::cout<<input_diff[i]<<" ";
         // }
         // std::cout<<std::endl;
-        // gradient_array(output_data,batch_size_*out_dim_,RELU,input_diff);
+        gradient_array(output_data,batch_size_*out_dim_,RELU,input_diff);
         // for(int i=0;i<out_dim_;i++){
         //     std::cout<<input_diff[i]<<" ";
         // }
@@ -144,11 +147,13 @@ namespace javernn{
         float *b = (float *)data_tensor->mutable_cpu_data();
         float *c = (float *)weight_tensor->mutable_cpu_diff();
 
-        fill_cpu(in_dim_*out_dim_,0,c,1);
         gemm(1,0,m,n,k,1,a,m,b,n,1,c,n);
+        scal_cpu(in_dim_*out_dim_,1./batch_size_,c,1);
         if(has_bias_) {
             float *bias_diff = (float *)bias_tensor->mutable_cpu_data();
+            
             backward_bias(bias_diff, a, batch_size_, out_dim_, 1);
+            scal_cpu(out_dim_,1./batch_size_,bias_diff,1);
         }
 
         m = batch_size_;
@@ -158,7 +163,7 @@ namespace javernn{
         a = (float *)out_data_tensor->mutable_cpu_diff();
         b = (float *)weight_tensor->mutable_cpu_data();
         c = (float *)data_tensor->mutable_cpu_diff();
-        fill_cpu(batch_size_*in_dim_,0,c,1);
+        //fill_cpu(batch_size_*in_dim_,0,c,1);
         gemm(0,0,m,n,k,1,a,k,b,n,1,c,n);
     }
 

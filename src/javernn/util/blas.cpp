@@ -74,6 +74,7 @@ namespace javernn
             output[i*stride] /= sum;
         }
     }
+    
 
    void softmax_x_ent_cpu(int n, float *pred, float *truth, float *delta, float *error)
     {

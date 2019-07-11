@@ -21,6 +21,11 @@ namespace javernn{
             return count(start_axis, num_axes());
         }
         inline uint32_t index(uint32_t i) const {return shape_size_[i];};
+        //for image
+        inline uint32_t get_width() const {return shape_size_[0];};
+        inline uint32_t get_height() const {return shape_size_[1];};
+        inline uint32_t get_channel() const {return shape_size_[2];};
+        inline uint32_t get_batch() const {return shape_size_[3];};
     private:
         std::vector<uint32_t> shape_size_;
 

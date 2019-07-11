@@ -1,5 +1,7 @@
+#include <chrono>
 #include "javernn/op/binary_data.h"
 #include "javernn/util/blas.h"
+#include "javernn/util/random.h"
 #include "javernn/log.h"
 
 namespace javernn
@@ -46,6 +48,10 @@ namespace javernn
         // std::cout.setf(std::ios::showpoint);//显示小数点
         // std::cout.precision(0);//设置输出精度为9位小数
         for(int i=0;i<batch_size_;i++){
+            unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+            Random::GetInstance().SetSeed(seed);
+            int rand_point = Random::GetInstance().GetUniformInt(0,5000);
+            file_in_.seekg(data_offset_+rand_point*in_dim_,std::ios::beg);
             if(one_hot_){
                 file_in_.read(tmp_data_.data(), in_dim_);
                 for(int ii=0;ii<in_dim_;ii++){

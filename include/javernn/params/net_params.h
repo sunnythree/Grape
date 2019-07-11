@@ -14,6 +14,7 @@ namespace javernn{
         std::string cal_type_;
         std::string optimizer_type_;
         uint32_t device_id_;
+        uint32_t max_train_iters_;
 
         template <class Archive>
         void serialize( Archive & ar )

@@ -23,7 +23,6 @@ namespace javernn{
         uint32_t in_dim_;
         uint32_t temperature_;
         std::shared_ptr<Tensor> cost_;
-        std::shared_ptr<Tensor> inner_;
     };
 }
 #endif

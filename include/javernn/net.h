@@ -20,6 +20,7 @@ namespace javernn{
     private:
         std::shared_ptr<Ops> ops_;
         std::shared_ptr<Optimizer> optimizer_;
+        uint32_t max_train_iters_;
     };
 }
 

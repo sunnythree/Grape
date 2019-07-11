@@ -7,6 +7,7 @@
 #include "javernn/op/softmax_with_loss.h"
 #include "javernn/graph.h"
 #include "javernn/optimizer/sgd.h"
+#include "javernn/net.h"
 
 using namespace std;
 using namespace javernn;
@@ -17,7 +18,7 @@ int main()
     int batch = 100;
     BinaryData input("data/train-images-idx3-ubyte",batch,784,784,16);
     BinaryData label("data/train-labels-idx1-ubyte",batch,1,10,8,true);
-    Fc fc1(batch,784,10),fc2(batch,10,10);
+    Fc fc1(batch,784,64),fc2(batch,64,10);
     SoftmaxWithLoss sm(batch,10);
     std::vector<Op *> tuple1 = (fc2,label);
 
@@ -25,15 +26,11 @@ int main()
     input<<fc1<<fc2;
     tuple1<<sm;
 
-    Graph graph;
-    graph.Construct({&input,&label},{&sm});
-    int i=10;
-    SGDOptimizer opt(0.01);
-    while(--i>0){
-        graph.Forward();
-        graph.Backward();
-        graph.UpdateWeights(opt);
-    }
+    NetParams params;
+    params.max_train_iters_ = 100;
+    Net net(params);
+    net.Construct({&input},{&sm});
+    net.Train();
 
     return 0;
 }
