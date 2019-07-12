@@ -45,20 +45,27 @@ namespace javernn
         int32_t n = intput_tensor->shape().count();
         // printf("n is %d\n",n);
         // std::cout<<std::endl;
-        // for(int i=0;i<in_dim_;i++){
+        // for(int i=0;i<in_dim_*batch_size_;i++){
         //     std::cout<<intput_data[i]<<" ";
+        // }
+        // std::cout<<std::endl;
+        // for(int i=0;i<in_dim_*batch_size_;i++){
+        //     std::cout<<label_data[i]<<" ";
         // }
         // std::cout<<std::endl;
         for(int i=0;i<batch_size_;i++){
             softmax(intput_data+i*in_dim_, in_dim_, temperature_, 1, output_data+i*in_dim_);
-            // for(int i=0;i<in_dim_;i++){
-            //     std::cout<<output_data[i]<<" ";
-            // }
-            // std::cout<<std::endl;
-
         }
-        softmax_x_ent_cpu(in_dim_, output_data, label_data, intput_diff, cost_data);
-        float cost_sum = sum_array(cost_data,n);
+        // for(int i=0;i<in_dim_*batch_size_;i++){
+        //     std::cout<<output_data[i]<<" ";
+        // }
+        // std::cout<<std::endl;
+        softmax_x_ent_cpu(in_dim_*batch_size_, output_data, label_data, intput_diff, cost_data);
+        // for(int i=0;i<in_dim_*batch_size_;i++){
+        //     std::cout<<intput_diff[i]<<" ";
+        // }
+        // std::cout<<std::endl;
+        float cost_sum = sum_array(cost_data,n)/batch_size_;
         Log::v(TAG,"cost_sum is "+ std::to_string(cost_sum));
     }
 

@@ -8,7 +8,7 @@ namespace javernn{
     {
         ops_ = std::make_shared<Graph>();
         max_train_iters_ = net_params.max_train_iters_;
-        optimizer_ = std::make_shared<SGDOptimizer>(0.1f);
+        optimizer_ = std::make_shared<SGDOptimizer>(0.01f);
     }
 
     Net::~Net()

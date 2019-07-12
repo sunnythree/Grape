@@ -37,7 +37,7 @@ namespace javernn{
             //Log::v(TAG,"create weights");
             assert(prev_[0].get() != nullptr);
             prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({out_dim_,in_dim_}),DATA,gNetMode);
+            Shape({out_dim_,in_dim_}),WEIGHTS,gNetMode);
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
             Random::GetInstance().SetSeed(seed);
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
@@ -60,7 +60,7 @@ namespace javernn{
             if(has_bias_){
                 //Log::v(TAG,"create bias");
                 prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({out_dim_}),DATA,gNetMode);
+                Shape({out_dim_}),BIAS,gNetMode);
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->cpu_data(),1);
 #ifdef GPU
                 if(gNetMode == GPU_MODE){
@@ -109,7 +109,7 @@ namespace javernn{
         //     std::cout<<c[i]<<" ";
         // }
         // std::cout<<std::endl;
-        activate_array(c,batch_size_*out_dim_,RELU);
+        activate_array(c,batch_size_*out_dim_,LEAKY);
         // std::cout<<"activate_array after"<<std::endl;
         // for(int i=0;i<out_dim_;i++){
         //     std::cout<<c[i]<<" ";
@@ -136,7 +136,7 @@ namespace javernn{
         //     std::cout<<input_diff[i]<<" ";
         // }
         // std::cout<<std::endl;
-        gradient_array(output_data,batch_size_*out_dim_,RELU,input_diff);
+        gradient_array(output_data,batch_size_*out_dim_,LEAKY,input_diff);
         // for(int i=0;i<out_dim_;i++){
         //     std::cout<<input_diff[i]<<" ";
         // }
@@ -164,7 +164,7 @@ namespace javernn{
         a = (float *)out_data_tensor->mutable_cpu_diff();
         b = (float *)weight_tensor->mutable_cpu_data();
         c = (float *)data_tensor->mutable_cpu_diff();
-        //fill_cpu(batch_size_*in_dim_,0,c,1);
+        fill_cpu(batch_size_*in_dim_,0,c,1);
         gemm(0,0,m,n,k,1,a,k,b,n,1,c,n);
     }
 

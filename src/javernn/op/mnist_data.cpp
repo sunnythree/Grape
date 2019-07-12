@@ -28,7 +28,7 @@ namespace javernn
         }
         Log::v(TAG,"data file open sucess");
         data_in_.seekg(0,std::ios::beg);
-        label_in_.open(data_path_,std::ios::binary);
+        label_in_.open(label_path_,std::ios::binary);
         if(!label_in_.is_open()){
             Log::v(TAG,"file open error, path is "+label_path_);
         }
@@ -57,21 +57,31 @@ namespace javernn
         Tensor *label_tensor = next_[1].get();
         float *data = (float *)data_tensor->mutable_cpu_data();
         float *label = (float *)label_tensor->mutable_cpu_data();
-
+        std::cout.setf(std::ios::fixed);//固定小数位数
+        std::cout.setf(std::ios::showpoint);//显示小数点
+        std::cout.precision(2);//设置输出精度为0位小数
         for(int i=0;i<batch_size_;i++){
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
             Random::GetInstance().SetSeed(seed);
             int rand_point = Random::GetInstance().GetUniformInt(0,5000);
-            data_in_.seekg(rand_point*mnist_data_size,std::ios::beg);
+            data_in_.seekg(rand_point*mnist_data_size+16,std::ios::beg);
+            // std::cout<<"rand_point: "<<rand_point<<std::endl;
             data_in_.read(tmp_data_.data(), mnist_data_size);
             for(int ii=0;ii<mnist_data_size;ii++){
-                data[ii+i*mnist_data_size] = ((float)(tmp_data_.data()[i]&0xff))/255.0;
+                data[ii+i*mnist_data_size] = ((float)(tmp_data_[ii]&0xff))/255.0;
+                // std::cout<<(tmp_data_[ii]?1:0)<<" ";
+                // if((ii+1)%28==0){
+                //     std::cout<<std::endl;
+                // }
             }
-            data_in_.seekg(rand_point*mnist_label_size,std::ios::beg);
-            data_in_.read(tmp_data_.data(), mnist_label_size);
-            int tmp = (int)(tmp_data_.data()[0]&0xff);
+            // std::cout<<std::endl;
+            char label_read = 0;
+            label_in_.seekg(rand_point*mnist_label_size+8,std::ios::beg);
+            label_in_.read(&label_read, mnist_label_size);
+            // std::cout<<"label: "<<std::to_string(label_read)<<std::endl;
+            // std::cout<<std::endl;
             for(int ii=0;ii<10;ii++){
-                if(tmp == ii){
+                if(label_read == ii){
                     label[i*10+ii] = 1;
                 }
                 else {

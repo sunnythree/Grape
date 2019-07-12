@@ -15,7 +15,7 @@ using namespace javernn;
 int main()
 {
     //std::cout<<"hello world"<<std::endl;
-    int batch = 100;
+    int batch = 30;
     MnistData input("data/train-images-idx3-ubyte","data/train-labels-idx1-ubyte",batch);      
     Fc fc1(batch,784,64),fc2(batch,64,10);
     SoftmaxWithLoss sm(batch,10);
@@ -26,7 +26,7 @@ int main()
     
 
     NetParams params;
-    params.max_train_iters_ = 100;
+    params.max_train_iters_ = 10000;
     Net net(params);
     net.Construct({&input},{&sm});
     net.Train();

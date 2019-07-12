@@ -24,6 +24,7 @@ namespace javernn
 #endif
         virtual Tensor* GetLossTensor();
         virtual float GetLoss();
+        
     protected:
         uint32_t batch_size_;
         uint32_t out_dim_;
