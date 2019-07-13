@@ -9,8 +9,10 @@ namespace javernn{
         virtual ~Ops(){};
         virtual void Backward() = 0;
         virtual void Forward() = 0;  
-        virtual void UpdateWeights(Optimizer &opt) = 0;
+        virtual void UpdateWeights() = 0;
         virtual void Setup() = 0;
+        virtual void Save();
+        virtual void Load();
     };
 }
 

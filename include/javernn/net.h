@@ -17,9 +17,10 @@ namespace javernn{
                  const std::vector<Op *> &output);
         void Train();
         void Test();
+        void Save();
+        void Load();
     private:
         std::shared_ptr<Ops> ops_;
-        std::shared_ptr<Optimizer> optimizer_;
         uint32_t max_train_iters_;
     };
 }

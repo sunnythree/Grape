@@ -4,8 +4,9 @@
 #include "javernn/op.h"
 
 namespace javernn{
-    class AccuracyTest :protected Op{
+    class AccuracyTest : public Op{
     public:
+        AccuracyTest() = delete;
         AccuracyTest(std::string name, uint32_t batch_size, uint32_t in_dim);
         ~AccuracyTest();
         void Setup();

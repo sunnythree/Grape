@@ -9,9 +9,34 @@
 #include "javernn/error.h"
 #include "javernn/global_config.h"
 #include "javernn/log.h"
+#include "javernn/optimizer/sgd.h"
 
 namespace javernn{
     static std::string TAG = "Graph";
+
+    Graph::Graph(std::string save_path,SERIALIZE_TYPE serialize_type,OPTIMIZER_TYPE optimizer_type,float lr):
+    save_path_(save_path),
+    serialize_type_(serialize_type),
+    optimizer_type_(optimizer_type),
+    lr_(lr)
+    {
+        switch (optimizer_type_)
+        {
+        case SGD:
+            optimizer_ = std::make_shared<SGDOptimizer>(0.1f);
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+    Graph::~Graph()
+    {
+
+    }
+
+
     void Graph::Backward()
     {
         for(int i=ops_.size()-1;i>-1;--i){
@@ -37,14 +62,14 @@ namespace javernn{
             }
         }
     } 
-    void Graph::UpdateWeights(Optimizer &opt)
+    void Graph::UpdateWeights()
     {
         for(auto o:ops_){
             if(gNetMode == CPU_MODE){
-                o->UpdateWeightsCpu(opt);
+                o->UpdateWeightsCpu(*optimizer_.get());
             }else{
 #ifdef GPU
-                o->UpdateWeightsGpu(opt);
+                o->UpdateWeightsGpu(*optimizer_.get());
 #endif
             }
         }
@@ -104,4 +129,17 @@ namespace javernn{
         throw Error("invalid connection");
     }
 
+    void Graph::Save()
+    {
+        for(auto o:ops_){
+            o->Save(save_path_,serialize_type_);
+        }
+    }
+
+    void Graph::Load()
+    {
+        for(auto o:ops_){
+            o->Load(save_path_,serialize_type_);
+        }
+    }
 }

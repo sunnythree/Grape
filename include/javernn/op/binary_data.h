@@ -6,7 +6,7 @@
 
 namespace javernn
 {
-    class BinaryData: public Op
+    class BinaryData : public Op
     {
     public:
         BinaryData(std::string name, std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t out_dim, 

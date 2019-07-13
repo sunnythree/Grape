@@ -37,6 +37,7 @@
             all_count++;
         }
         accuracy_ = accuracy_count_/(float)all_count;
+        Log::v(TAG,"accuracy_ "+std::to_string(accuracy_)+" accuracy_count_ "+std::to_string(accuracy_count_));
     }
     void AccuracyTest::BackwardCpu()
     {

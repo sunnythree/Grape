@@ -6,9 +6,8 @@
 namespace javernn{
     Net::Net(NetParams &net_params)
     {
-        ops_ = std::make_shared<Graph>();
+        ops_ = std::make_shared<Graph>("data/test",JSON,SGD,0.1f);
         max_train_iters_ = net_params.max_train_iters_;
-        optimizer_ = std::make_shared<SGDOptimizer>(0.01f);
     }
 
     Net::~Net()
@@ -28,15 +27,25 @@ namespace javernn{
         for(int i=0;i<max_train_iters_;++i){
             ops_->Forward();
             ops_->Backward();
-            ops_->UpdateWeights(*optimizer_);
+            ops_->UpdateWeights();
         }
 
     }
 
     void Net::Test()
     {
-        ops_->Forward();
+        for(int i=0;i<max_train_iters_;++i){
+            ops_->Forward();
+        }
     }
 
+    void Net::Save()
+    {
+        ops_->Save();
+    }
     
+    void Net::Load()
+    {
+        ops_->Load();
+    }
 }
