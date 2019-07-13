@@ -16,8 +16,9 @@ namespace javernn
         virtual void UpdateGpu(Tensor *weights);
     #endif
     private:
-    float alpha_;   // learning rate
-    float lambda_;  // weight decay
+    float alpha_ = 0;   // learning rate
+    float lambda_ = 0;  // weight decay
+    uint32_t update_count_ = 0;
     };
 } // namespace javernn
 

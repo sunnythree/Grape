@@ -10,11 +10,14 @@ namespace javernn
     static uint32_t mnist_data_size = 784;
     static uint32_t mnist_label_size = 1;
 
-    MnistData::MnistData(std::string name, std::string data_path, std::string label_path, uint32_t batch_size):
+    MnistData::MnistData(std::string name, std::string data_path, 
+        std::string label_path, uint32_t batch_size, bool random, uint32_t pic_count):
     Op({},{DATA,DATA}),
     data_path_(data_path),
     label_path_(label_path),
-    batch_size_(batch_size)
+    batch_size_(batch_size),
+    random_(random),
+    pic_count_(pic_count)
     {
         type_ = "MnistData";
         name_ = name;
@@ -62,10 +65,17 @@ namespace javernn
         std::cout.setf(std::ios::showpoint);//显示小数点
         std::cout.precision(2);//设置输出精度为0位小数
         for(int i=0;i<batch_size_;i++){
-            unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-            Random::GetInstance().SetSeed(seed);
-            int rand_point = Random::GetInstance().GetUniformInt(0,5000);
-            data_in_.seekg(rand_point*mnist_data_size+16,std::ios::beg);
+            if(random_){
+                unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+                Random::GetInstance().SetSeed(seed);
+                read_point_ = Random::GetInstance().GetUniformInt(0,pic_count_);
+            }else{
+                read_point_++;
+            }
+            if(read_point_>=pic_count_){
+                read_point_ = 0;
+            }
+            data_in_.seekg(read_point_*mnist_data_size+16,std::ios::beg);
             // std::cout<<"rand_point: "<<rand_point<<std::endl;
             data_in_.read(tmp_data_.data(), mnist_data_size);
             for(int ii=0;ii<mnist_data_size;ii++){
@@ -77,7 +87,7 @@ namespace javernn
             }
             // std::cout<<std::endl;
             char label_read = 0;
-            label_in_.seekg(rand_point*mnist_label_size+8,std::ios::beg);
+            label_in_.seekg(read_point_*mnist_label_size+8,std::ios::beg);
             label_in_.read(&label_read, mnist_label_size);
             // std::cout<<"label: "<<std::to_string(label_read)<<std::endl;
             // std::cout<<std::endl;

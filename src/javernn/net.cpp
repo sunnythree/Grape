@@ -6,7 +6,7 @@
 namespace javernn{
     Net::Net(NetParams &net_params)
     {
-        ops_ = std::make_shared<Graph>("data/test",JSON,SGD,0.1f);
+        ops_ = std::make_shared<Graph>("data/test",JSON,SGD,0.005f);
         max_train_iters_ = net_params.max_train_iters_;
     }
 

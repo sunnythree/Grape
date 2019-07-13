@@ -9,7 +9,9 @@ namespace javernn
     class MnistData: public Op
     {
     public:
-        MnistData(std::string name, std::string data_path, std::string label_path, uint32_t batch_size);
+        MnistData(std::string name, std::string data_path, 
+            std::string label_path, uint32_t batch_size,
+            bool random, uint32_t pic_count);
         virtual ~MnistData();
 
         virtual void Setup();
@@ -30,6 +32,9 @@ namespace javernn
         std::ifstream label_in_;
         std::vector<char> tmp_data_;
         uint32_t batch_size_ = 0;
+        bool random_ = true;
+        uint32_t pic_count_ = 0;
+        uint32_t read_point_ = 0;
     };
     
 } // namespace javernn
