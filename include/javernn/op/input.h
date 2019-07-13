@@ -8,7 +8,7 @@ namespace javernn
     class Input: public Op
     {
     public:
-        Input(uint32_t batch_size, uint32_t out_dim);
+        Input(std::string name, uint32_t batch_size, uint32_t out_dim);
         virtual ~Input();
 
         virtual void Setup();

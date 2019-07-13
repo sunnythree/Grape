@@ -15,21 +15,26 @@ using namespace javernn;
 int main()
 {
     //std::cout<<"hello world"<<std::endl;
-    int batch = 30;
-    MnistData input("data/train-images-idx3-ubyte","data/train-labels-idx1-ubyte",batch);      
-    Fc fc1(batch,784,64),fc2(batch,64,10);
-    SoftmaxWithLoss sm(batch,10);
+    // int batch = 20;
+    // MnistData input("input","data/train-images-idx3-ubyte","data/train-labels-idx1-ubyte",batch);      
+    // Fc fc1("fc1",batch,784,64),fc2("fc2",batch,64,10);
+    // SoftmaxWithLoss sm("sm",batch,10);
     
     
-    input<<fc1<<fc2<<sm;
-    connect_op(&input,&sm,1,1);
+    // input<<fc1<<fc2<<sm;
+    // connect_op(&input,&sm,1,1);
     
 
-    NetParams params;
-    params.max_train_iters_ = 10000;
-    Net net(params);
-    net.Construct({&input},{&sm});
-    net.Train();
+    // NetParams params;
+    // params.max_train_iters_ = 10000;
+    // Net net(params);
+    // net.Construct({&input},{&sm});
+    // net.Train();
 
+    Fc fc1("fc1",1,10,10);
+    fc1.Setup();
+    fc1.Save("data/test",BINARY);
+    fc1.Save("data/test",JSON);
+    fc1.Save("data/test",XML);
     return 0;
 }

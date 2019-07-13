@@ -24,6 +24,7 @@ namespace javernn
     }
 
     float sum_array(float *a, int n);
+    uint32_t max_index(const float *a, int n);
 
 } // namespace javernn
 

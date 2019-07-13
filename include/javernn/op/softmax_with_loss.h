@@ -6,7 +6,7 @@
 namespace javernn{
     class SoftmaxWithLoss :public Op{
     public:
-        SoftmaxWithLoss(uint32_t batch_size, uint32_t in_dim);
+        SoftmaxWithLoss(std::string name, uint32_t batch_size, uint32_t in_dim);
         ~SoftmaxWithLoss();
         void Setup();
         void ForwardCpu(); 

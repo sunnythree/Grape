@@ -9,7 +9,7 @@ namespace javernn
     class MnistData: public Op
     {
     public:
-        MnistData(std::string data_path, std::string label_path, uint32_t batch_size);
+        MnistData(std::string name, std::string data_path, std::string label_path, uint32_t batch_size);
         virtual ~MnistData();
 
         virtual void Setup();

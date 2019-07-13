@@ -45,6 +45,15 @@ namespace javernn{
         inline void diff_to_cpu(){diff_->to_cpu();};
         inline void diff_to_gpu(){diff_->to_gpu();};
 
+        template <class Archive>
+        void serialize(Archive & ar)
+        {
+            data_to_cpu();
+            float *data = (float *)mutable_cpu_data();
+            for(int i=0;i<shape_.count();++i){
+                ar(data[i]);
+            }
+        }
     private:
         std::shared_ptr<SyncedMemory> data_;
         std::shared_ptr<SyncedMemory> diff_;

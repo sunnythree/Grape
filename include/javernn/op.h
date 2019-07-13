@@ -16,6 +16,12 @@ namespace javernn{
 class Tensor;
 typedef std::shared_ptr<Tensor> tensorptr_t;
 
+enum SERIALIZE_TYPE{
+    BINARY,
+    JSON,
+    XML
+};
+
 class Op{
 public:
     Op() = delete;
@@ -47,6 +53,8 @@ public:
     virtual void UpdateWeightsGpu(Optimizer &opt) = 0;
 #endif
 
+    virtual void Save(std::string path, SERIALIZE_TYPE type);
+    virtual void Load(std::string path, SERIALIZE_TYPE type);
 
 protected:
     friend void connect_op(Op *head,Op *tail,int32_t head_index,int32_t tail_index);
@@ -57,7 +65,7 @@ protected:
     bool initialized_;
     int32_t in_size_;
     int32_t out_size_;
-    
+    std::string name_;
 };
 
 void connection_mismatch(const Op &from, const Op &to);

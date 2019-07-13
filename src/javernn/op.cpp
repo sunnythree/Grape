@@ -123,4 +123,14 @@ namespace javernn{
         }
         return rhs;
     }
+
+    void Op::Save(std::string path, SERIALIZE_TYPE type)
+    {
+
+    }
+
+    void Op::Load(std::string path, SERIALIZE_TYPE type)
+    {
+
+    }
 }

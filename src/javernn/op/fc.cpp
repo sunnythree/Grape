@@ -2,16 +2,20 @@
 #include <memory>
 #include <assert.h>
 #include <chrono>
+#include <fstream>
 #include "javernn/op/fc.h"
 #include "javernn/log.h"
 #include "javernn/util/random.h"
 #include "javernn/util/blas.h"
 #include "javernn/util/gemm.h"
 #include "javernn/util/activations.h"
+#include "cereal/archives/binary.hpp"
+#include "cereal/archives/xml.hpp"
+#include "cereal/archives/json.hpp"
 
 namespace javernn{
     static std::string TAG = "Fc";
-    Fc::Fc(uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias)
+    Fc::Fc(std::string name, uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias)
     : Op({DATA,WEIGHTS,BIAS}, {DATA}),
     batch_size_(batch_size),
     in_dim_(in_dim),
@@ -19,6 +23,7 @@ namespace javernn{
     has_bias_(has_bias)
     {
         type_ = "Fc";
+        name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,out_dim_}),DATA,gNetMode);
     }
@@ -35,7 +40,7 @@ namespace javernn{
             Log::v(TAG,"skip init weights");
         }else{
             //Log::v(TAG,"create weights");
-            assert(prev_[0].get() != nullptr);
+            //assert(prev_[0].get() != nullptr);
             prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
             Shape({out_dim_,in_dim_}),WEIGHTS,gNetMode);
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
@@ -194,4 +199,76 @@ namespace javernn{
 
     }
 #endif
+
+    void Fc::Save(std::string path, SERIALIZE_TYPE type)
+    {
+        switch (type)
+        {
+        case BINARY:{
+            std::ofstream os(path+"/"+name_+".binary");
+            cereal::BinaryOutputArchive archive(os);
+            archive(cereal::make_nvp("weight", *prev_[1].get()));
+            if(has_bias_){
+                archive(cereal::make_nvp("bias", *prev_[2].get()));
+            }
+            break;
+        }
+        case JSON:{
+            std::ofstream os(path+"/"+name_+".json");
+            cereal::JSONOutputArchive archive(os);
+            archive(cereal::make_nvp("weight", *prev_[1].get()));
+            if(has_bias_){
+                archive(cereal::make_nvp("bias", *prev_[2].get()));
+            }
+            break;
+        }
+        case XML:{
+            std::ofstream os(path+"/"+name_+".xml");
+            cereal::XMLOutputArchive archive(os);
+            archive(cereal::make_nvp("weight", *prev_[1].get()));
+            if(has_bias_){
+                archive(cereal::make_nvp("bias", *prev_[2].get()));
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+    void Fc::Load(std::string path, SERIALIZE_TYPE type)
+    {
+        switch (type)
+        {
+        case BINARY:{
+            std::ifstream is(path+"/"+name_+".binary");
+            cereal::BinaryInputArchive archive(is);
+            archive(cereal::make_nvp("weight", *prev_[1].get()));
+            if(has_bias_){
+                archive(cereal::make_nvp("bias", *prev_[2].get()));
+            }
+            break;
+        }
+        case JSON:{
+            std::ifstream is(path+"/"+name_+".json");
+            cereal::JSONInputArchive archive(is);
+            archive(cereal::make_nvp("weight", *prev_[1].get()));
+            if(has_bias_){
+                archive(cereal::make_nvp("bias", *prev_[2].get()));
+            }
+            break;
+        }
+        case XML:{
+            std::ifstream is(path+"/"+name_+".xml");
+            cereal::XMLInputArchive archive(is);
+            archive(cereal::make_nvp("weight", *prev_[1].get()));
+            if(has_bias_){
+                archive(cereal::make_nvp("bias", *prev_[2].get()));
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
 }

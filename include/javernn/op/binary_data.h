@@ -2,14 +2,14 @@
 #define __JAVERNN_BINARY_DATA_H__
 
 #include <fstream>
-#include "javernn/op/input.h"
+#include "javernn/op.h"
 
 namespace javernn
 {
-    class BinaryData: public Input
+    class BinaryData: public Op
     {
     public:
-        BinaryData(std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t out_dim, 
+        BinaryData(std::string name, std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t out_dim, 
         uint32_t data_offset, bool one_hot = false);
         virtual ~BinaryData();
 

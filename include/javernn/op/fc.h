@@ -6,7 +6,7 @@ namespace javernn{
     class Fc:public Op{
     public:
         Fc() = delete;
-        explicit Fc(uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias = true);
+        explicit Fc(std::string name, uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias = true);
         virtual ~Fc();
         void Setup();
         void ForwardCpu(); 
@@ -18,6 +18,9 @@ namespace javernn{
         void BackwardGpu();
         void UpdateWeightsGpu(Optimizer &opt);
 #endif
+        void Save(std::string path, SERIALIZE_TYPE type);
+        void Load(std::string path, SERIALIZE_TYPE type);
+
     private:
         uint32_t batch_size_;
         uint32_t in_dim_;

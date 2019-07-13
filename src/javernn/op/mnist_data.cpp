@@ -10,13 +10,14 @@ namespace javernn
     static uint32_t mnist_data_size = 784;
     static uint32_t mnist_label_size = 1;
 
-    MnistData::MnistData(std::string data_path, std::string label_path, uint32_t batch_size):
+    MnistData::MnistData(std::string name, std::string data_path, std::string label_path, uint32_t batch_size):
     Op({},{DATA,DATA}),
     data_path_(data_path),
     label_path_(label_path),
     batch_size_(batch_size)
     {
         type_ = "MnistData";
+        name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,784}),DATA,gNetMode);
         next_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
