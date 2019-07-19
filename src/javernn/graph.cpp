@@ -80,6 +80,51 @@ namespace javernn{
             o->Setup();
         }
     }
+
+    void Graph::TrainOnce()
+    {
+        Forward();
+        Backward();
+        UpdateWeights();
+    }
+
+    void Graph::Train()
+    {
+        for(uint32_t i=0;i<max_iter_;i++){
+            TrainOnce();
+        }
+    }
+
+    void Graph::TestOnce()
+    {
+        Forward();
+    }
+
+    void Graph::Test()
+    {
+        for(uint32_t i=0;i<max_iter_;i++){
+            Forward();
+        }
+    }
+
+    void Graph::Run()
+    {
+        if(graph_phase_ == GRAPH_TRAIN){
+            Train();
+        }else{
+            Test();
+        }
+    }
+
+    void Graph::RunOnce()
+    {
+        if(graph_phase_ == GRAPH_TRAIN){
+            TrainOnce();
+        }else{
+            TestOnce();
+        }
+    }
+
     void Graph::Construct(const std::vector<Op *> &inputs,
                     const std::vector<Op *> &outputs) {
         std::vector<Op *> sorted;
@@ -142,4 +187,15 @@ namespace javernn{
             o->Load(save_path_,serialize_type_);
         }
     }
+
+    uint32_t Graph::GetMaxIter()
+    {
+        return max_iter_;
+    }
+
+    GRAPH_PHASE Graph::GetGraphPhase()
+    {
+        return graph_phase_;
+    }
+
 }

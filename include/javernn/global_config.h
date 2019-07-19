@@ -7,9 +7,9 @@ namespace javernn{
         GPU_MODE
     };
 
-    enum NET_TYPE{
-        NET_SEQUENCE,
-        NET_GRAPH
+    enum GRAPH_PHASE{
+        GRAPH_TRAIN,
+        GRAPH_TEST
     };
 
     enum OPTIMIZER_TYPE{
@@ -18,8 +18,6 @@ namespace javernn{
         ADAM
     };
 
-    static CAL_MODE gNetMode = CPU_MODE;
-    static uint32_t gDeviceId = 0;
 }
 
 #endif

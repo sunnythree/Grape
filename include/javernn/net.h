@@ -4,24 +4,24 @@
 #include "javernn/optimizer/optimizer.h"
 #include "javernn/ops.h"
 #include "javernn/params/net_params.h"
+#include "javernn/graph.h"
 
 
 namespace javernn{
-
+    typedef std::shared_ptr<Ops> ops_t;
+    enum ITER_MODE{
+        STAGGER,
+        SEQUENCE
+    };
     class Net{
     public:
         explicit Net(NetParams &net_params);
         ~Net();
-        void Construct();
-        void Construct(const std::vector<Op *> &input,
-                 const std::vector<Op *> &output);
-        void Train();
-        void Test();
-        void Save();
-        void Load();
+        void Run();
     private:
-        std::shared_ptr<Ops> ops_;
-        uint32_t max_train_iters_;
+        std::vector<ops_t> ops_;
+        std::vector<int32_t> the_ops_iters;
+        ITER_MODE iter_mode_ = SEQUENCE;
     };
 }
 

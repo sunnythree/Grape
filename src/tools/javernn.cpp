@@ -18,7 +18,7 @@ int main()
 {
     int batch = 100;
     MnistData input("input","data/train-images-idx3-ubyte",
-        "data/train-labels-idx1-ubyte",batch,true,50000);      
+        "data/train-labels-idx1-ubyte",batch,false,50000);      
     Fc fc1("fc1",batch,784,100);
     Fc fc2("fc2",batch,100,30);
     Fc fc3("fc3",batch,30,10);
