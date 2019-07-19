@@ -1,5 +1,5 @@
-#ifndef __JAVERNN_NET_PARAMS_TEST_H__
-#define __JAVERNN_NET_PARAMS_TEST_H__
+#ifndef __GRAPE_NET_PARAMS_TEST_H__
+#define __GRAPE_NET_PARAMS_TEST_H__
 
 #include <string>
 #include <cstdint>
@@ -7,9 +7,9 @@
 #include <sstream>
 #include <iostream>
 #include "cereal/archives/json.hpp"
-#include "javernn/params/net_params.h"
+#include "Grape/params/net_params.h"
 
-namespace javernn{
+namespace Grape{
 
     static void parse_net_params()
     {

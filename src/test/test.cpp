@@ -1,23 +1,10 @@
 #include <iostream>
-#include "javernn/graph.h"
-#include "javernn/op/fc.h"
-#include "javernn/tensor.h"
-#include "net_params_test.h"
+#include "gtest.h"
 
 using namespace std;
-using namespace javernn;
-int main()
+
+int main(int argc,char **argv)
 {
-    // std::cout<<"hello world"<<std::endl;
-    // Fc fc1(1,1,1),fc2(1,1,1),fc3(1,1,1);
-    // fc1<<fc2<<fc3;
-    // Graph graph;
-    // graph.Construct({&fc1},{&fc3});
-    // std::vector<Tensor> in;
-    // graph.Forward(in);
-    // graph.Backward(in);
-    
-    //serialize_net_params();
-    parse_net_params();
-    return 0;
+    testing::InitGoogleTest(&argc, argv);//将命令行参数传递给gtest
+    return RUN_ALL_TESTS();   //RUN_ALL_TESTS()运行所有测试案例
 }

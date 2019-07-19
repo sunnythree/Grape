@@ -1,8 +1,8 @@
 .vscode
 /obj
-javernn
-!javernn/
-libjavernn.a
-libjavernn.so
+Grape
+!Grape/
+libGrape.a
+libGrape.so
 test
 /data

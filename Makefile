@@ -13,10 +13,10 @@ ARCH= -gencode arch=compute_30,code=sm_30 \
 # This is what I use, uncomment if you know your arch and want to specify
 # ARCH= -gencode arch=compute_52,code=compute_52
 
-SLIB=libjavernn.so
-ALIB=libjavernn.a
-EXEC=javernn
-TEST_EXE=test
+SLIB=libGrape.so
+ALIB=libGrape.a
+EXEC=Grape
+TEST_EXE=Test
 OBJDIR=./obj/
 
 CC=gcc
@@ -49,52 +49,34 @@ endif
 
 
 #srcs
-LIB_CPP += $(wildcard ./src/javernn/*.cpp)
-LIB_CPP += $(wildcard ./src/javernn/util/*.cpp)
-LIB_CPP += $(wildcard ./src/javernn/op/*.cpp)
-LIB_CPP += $(wildcard ./src/javernn/optimizer/*.cpp)
-OBJ_CPP += $(wildcard ./src/tools/*.cpp)
+LIB_CPP_SRCS := $(shell find ./src/grape -name "*.cpp")
+BIN_CPP_SRCS := $(shell find ./src/tools -name "*.cpp")
 ifeq ($(GPU), 1) 
-OBJ_CU  += $(wildcard ./src/javernn/op/*.cu)
-OBJ_CU  += $(wildcard ./src/javernn/util/*.cu)
+LIB_CU_SRCS := $(shell find ./src/grape -name "*.cu")
 endif
-ifeq ($(TEST), 1) 
-TEST_CPP += $(wildcard ./src/test/*.cpp)
-endif
+
+$(info $(BIN_CPP_SRCS))
+
 
 #objs
-OBJ_LIB := $(patsubst %.cpp, %.o, $(LIB_CPP))
-OBJ_LIB += $(patsubst %.cu, %.o, $(OBJ_CU))
-OBJ_BIN += $(patsubst %.cpp, %.o, $(OBJ_CPP))
-ifeq ($(TEST), 1) 
-OBJ_TEST += $(patsubst %.cpp, %.o, $(TEST_CPP))
-endif
+OBJ_LIB_CPP := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(LIB_CPP_SRCS))
+OBJ_LIB_CU  := $(patsubst ./%.cu, ./$(OBJDIR)%.o, $(LIB_CU_SRCS))
+OBJ_BIN_CPP := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(BIN_CPP_SRCS))
 
-OBJ_LIBS = $(addprefix $(OBJDIR), $(OBJ_LIB))
-OBJ_BINS = $(addprefix $(OBJDIR), $(OBJ_BIN))
-ifeq ($(TEST), 1) 
-OBJ_TESTS += $(addprefix $(OBJDIR), $(OBJ_TEST))
-endif
-
-DIRS := obj obj/src obj/src/tools obj/src/javernn obj/src/test  
-DIRS += obj/src/javernn/util obj/src/javernn/op obj/src/javernn/optimizer 
+DIRS := obj obj/src obj/src/tools obj/src/grape obj/src/test  
+DIRS += obj/src/grape/util obj/src/grape/op obj/src/grape/optimizer 
 DIRS += backup results 
-all: $(DIRS) $(SLIB) $(ALIB) $(EXEC) $(TEST_EXE)
+all: $(DIRS) $(SLIB) $(ALIB) $(EXEC)
 #all: obj  results $(SLIB) $(ALIB) $(EXEC)
 
 
-$(EXEC): $(OBJ_BINS) $(ALIB) 
+$(EXEC): $(OBJ_BIN_CPP) $(ALIB) 
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(ALIB)
 
-ifeq ($(TEST), 1) 
-$(TEST_EXE): $(OBJ_TESTS) $(ALIB) 
-	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(ALIB)
-endif
-
-$(ALIB): $(OBJ_LIBS)
+$(ALIB): $(OBJ_LIB_CPP)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(SLIB): $(OBJ_LIBS)
+$(SLIB): $(OBJ_LIB_CPP)
 	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.cpp

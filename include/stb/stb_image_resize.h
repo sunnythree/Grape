@@ -149,7 +149,7 @@
          7. You can separately control whether the alpha channel is
          interpreted as linear or affected by the colorspace. By default
          it is linear; you almost never want to apply the colorspace.
-         (For example, graphics hardware does not apply sRGB conversion
+         (For example, Grapeics hardware does not apply sRGB conversion
          to the alpha channel.)
 
    CONTRIBUTORS

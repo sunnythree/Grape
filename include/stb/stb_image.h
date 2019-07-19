@@ -6441,7 +6441,7 @@ static stbi_uc *stbi__gif_load_next(stbi__context *s, stbi__gif *g, int *comp, i
          dispose = 2; // if I don't have an image to revert back to, default to the old background
       }
 
-      if (dispose == 3) { // use previous graphic
+      if (dispose == 3) { // use previous Grapeic
          for (pi = 0; pi < pcount; ++pi) {
             if (g->history[pi]) {
                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 ); 
@@ -6538,7 +6538,7 @@ static stbi_uc *stbi__gif_load_next(stbi__context *s, stbi__gif *g, int *comp, i
          {
             int len;
             int ext = stbi__get8(s); 
-            if (ext == 0xF9) { // Graphic Control Extension.
+            if (ext == 0xF9) { // Grapeic Control Extension.
                len = stbi__get8(s);
                if (len == 4) {
                   g->eflags = stbi__get8(s);
