@@ -5,15 +5,15 @@
 #include "grape/global_config.h"
 
 namespace Grape{
-    class Grape:public Ops{
+    class Graph:public Ops{
     public:
-        explicit Grape(std::string save_path, SERIALIZE_TYPE serialize_type,
+        explicit Graph(std::string save_path, SERIALIZE_TYPE serialize_type,
         OPTIMIZER_TYPE optimizer_type, float lr);
-        virtual ~Grape();
+        virtual ~Graph();
         void Backward(void);
         void Forward();  
         void UpdateWeights();
-        void Setup();
+        void Setup(bool load);
         void Construct(const std::vector<Op *> &input,
                  const std::vector<Op *> &output);
         int32_t FindIndex(const std::vector<Op *> &ops, Op *target);
@@ -25,10 +25,14 @@ namespace Grape{
         void RunOnce();
         void Save();
         void Load();
+        PHASE GetPhase();
+        void SetPhase(PHASE phase);
         uint32_t GetMaxIter();
-        GRAPH_PHASE GetGraphPhase();
+        void SetMaxIter(uint32_t iter);
         inline CAL_MODE get_cal_mode(){return cal_mode_;};
         inline void set_cal_mode(CAL_MODE mode){cal_mode_ = mode;};
+        inline PHASE get_phase(){return graph_phase_;};
+        inline void set_phase(PHASE phase){graph_phase_ = phase;};
     private:
         std::vector<Op *> ops_;
         std::vector<Op *> input_ops_;
@@ -40,7 +44,7 @@ namespace Grape{
         std::shared_ptr<Optimizer> optimizer_;
         float lr_ = 0.1f;
         uint32_t max_iter_ = 0;
-        GRAPH_PHASE grape_phase_ = GRAPH_TRAIN;
+        PHASE graph_phase_ = TRAIN;
     };
 }
 

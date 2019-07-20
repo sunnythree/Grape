@@ -7,9 +7,9 @@ namespace Grape{
         GPU_MODE
     };
 
-    enum GRAPH_PHASE{
-        GRAPH_TRAIN,
-        GRAPH_TEST
+    enum PHASE{
+        TRAIN,
+        TEST
     };
 
     enum OPTIMIZER_TYPE{

@@ -45,6 +45,17 @@ namespace Grape{
     return vecs;
     }
 
+    std::vector<Op *> Op::PrevDataOps() const 
+    {
+        std::vector<Op *> vecs;
+        for (auto &e : prev_) {
+            if (e && e->prev() && e->vtype() == DATA) {
+                vecs.insert(vecs.end(), e->prev());
+            }
+        }
+    return vecs;
+    }
+
     std::vector<Op *> Op::NextOps() const 
     {
         std::vector<Op *> vecs;

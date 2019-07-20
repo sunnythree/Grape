@@ -14,7 +14,7 @@
 namespace Grape{
     static std::string TAG = "Grape";
 
-    Grape::Grape(std::string save_path,SERIALIZE_TYPE serialize_type,OPTIMIZER_TYPE optimizer_type,float lr):
+    Graph::Graph(std::string save_path,SERIALIZE_TYPE serialize_type,OPTIMIZER_TYPE optimizer_type,float lr):
     save_path_(save_path),
     serialize_type_(serialize_type),
     optimizer_type_(optimizer_type),
@@ -31,13 +31,13 @@ namespace Grape{
         }
     }
 
-    Grape::~Grape()
+    Graph::~Graph()
     {
 
     }
 
 
-    void Grape::Backward()
+    void Graph::Backward()
     {
         for(int i=ops_.size()-1;i>-1;--i){
             if(cal_mode_ == CPU_MODE){
@@ -49,7 +49,7 @@ namespace Grape{
             }
         }
     }
-    void Grape::Forward()
+    void Graph::Forward()
     {
         Log::v(TAG,"Forward");
         for(auto o:ops_){
@@ -62,7 +62,7 @@ namespace Grape{
             }
         }
     } 
-    void Grape::UpdateWeights()
+    void Graph::UpdateWeights()
     {
         for(auto o:ops_){
             if(cal_mode_ == CPU_MODE){
@@ -74,58 +74,70 @@ namespace Grape{
             }
         }
     }
-    void Grape::Setup()
+    void Graph::Setup(bool load)
     {
-        for(auto o:ops_){
-            o->Setup();
+        std::cout<<ops_.size()<<std::endl;
+        if(load){
+            for(auto o:ops_){
+                o->Load(save_path_,serialize_type_);
+            }
+        }else
+        {
+            for(auto o:ops_){
+                o->Setup();
+            }
         }
+        
+
     }
 
-    void Grape::TrainOnce()
+    void Graph::TrainOnce()
     {
         Forward();
         Backward();
         UpdateWeights();
     }
 
-    void Grape::Train()
+    void Graph::Train()
     {
         for(uint32_t i=0;i<max_iter_;i++){
             TrainOnce();
         }
     }
 
-    void Grape::TestOnce()
+    void Graph::TestOnce()
     {
         Forward();
     }
 
-    void Grape::Test()
+    void Graph::Test()
     {
         for(uint32_t i=0;i<max_iter_;i++){
             Forward();
         }
     }
 
-    void Grape::Run()
+    void Graph::Run()
     {
-        if(grape_phase_ == GRAPH_TRAIN){
+        if(graph_phase_ == TRAIN){
             Train();
+            Save();
         }else{
+            Load();
             Test();
         }
     }
 
-    void Grape::RunOnce()
+    void Graph::RunOnce()
     {
-        if(grape_phase_ == GRAPH_TRAIN){
+        if(graph_phase_ == TRAIN){
             TrainOnce();
         }else{
             TestOnce();
         }
     }
 
-    void Grape::Construct(const std::vector<Op *> &inputs,
+    void Graph::Construct(const std::vector<Op *> &inputs,
                     const std::vector<Op *> &outputs) {
         std::vector<Op *> sorted;
         std::vector<Op *> input_nodes(inputs.begin(), inputs.end());
@@ -144,11 +156,11 @@ namespace Grape{
                 // remove edge between next[i] and current
                 if (removed_edge.find(next[i]) == removed_edge.end()) {
                     removed_edge[next[i]] =
-                        std::vector<uint8_t>(next[i]->PrevOps().size(), 0);
+                        std::vector<uint8_t>(next[i]->PrevDataOps().size(), 0);
                 }
 
                 std::vector<uint8_t> &removed = removed_edge[next[i]];
-                removed[FindIndex(next[i]->PrevOps(), curr)] = 1;
+                removed[FindIndex(next[i]->PrevDataOps(), curr)] = 1;
 
                 if (std::all_of(removed.begin(), removed.end(),
                                 [](uint8_t x) { return x == 1; })) {
@@ -163,10 +175,9 @@ namespace Grape{
 
         input_ops_  = inputs;
         output_ops_ = outputs;
-        Setup();
     }
 
-    int32_t Grape::FindIndex(const std::vector<Op *> &ops, Op *target) 
+    int32_t Graph::FindIndex(const std::vector<Op *> &ops, Op *target) 
     {
         for (int32_t i = 0; i < ops.size(); i++) {
             if (ops[i] == static_cast<Op *>(&*target)) return i;
@@ -174,28 +185,38 @@ namespace Grape{
         throw Error("invalid connection");
     }
 
-    void Grape::Save()
+    void Graph::Save()
     {
         for(auto o:ops_){
             o->Save(save_path_,serialize_type_);
         }
     }
 
-    void Grape::Load()
+    void Graph::Load()
     {
         for(auto o:ops_){
             o->Load(save_path_,serialize_type_);
         }
     }
 
-    uint32_t Grape::GetMaxIter()
+
+    PHASE Graph::GetPhase()
+    {
+        return graph_phase_;
+    }
+
+    void Graph::SetPhase(PHASE phase)
+    {
+        graph_phase_ = phase;
+    }
+
+    uint32_t Graph::GetMaxIter()
     {
         return max_iter_;
     }
 
-    GRAPH_PHASE Grape::GetGraphPhase()
+    void Graph::SetMaxIter(uint32_t iter)
     {
-        return grape_phase_;
+        max_iter_ = iter;
     }
-
 }

@@ -25,7 +25,21 @@ namespace Grape{
         type_ = "Fc";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,out_dim_}),DATA,cal_mode_);
+            Shape({batch_size_,out_dim_}),DATA,cal_mode_);
+        //reverve size
+        if(has_bias_){
+            prev_.reserve(3);
+        }else{
+            prev_.reserve(2);
+        }
+
+        prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
+            Shape({out_dim_,in_dim_}),WEIGHTS,cal_mode_);
+
+        if(has_bias_){
+            prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
+                Shape({out_dim_}),BIAS,cal_mode_);
+        }
     }
 
     Fc::~Fc()
@@ -41,8 +55,7 @@ namespace Grape{
         }else{
             //Log::v(TAG,"create weights");
             //assert(prev_[0].get() != nullptr);
-            prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({out_dim_,in_dim_}),WEIGHTS,cal_mode_);
+
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
             Random::GetInstance().SetSeed(seed);
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
@@ -64,8 +77,6 @@ namespace Grape{
 #endif
             if(has_bias_){
                 //Log::v(TAG,"create bias");
-                prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({out_dim_}),BIAS,cal_mode_);
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->cpu_data(),1);
 #ifdef GPU
                 if(cal_mode_ == GPU_MODE){

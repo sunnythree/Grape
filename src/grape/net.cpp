@@ -47,4 +47,9 @@ namespace Grape{
             }
         }
     }
+
+    void Net::AddOps(Ops *ops)
+    {
+        ops_.push_back(ops);
+    }
 }

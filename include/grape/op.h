@@ -32,6 +32,7 @@ public:
     int32_t NextPort(const Tensor &e) const;
 
     std::vector<Op *> PrevOps() const;
+    std::vector<Op *> PrevDataOps() const;
     std::vector<Op *> NextOps() const;
 
     inline int32_t in_size() const { return in_size_; }

@@ -8,7 +8,6 @@
 
 
 namespace Grape{
-    typedef std::shared_ptr<Ops> ops_t;
     enum ITER_MODE{
         STAGGER,
         SEQUENCE
@@ -18,8 +17,9 @@ namespace Grape{
         explicit Net(NetParams &net_params);
         ~Net();
         void Run();
+        void AddOps(Ops *ops);
     private:
-        std::vector<ops_t> ops_;
+        std::vector<Ops *> ops_;
         std::vector<int32_t> the_ops_iters;
         ITER_MODE iter_mode_ = SEQUENCE;
     };
