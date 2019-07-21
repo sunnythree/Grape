@@ -8,20 +8,18 @@
 
 
 namespace Grape{
-    enum ITER_MODE{
-        STAGGER,
-        SEQUENCE
-    };
+
     class Net{
     public:
         explicit Net(NetParams &net_params);
         ~Net();
         void Run();
         void AddOps(Ops *ops);
+        inline uint32_t get_max_iter(){return max_iter_;};
+        inline void set_max_iter(uint32_t iter){max_iter_ = iter;};
     private:
         std::vector<Ops *> ops_;
-        std::vector<int32_t> the_ops_iters;
-        ITER_MODE iter_mode_ = SEQUENCE;
+        uint32_t max_iter_ = 1;
     };
 }
 

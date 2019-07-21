@@ -6,12 +6,14 @@
 namespace Grape{
     class OptimizerParams{
     public:
-        std::string type_;
-        float lr;
+        OPTIMIZER_TYPE type_;
+        float lr_;
+        
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar( type_, lr);
+            ar( cereal::make_nvp("type_",type_));
+            ar( cereal::make_nvp("lr_",lr_));
         }
     };
 }

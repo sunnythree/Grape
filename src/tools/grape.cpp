@@ -9,13 +9,13 @@
 #include "grape/optimizer/sgd.h"
 #include "grape/net.h"
 #include "grape/op/accuracy_test.h"
+#include "cereal/types/vector.hpp"
 
 using namespace std;
 using namespace Grape;
 
-int main()
-{
-    int batch = 100;
+void net(){
+   int batch = 100;
     MnistData input("input","data/train-images-idx3-ubyte",
         "data/train-labels-idx1-ubyte",batch,false,50000);      
     Fc fc1("fc1",batch,784,100);
@@ -56,6 +56,39 @@ int main()
     net.AddOps(&graph1);
     
     net.Run();
+}
 
+int main(int argc,char **argv)
+{
+    if(argc != 2){
+        std::cout<<"usage: ./Grape cfb_file"<<std::endl;
+    }
+    {
+        std::ofstream os(argv[1]);
+        cereal::JSONOutputArchive archive(os);
+        NetParams params;
+        GraphParams graphp;
+        graphp.cal_mode_ = CPU_MODE;
+        graphp.device_id_ = 0;
+        graphp.max_iter_ = 100;
+        graphp.phase_ = TRAIN;
+
+        // OpParams opp;
+        // opp.batch_ = 100;
+        // opp.name_ = "1212";
+        // graphp.op_params_.push_back(opp);
+        params.max_iter_ = 1000;
+        params.graphs_.push_back(graphp);
+        archive(cereal::make_nvp("net",params));
+    }
+    
+    // {
+    //     std::ifstream is(argv[1]);
+    //     cereal::JSONInputArchive archive(is);
+    //     NetParams params;
+    //     archive(CEREAL_NVP(net));
+    // }
+
+    
     return 0;
 }
