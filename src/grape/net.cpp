@@ -6,7 +6,7 @@
 namespace Grape{
     Net::Net(NetParams &net_params)
     {
-
+        max_iter_ = net_params.max_iter_;
     }
 
     Net::~Net()

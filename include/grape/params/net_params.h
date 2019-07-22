@@ -13,13 +13,11 @@ namespace Grape{
     class NetParams{
     public:
         uint32_t max_iter_;
-        std::vector<GraphParams> graphs_;
 
         template <class Archive>
         void serialize( Archive & ar )
         {
             ar(cereal::make_nvp("max_iter_",max_iter_));
-            ar(cereal::make_nvp("graphs_",graphs_));
         }
     };
 }

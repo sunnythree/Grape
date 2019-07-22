@@ -10,6 +10,7 @@
 #include "grape/net.h"
 #include "grape/op/accuracy_test.h"
 #include "cereal/types/vector.hpp"
+#include "grape/util/parser.h"
 
 using namespace std;
 using namespace Grape;
@@ -63,32 +64,11 @@ int main(int argc,char **argv)
     if(argc != 2){
         std::cout<<"usage: ./Grape cfb_file"<<std::endl;
     }
-    {
-        std::ofstream os(argv[1]);
-        cereal::JSONOutputArchive archive(os);
-        NetParams params;
-        GraphParams graphp;
-        graphp.cal_mode_ = CPU_MODE;
-        graphp.device_id_ = 0;
-        graphp.max_iter_ = 100;
-        graphp.phase_ = TRAIN;
-
-        // OpParams opp;
-        // opp.batch_ = 100;
-        // opp.name_ = "1212";
-        // graphp.op_params_.push_back(opp);
-        params.max_iter_ = 1000;
-        params.graphs_.push_back(graphp);
-        archive(cereal::make_nvp("net",params));
-    }
-    
-    // {
-    //     std::ifstream is(argv[1]);
-    //     cereal::JSONInputArchive archive(is);
-    //     NetParams params;
-    //     archive(CEREAL_NVP(net));
-    // }
-
+    NetParams net_params;
+    GraphListParams graph_list;
+    ConnectionParams connectons;
+    OpListParams op_list;
+    Parser::Serialize(argv[1],op_list,graph_list,connectons,net_params);
     
     return 0;
 }
