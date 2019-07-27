@@ -1,0 +1,30 @@
+{
+    "op_list": {
+        "op_list_": [
+            {
+                "name_": "name0",
+                "type_": "fc",
+                "batch_": 10,
+                "in_dim_": 0,
+                "out_dim_": 0,
+                "has_bias_": true
+            },
+            {
+                "name_": "name1",
+                "type_": "fc",
+                "batch_": 10,
+                "in_dim_": 1,
+                "out_dim_": 1,
+                "has_bias_": true
+            },
+            {
+                "name_": "name2",
+                "type_": "fc",
+                "batch_": 10,
+                "in_dim_": 2,
+                "out_dim_": 2,
+                "has_bias_": true
+            }
+        ]
+    }
+}
