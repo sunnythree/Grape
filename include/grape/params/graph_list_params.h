@@ -13,12 +13,12 @@ namespace Grape{
 
     class GraphListParams{
     public:
-        std::map<std::string,GraphParams> graph_map_;
+        std::vector<GraphParams> graph_list_;
 
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar(cereal::make_nvp("graph_map_",graph_map_));
+            ar(cereal::make_nvp("graph_list_",graph_list_));
         }
     };
 }

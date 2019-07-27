@@ -15,9 +15,9 @@ namespace Grape
     static const std::string NET = "net";
     static const std::string GRAPHS = "graphs";
     static const std::string CONNECTIONS = "connections";
-    static const std::string OP_PATH = "op_path";
-    static const std::string OP_LIST = "op_list";
-    static const std::string OPTIMIZER_LIST = "optimizer_list";
+    static const std::string OP_PATH = "op_paths";
+    static const std::string OP_LIST = "ops";
+    static const std::string OPTIMIZER_LIST = "optimizers";
 
     void Parser::Parse(std::string path,
         OpPathParams& op_path)
@@ -273,9 +273,9 @@ namespace Grape
         }
 
         //get graph_map
-        for(auto tmp:graph_list.graph_map_){
-            auto tmp_graph = GraphFactory::Build(tmp.second);
-            graph_map_.insert(std::pair<std::string,std::shared_ptr<Graph>>(tmp.first,tmp_graph));
+        for(auto tmp:graph_list.graph_list_){
+            auto tmp_graph = GraphFactory::Build(tmp);
+            graph_map_.insert(std::pair<std::string,std::shared_ptr<Graph>>(tmp.name_,tmp_graph));
         }
         //combine op_map and graph_map
         for(int i=0;i<connection_list.connection_list_.size();i++){

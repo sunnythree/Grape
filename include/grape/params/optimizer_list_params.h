@@ -2,17 +2,17 @@
 #define __GRAPE_OPTIMIZER_LIST_PARAMS_H__
 
 #include <string>
-#include <map>
+#include <vector>
 #include "optimizer_params.h"
 
 namespace Grape{
     class OptimizerListParams{
     public:
-        std::map<std::string,OptimizerParams> optimizer_map;
+        std::vector<OptimizerParams> optimizer_list_;
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar( cereal::make_nvp("optimizer_map",optimizer_map));
+            ar( cereal::make_nvp("optimizer_list",optimizer_list_));
         }
     };
 }
