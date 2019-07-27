@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gtest.h"
+#include "gtest/gtest.h"
 
 using namespace std;
 

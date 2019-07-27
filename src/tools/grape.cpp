@@ -64,27 +64,19 @@ void code_net(){
     net.Run();
 }
 
-void combine_oplist_graph(
-    std::map<std::string,std::vector<std::shared_ptr<Op>>> &op_map,
-    std::map<std::string,std::shared_ptr<Graph>> &graph_map,
-    ConnectionListParams &connection_list
-)
-{
-    assert(op_map.size()==graph_map.size());
-    
-}
-
-void json_net(std::string path)
-{
-  
-}
 
 int main(int argc,char **argv)
 {
     if(argc != 2){
         std::cout<<"usage: ./Grape cfb_file"<<std::endl;
     }
-    json_net(argv[1]);
-    
+    Parser parser;
+    //parser.Parse(argv[1]);
+    NetParams net_params;
+    GraphListParams graph_list;
+    ConnectionListParams connection_list;
+    OpPathParams op_path;
+    OptimizerListParams optimizer_list;
+    parser.Serialize(argv[1],op_path,optimizer_list,graph_list,connection_list,net_params);
     return 0;
 }

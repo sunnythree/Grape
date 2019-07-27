@@ -1,18 +1,17 @@
 {
+    "op_path": {
+        "path_list_": []
+    },
+    "optimizer_list": {
+        "optimizer_mapL": []
+    },
+    "graphs": {
+        "graph_map_": []
+    },
+    "connections": {
+        "connection_list_": []
+    },
     "net": {
-        "max_iter_": 1000,
-        "graphs_": [
-            {
-                "max_iter_": 100,
-                "cal_mode_": 0,
-                "phase_": 0,
-                "device_id_": 0,
-                "optimizer_": {
-                    "type_": 3517607536,
-                    "lr_": 3.0961689569256833e-41
-                },
-                "op_params_": []
-            }
-        ]
+        "max_iter_": 0
     }
 }

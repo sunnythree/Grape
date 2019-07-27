@@ -8,11 +8,11 @@
 namespace Grape{
     class OptimizerListParams{
     public:
-        std::map<std::string,OptimizerParams> optimizer_mapL;
+        std::map<std::string,OptimizerParams> optimizer_map;
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar( cereal::make_nvp("optimizer_mapL",optimizer_mapL));
+            ar( cereal::make_nvp("optimizer_map",optimizer_map));
         }
     };
 }
