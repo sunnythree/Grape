@@ -7,8 +7,13 @@
 namespace Grape{
     class Graph:public Ops{
     public:
-        explicit Graph(std::string save_path, SERIALIZE_TYPE serialize_type,
-        OPTIMIZER_TYPE optimizer_type, float lr);
+        explicit Graph(
+            std::string save_path,
+            SERIALIZE_TYPE serialize_type,
+            int32_t max_iter,
+            PHASE graph_phase,
+            CAL_MODE cal_mode
+        );
         virtual ~Graph();
         void Backward(void);
         void Forward();  
@@ -33,18 +38,21 @@ namespace Grape{
         inline void set_cal_mode(CAL_MODE mode){cal_mode_ = mode;};
         inline PHASE get_phase(){return graph_phase_;};
         inline void set_phase(PHASE phase){graph_phase_ = phase;};
+        
     private:
         std::vector<Op *> ops_;
         std::vector<Op *> input_ops_;
         std::vector<Op *> output_ops_;
         std::string save_path_ = ".";
         SERIALIZE_TYPE serialize_type_ = BINARY;
-        OPTIMIZER_TYPE optimizer_type_ = SGD;
         CAL_MODE cal_mode_ = CPU_MODE;
-        std::shared_ptr<Optimizer> optimizer_;
-        float lr_ = 0.1f;
         uint32_t max_iter_ = 0;
         PHASE graph_phase_ = TRAIN;
+        Optimizer *optimizer_;
+        std::vector<OpConnectionPoint> connections_;
+        void SnapShotConnections();
+        void GetConnection(Op *op,std::vector<OpConnectionPoint> &connections);
+        void ReConnection();
     };
 }
 

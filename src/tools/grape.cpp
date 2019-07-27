@@ -1,5 +1,8 @@
 #include <iostream>
+#include <map>
+#include <vector>
 #include <string>
+#include <assert.h>
 #include "grape/op/fc.h"
 #include "grape/tensor.h"
 #include "grape/op/mnist_data.h"
@@ -10,12 +13,14 @@
 #include "grape/net.h"
 #include "grape/op/accuracy_test.h"
 #include "cereal/types/vector.hpp"
-#include "grape/util/parser.h"
+#include "grape/parse/parser.h"
+#include "grape/op_factory.h"
+#include "grape/graph_factory.h"
 
 using namespace std;
 using namespace Grape;
 
-void net(){
+void code_net(){
    int batch = 100;
     MnistData input("input","data/train-images-idx3-ubyte",
         "data/train-labels-idx1-ubyte",batch,false,50000);      
@@ -28,7 +33,7 @@ void net(){
     input<<fc1<<fc2<<fc3<<sm;
     connect_op(&input,&sm,1,1);
     
-    Graph graph("data/test",JSON,SGD,0.1f);
+    Graph graph("data/test",JSON,1000,TRAIN,CPU_MODE);
     graph.set_phase(TRAIN);
     graph.SetMaxIter(500);
     graph.Construct({&input},{&sm});
@@ -49,7 +54,7 @@ void net(){
     input_test<<fc1_t<<fc2_t<<fc3_t<<sm1<<accuracy;
     connect_op(&input_test,&accuracy,1,1);
 
-    Graph graph1("data/test",JSON,SGD,0.1f);
+    Graph graph1("data/test",JSON,100,TEST,CPU_MODE);
     graph1.set_phase(TEST);
     graph1.SetMaxIter(100);
     graph1.Construct({&input_test},{&accuracy});
@@ -59,16 +64,27 @@ void net(){
     net.Run();
 }
 
+void combine_oplist_graph(
+    std::map<std::string,std::vector<std::shared_ptr<Op>>> &op_map,
+    std::map<std::string,std::shared_ptr<Graph>> &graph_map,
+    ConnectionListParams &connection_list
+)
+{
+    assert(op_map.size()==graph_map.size());
+    
+}
+
+void json_net(std::string path)
+{
+  
+}
+
 int main(int argc,char **argv)
 {
     if(argc != 2){
         std::cout<<"usage: ./Grape cfb_file"<<std::endl;
     }
-    NetParams net_params;
-    GraphListParams graph_list;
-    ConnectionParams connectons;
-    OpListParams op_list;
-    Parser::Serialize(argv[1],op_list,graph_list,connectons,net_params);
+    json_net(argv[1]);
     
     return 0;
 }

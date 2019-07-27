@@ -1,24 +1,24 @@
-#ifndef __GRAPE_GRAPH_LIST_PARAMS_H__
-#define __GRAPE_GRAPH_LIST_PARAMS_H__
+#ifndef __GRAPE_OP_PATH_PARAMS_H__
+#define __GRAPE_OP_PATH_PARAMS_H__
 
 #include <cstdint>
 #include <string>
 #include <vector>
 #include <map>
+#include "op_params.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/types/map.hpp"
-#include "graph_params.h"
 
 namespace Grape{
 
-    class GraphListParams{
+    class OpPathParams{
     public:
-        std::map<std::string,GraphParams> graph_map_;
+        std::map<std::string,std::string> path_list_;
 
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar(cereal::make_nvp("graph_map_",graph_map_));
+            ar(cereal::make_nvp("path_list_",path_list_));
         }
     };
 }

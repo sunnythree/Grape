@@ -14,21 +14,15 @@
 namespace Grape{
     static std::string TAG = "Grape";
 
-    Graph::Graph(std::string save_path,SERIALIZE_TYPE serialize_type,OPTIMIZER_TYPE optimizer_type,float lr):
+    Graph::Graph(std::string save_path, SERIALIZE_TYPE serialize_type,
+            int32_t max_iter,PHASE graph_phase,CAL_MODE cal_mode):
     save_path_(save_path),
     serialize_type_(serialize_type),
-    optimizer_type_(optimizer_type),
-    lr_(lr)
+    max_iter_(max_iter),
+    graph_phase_(graph_phase),
+    cal_mode_(cal_mode)
     {
-        switch (optimizer_type_)
-        {
-        case SGD:
-            optimizer_ = std::make_shared<SGDOptimizer>(0.1f);
-            break;
-        
-        default:
-            break;
-        }
+
     }
 
     Graph::~Graph()
@@ -66,10 +60,10 @@ namespace Grape{
     {
         for(auto o:ops_){
             if(cal_mode_ == CPU_MODE){
-                o->UpdateWeightsCpu(*optimizer_.get());
+                o->UpdateWeightsCpu(*optimizer_);
             }else{
 #ifdef GPU
-                o->UpdateWeightsGpu(*optimizer_.get());
+                o->UpdateWeightsGpu(*optimizer_);
 #endif
             }
         }
@@ -123,7 +117,6 @@ namespace Grape{
             Train();
             Save();
         }else{
-            Load();
             Test();
         }
     }
@@ -137,8 +130,42 @@ namespace Grape{
         }
     }
 
-    void Graph::Construct(const std::vector<Op *> &inputs,
-                    const std::vector<Op *> &outputs) {
+    void Graph::GetConnection(Op *op,std::vector<OpConnectionPoint> &connections)
+    {
+        std::vector<tensorptr_t> output_tensors = op->next();
+        for(int i=0;i<output_tensors.size();++i){
+            std::vector<Op *> consumer_op = output_tensors[i]->next();
+            for(int j=0;j>consumer_op.size();j++){
+                uint32_t index = consumer_op[j]->PrevPort(*output_tensors[i].get());
+                OpConnectionPoint opconnp;
+                opconnp.head = op;
+                opconnp.head_index = i;
+                opconnp.tail = consumer_op[j];
+                opconnp.tail_index = index;
+                connections.emplace_back(opconnp);
+            }
+        }
+    }
+
+    void Graph::SnapShotConnections()
+    {
+        connections_.clear();
+        for(auto tmp:ops_){
+            GetConnection(tmp,connections_);
+        }
+    }
+
+    void Graph::ReConnection()
+    {
+        for(auto tmp:connections_){
+            connect_op(tmp.head,tmp.tail,tmp.head_index,tmp.tail_index);
+        }
+    }
+
+    void Graph::Construct(
+        const std::vector<Op *> &inputs,
+        const std::vector<Op *> &outputs) 
+    {
         std::vector<Op *> sorted;
         std::vector<Op *> input_nodes(inputs.begin(), inputs.end());
         std::unordered_map<Op *, std::vector<uint8_t>> removed_edge;
@@ -175,6 +202,7 @@ namespace Grape{
 
         input_ops_  = inputs;
         output_ops_ = outputs;
+        SnapShotConnections();
     }
 
     int32_t Graph::FindIndex(const std::vector<Op *> &ops, Op *target) 

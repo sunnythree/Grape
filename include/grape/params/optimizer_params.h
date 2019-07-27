@@ -2,13 +2,15 @@
 #define __GRAPE_OPTIMIZER_PARAMS_H__
 
 #include <string>
+#include "grape/global_config.h"
+#include "cereal/archives/json.hpp"
 
 namespace Grape{
     class OptimizerParams{
     public:
         OPTIMIZER_TYPE type_;
         float lr_;
-        
+
         template <class Archive>
         void serialize( Archive & ar )
         {

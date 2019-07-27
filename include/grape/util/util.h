@@ -3,6 +3,8 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
+
 namespace Grape
 {
     template <typename T, typename Pred, typename Sum>
@@ -25,7 +27,8 @@ namespace Grape
 
     float sum_array(float *a, int n);
     uint32_t max_index(const float *a, int n);
-
+    void split(const std::string& src, const std::string& separator, std::vector<std::string>& dest);
+    void trim(std::string &s);
 } // namespace Grape
 
 

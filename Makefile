@@ -64,7 +64,7 @@ OBJ_LIB_CU  := $(patsubst ./%.cu, ./$(OBJDIR)%.o, $(LIB_CU_SRCS))
 OBJ_BIN_CPP := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(BIN_CPP_SRCS))
 
 DIRS := obj obj/src obj/src/tools obj/src/grape obj/src/test  
-DIRS += obj/src/grape/util obj/src/grape/op obj/src/grape/optimizer 
+DIRS += obj/src/grape/util obj/src/grape/op obj/src/grape/optimizer obj/src/grape/parse 
 DIRS += backup results 
 all: $(DIRS) $(SLIB) $(ALIB) $(EXEC)
 #all: obj  results $(SLIB) $(ALIB) $(EXEC)

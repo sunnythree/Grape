@@ -3,7 +3,9 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 #include <map>
+#include "op_params.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/types/map.hpp"
 
@@ -11,7 +13,7 @@ namespace Grape{
 
     class OpListParams{
     public:
-        std::map<std::string,std::string> op_list_;
+        std::vector<OpParams> op_list_;
 
         template <class Archive>
         void serialize( Archive & ar )

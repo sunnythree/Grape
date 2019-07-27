@@ -16,7 +16,20 @@ namespace Grape{
 class Tensor;
 typedef std::shared_ptr<Tensor> tensorptr_t;
 
+typedef struct op_connection_t{
+    std::string head;
+    std::string tail;
+    uint32_t head_index;
+    uint32_t tail_index;
+}OpConnection;
 
+class Op;
+typedef struct op_connection_point_t{
+    Op *head;
+    Op *tail;
+    uint32_t head_index;
+    uint32_t tail_index;
+}OpConnectionPoint;
 
 class Op{
 public:

@@ -3,15 +3,13 @@
 
 #include <string>
 #include <cstdint>
-
+#include "cereal/cereal.hpp"
+#include "cereal/archives/json.hpp"
 namespace Grape{
     class OpParams{
     public:
         std::string name_;
         std::string type_;
-        std::string connect_to_;
-        uint32_t connect_index_;
-
         uint32_t batch_;
         uint32_t in_dim_;
         uint32_t out_dim_;
@@ -26,8 +24,6 @@ namespace Grape{
         {
             ar(cereal::make_nvp("name_",name_));
             ar(cereal::make_nvp("type_",type_));
-            ar(cereal::make_nvp("connect_to_",connect_to_));
-            ar(cereal::make_nvp("connect_index_",connect_index_));
             ar(cereal::make_nvp("batch_",batch_));
             ar(cereal::make_nvp("in_dim_",in_dim_));
             ar(cereal::make_nvp("out_dim_",out_dim_));
