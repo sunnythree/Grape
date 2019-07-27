@@ -20,6 +20,54 @@ namespace Grape
     static const std::string OPTIMIZER_LIST = "optimizer_list";
 
     void Parser::Parse(std::string path,
+        OpPathParams& op_path)
+    {
+        std::ifstream is(path);
+        cereal::JSONInputArchive archive(is);
+        archive(cereal::make_nvp(OP_PATH,op_path));
+    }
+
+    void Parser::Parse(std::string path,
+        OptimizerListParams& optimizer_list)
+    {
+        std::ifstream is(path);
+        cereal::JSONInputArchive archive(is);
+        archive(cereal::make_nvp(OPTIMIZER_LIST,optimizer_list));
+    }
+
+    void Parser::Parse(std::string path,
+        GraphListParams &graph_list)
+    {
+        std::ifstream is(path);
+        cereal::JSONInputArchive archive(is);
+        archive(cereal::make_nvp(GRAPHS,graph_list));
+    }
+
+    void Parser::Parse(std::string path,
+        ConnectionListParams &connection_list)
+    {
+        std::ifstream is(path);
+        cereal::JSONInputArchive archive(is);
+        archive(cereal::make_nvp(CONNECTIONS,connection_list));
+    }
+
+    void Parser::Parse(std::string path,
+        NetParams &net)
+    {
+        std::ifstream is(path);
+        cereal::JSONInputArchive archive(is);
+        archive(cereal::make_nvp(NET,net));
+    }
+
+    void Parser::Parse(std::string path,
+        OpListParams &op_list)
+    {
+        std::ifstream is(path);
+        cereal::JSONInputArchive archive(is);
+        archive(cereal::make_nvp(OP_LIST,op_list));
+    }
+
+    void Parser::Parse(std::string path,
             OpPathParams& op_path,
             OptimizerListParams &optimizer_list,
             GraphListParams &graph_list,
@@ -32,6 +80,54 @@ namespace Grape
         archive(cereal::make_nvp(OPTIMIZER_LIST,optimizer_list));
         archive(cereal::make_nvp(GRAPHS,graph_list));
         archive(cereal::make_nvp(CONNECTIONS,connection_list));
+        archive(cereal::make_nvp(NET,net));
+    }
+
+    void Parser::Serialize(std::string path,
+        OpPathParams& op_path)
+    {
+        std::ofstream os(path);
+        cereal::JSONOutputArchive archive(os);
+        archive(cereal::make_nvp(OP_PATH,op_path));
+    }
+
+    void Parser::Serialize(std::string path,
+        OpListParams& op_list)
+    {
+        std::ofstream os(path);
+        cereal::JSONOutputArchive archive(os);
+        archive(cereal::make_nvp(OP_LIST,op_list));
+    }
+
+    void Parser::Serialize(std::string path,
+        OptimizerListParams& optimizer_list)
+    {
+        std::ofstream os(path);
+        cereal::JSONOutputArchive archive(os);
+        archive(cereal::make_nvp(OPTIMIZER_LIST,optimizer_list));
+    }
+
+    void Parser::Serialize(std::string path,
+        GraphListParams &graph_list)
+    {
+        std::ofstream os(path);
+        cereal::JSONOutputArchive archive(os);
+        archive(cereal::make_nvp(GRAPHS,graph_list));
+    }
+
+    void Parser::Serialize(std::string path,
+        ConnectionListParams &connection_list)
+    {
+        std::ofstream os(path);
+        cereal::JSONOutputArchive archive(os);
+        archive(cereal::make_nvp(CONNECTIONS,connection_list));
+    }
+
+    void Parser::Serialize(std::string path,
+        NetParams &net)
+    {
+        std::ofstream os(path);
+        cereal::JSONOutputArchive archive(os);
         archive(cereal::make_nvp(NET,net));
     }
 

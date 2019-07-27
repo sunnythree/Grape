@@ -28,6 +28,7 @@ namespace Grape{
             ar(cereal::make_nvp("in_dim_",in_dim_));
             ar(cereal::make_nvp("out_dim_",out_dim_));
             ar(cereal::make_nvp("data_path_",data_path_));
+            ar(cereal::make_nvp("label_path_",label_path_));
             ar(cereal::make_nvp("has_bias_",has_bias_));
             ar(cereal::make_nvp("random_",random_));
             ar(cereal::make_nvp("sample_count_",sample_count_));

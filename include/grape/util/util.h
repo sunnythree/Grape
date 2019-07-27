@@ -18,16 +18,23 @@ namespace Grape
 
     template <typename T, typename Pred>
     std::vector<T> filter(const std::vector<T> &vec, Pred p) {
-    std::vector<T> res;
-    for (size_t i = 0; i < vec.size(); i++) {
-        if (p(i)) res.push_back(vec[i]);
-    }
-    return res;
+        std::vector<T> res;
+        for (size_t i = 0; i < vec.size(); i++) {
+            if (p(i)) res.push_back(vec[i]);
+        }
+        return res;
     }
 
     float sum_array(float *a, int n);
+
     uint32_t max_index(const float *a, int n);
-    void split(const std::string& src, const std::string& separator, std::vector<std::string>& dest);
+
+    void split(
+        const std::string& src,
+        const std::string& separator, 
+        std::vector<std::string>& dest
+    );
+
     void trim(std::string &s);
 } // namespace Grape
 

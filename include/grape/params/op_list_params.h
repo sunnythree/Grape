@@ -7,7 +7,7 @@
 #include <map>
 #include "op_params.h"
 #include "cereal/archives/json.hpp"
-#include "cereal/types/map.hpp"
+#include "cereal/types/vector.hpp"
 
 namespace Grape{
 
