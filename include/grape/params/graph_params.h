@@ -22,29 +22,29 @@ namespace Grape{
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar( cereal::make_nvp("name_",name_));
+            ar( cereal::make_nvp("name",name_));
             try{
-                ar( cereal::make_nvp("max_iter_",max_iter_));
+                ar( cereal::make_nvp("max_iter",max_iter_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
             try{
-                ar( cereal::make_nvp("cal_mode_",cal_mode_));
+                ar( cereal::make_nvp("cal_mode",cal_mode_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
             try{
-                ar( cereal::make_nvp("phase_",phase_));
+                ar( cereal::make_nvp("phase",phase_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
             try{
-                ar( cereal::make_nvp("device_id_",device_id_));
+                ar( cereal::make_nvp("device_id",device_id_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
             try{
-                ar( cereal::make_nvp("save_path_",save_path_));
+                ar( cereal::make_nvp("save_path",save_path_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }

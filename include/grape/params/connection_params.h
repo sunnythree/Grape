@@ -21,9 +21,9 @@ namespace Grape{
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar(cereal::make_nvp("op_list_name_",op_list_name_));
-            ar(cereal::make_nvp("graph_name_",graph_name_));
-            ar(cereal::make_nvp("cnnections_",cnnections_));
+            ar(cereal::make_nvp("op_list_name",op_list_name_));
+            ar(cereal::make_nvp("graph_name",graph_name_));
+            ar(cereal::make_nvp("cnnections",cnnections_));
         }
     };
 }

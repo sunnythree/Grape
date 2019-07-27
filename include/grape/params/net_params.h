@@ -17,7 +17,7 @@ namespace Grape{
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar(cereal::make_nvp("max_iter_",max_iter_));
+            ar(cereal::make_nvp("max_iter",max_iter_));
         }
     };
 }

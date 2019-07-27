@@ -18,7 +18,7 @@ namespace Grape{
         template <class Archive>
         void serialize( Archive & ar )
         {
-            ar(cereal::make_nvp("connection_list_",connection_list_));
+            ar(cereal::make_nvp("connection_list",connection_list_));
         }
     };
 }
