@@ -3,6 +3,5 @@ Grape
 !Grape/
 libGrape.a
 libGrape.so
-test
 Test
 /data
