@@ -1,0 +1,51 @@
+{
+    "op_paths": {
+        "path_list": [
+            {
+                "name": "mnist",
+                "path": "src/test/data/test_op.json"
+            }
+        ]
+    },
+    "connections": {
+        "connection_list": [
+            {
+                "op_list_name": "op_list0",
+                "graph_name": "graph0",
+                "cnnections": [
+                    {
+                        "from": "name0",
+                        "to": "name1"
+                    },
+                    {
+                        "from": "name1",
+                        "to": "name2"
+                    }
+                ]
+            }
+        ]
+    },
+    "optimizers": {
+        "optimizer_list": [
+            {
+                "type": 0,
+                "lr": 0.1
+            }
+        ]
+    },
+    "graphs": {
+        "graph_list": [
+            {
+                "name": "graph0",
+                "max_iter": 100,
+                "cal_mode": 0,
+                "phase": 0,
+                "device_id": 0,
+                "save_path": "test"
+            }
+        ]
+    },
+    "net": {
+        "max_iter": 1000
+    }
+}

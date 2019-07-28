@@ -158,3 +158,41 @@ TEST(paser,op_path)
         EXPECT_EQ(npp.path , "path:"+std::to_string(i));
     }
 }
+
+TEST(paser,all)
+{
+    NetParams net_params;
+    GraphListParams graph_list;
+    ConnectionListParams connection_list;
+    OpPathParams op_path;
+    OptimizerListParams optimizer_list;
+    Parser::Parse("src/test/data/test.json",op_path,optimizer_list,graph_list,connection_list,net_params);
+    
+    //path
+    EXPECT_EQ(op_path.path_list_[0].name,"mnist");
+    EXPECT_EQ(op_path.path_list_[0].path,"src/test/data/test_op.json");
+
+    //graph
+    EXPECT_EQ(graph_list.graph_list_[0].name_,"graph0");
+    EXPECT_EQ(graph_list.graph_list_[0].max_iter_,100);
+    EXPECT_EQ(graph_list.graph_list_[0].cal_mode_,0);
+    EXPECT_EQ(graph_list.graph_list_[0].phase_,0);
+    EXPECT_EQ(graph_list.graph_list_[0].save_path_,"test");
+
+    //connections
+    EXPECT_EQ(connection_list.connection_list_[0].graph_name_,"graph0");
+    EXPECT_EQ(connection_list.connection_list_[0].op_list_name_,"op_list0");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[0].from,"name0");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[0].to,"name1");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[1].from,"name1");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[1].to,"name2");
+
+    //optimizer
+    EXPECT_EQ(optimizer_list.optimizer_list_[0].lr_,0.1f);
+    EXPECT_EQ(optimizer_list.optimizer_list_[0].type_,0);
+
+    //net
+    EXPECT_EQ(net_params.max_iter_,1000);
+
+
+}
