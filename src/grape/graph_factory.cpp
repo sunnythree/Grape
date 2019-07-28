@@ -20,6 +20,11 @@ namespace Grape
 
     std::vector<std::shared_ptr<Graph>> GraphFactory::Build(std::vector<GraphParams> gps)
     {
-
+        std::vector<std::shared_ptr<Graph>> graphs;
+        for(int i=0;i<gps.size();i++){
+            std::shared_ptr<Graph> graph = Build(gps[i]);
+            graphs.emplace_back(graph);
+        }
+        return graphs;
     }
 } // namespace Grape        

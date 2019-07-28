@@ -159,7 +159,7 @@ TEST(paser,op_path)
     }
 }
 
-TEST(paser,all)
+TEST(paser,parse_all)
 {
     NetParams net_params;
     GraphListParams graph_list;
@@ -193,6 +193,10 @@ TEST(paser,all)
 
     //net
     EXPECT_EQ(net_params.max_iter_,1000);
+}
 
-
+TEST(paser,json_to_code)
+{
+    Parser parser;
+    parser.Parse("src/test/data/test.json");
 }

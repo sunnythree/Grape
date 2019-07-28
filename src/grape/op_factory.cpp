@@ -24,6 +24,11 @@ namespace Grape
 
     std::map<std::string,std::shared_ptr<Op>> OpFactory::Build(std::vector<OpParams> opps)
     {
-
+        std::map<std::string,std::shared_ptr<Op>> op_map;
+        for(int i=0;i<opps.size();i++){
+            std::shared_ptr<Op> op_tmp = Build(opps[i]);
+            op_map.insert(std::pair<std::string,std::shared_ptr<Op>>(op_tmp->get_name(),op_tmp));
+        }
+        return op_map;
     }
 } // namespace Grape

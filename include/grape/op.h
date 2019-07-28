@@ -68,7 +68,8 @@ public:
 
     inline CAL_MODE get_cal_mode(){return cal_mode_;};
     inline void set_cal_mode(CAL_MODE mode){cal_mode_ = mode;};
-
+    inline void set_name(std::string name){name_ = name;};
+    inline std::string get_name(){return name_;};
 protected:
     friend void connect_op(Op *head,Op *tail,int32_t head_index,int32_t tail_index);
     mutable std::vector<tensorptr_t> prev_;
