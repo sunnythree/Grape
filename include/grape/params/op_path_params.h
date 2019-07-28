@@ -4,16 +4,29 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include <map>
+#include <tuple>
 #include "op_params.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/types/map.hpp"
 
 namespace Grape{
 
+    typedef struct name_path_t
+    {
+        std::string name;
+        std::string path;
+        template <class Archive>
+        void serialize( Archive & ar )
+        {
+            ar(cereal::make_nvp("name",name));
+            ar(cereal::make_nvp("path",path));
+        }
+    }NamePathPair;
+    
+
     class OpPathParams{
     public:
-        std::map<std::string,std::string> path_list_;
+        std::vector<NamePathPair> path_list_;
 
         template <class Archive>
         void serialize( Archive & ar )

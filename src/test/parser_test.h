@@ -96,8 +96,10 @@ TEST(paser,connection_list)
         connection.graph_name_ = "graph"+std::to_string(i);
         connection.op_list_name_ = "op_list"+std::to_string(i);
         for(int i=0;i<3;i++){
-            std::tuple<std::string,std::string> t = std::make_tuple<std::string,std::string>("head:0","tail:0");
-            connection.cnnections_.push_back(t);
+            Conn conn;
+            conn.from = "from:"+std::to_string(i);
+            conn.to = "to:"+std::to_string(i);
+            connection.connections_.push_back(conn);
         }
         connection_list.connection_list_.emplace_back(connection);
     }
@@ -110,8 +112,9 @@ TEST(paser,connection_list)
         EXPECT_EQ(connection.graph_name_ , "graph"+std::to_string(i));
         EXPECT_EQ(connection.op_list_name_ , "op_list"+std::to_string(i));
         for(int i=0;i<3;i++){
-            EXPECT_EQ(std::get<0>(connection.cnnections_[i]),"head:0");
-            EXPECT_EQ(std::get<1>(connection.cnnections_[i]),"tail:0");
+            Conn &conn = connection.connections_[i];
+            EXPECT_EQ(conn.from , "from:"+std::to_string(i));
+            EXPECT_EQ(conn.to , "to:"+std::to_string(i));
         }
     }
 }
@@ -136,4 +139,22 @@ TEST(paser,optimizer_list)
     }
 }
 
+TEST(paser,op_path)
+{
+    OpPathParams oppath;
+    for(int i=0;i<3;i++){
+        NamePathPair npp;
+        npp.name = "name:"+std::to_string(i);
+        npp.path = "path:"+std::to_string(i);
+        oppath.path_list_.emplace_back(npp);
+    }
+    Parser::Serialize("obj/test_oppath_params.json",oppath);
 
+    OpPathParams oppath1;
+    Parser::Parse("obj/test_oppath_params.json",oppath1);
+    for(int i=0;i<3;i++){
+        NamePathPair &npp = oppath1.path_list_[i];
+        EXPECT_EQ(npp.name , "name:"+std::to_string(i));
+        EXPECT_EQ(npp.path , "path:"+std::to_string(i));
+    }
+}

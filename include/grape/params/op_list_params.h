@@ -21,6 +21,7 @@ namespace Grape{
             ar(cereal::make_nvp("op_list",op_list_));
         }
     };
+    
 }
 
 #endif

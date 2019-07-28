@@ -213,11 +213,11 @@ namespace Grape
         std::map<std::string,std::shared_ptr<Op>> &ops)
     {
         std::vector<OpConnection> connnections;
-        for(int i=0;i<conn.cnnections_.size();i++){
+        for(int i=0;i<conn.connections_.size();i++){
             OpConnection ocn;
             ParseOpConnection(
-                std::get<0>(conn.cnnections_[i]),
-                std::get<0>(conn.cnnections_[i]),
+                conn.connections_[i].from,
+                conn.connections_[i].to,
                 ocn
                 );
             connnections.emplace_back(ocn);
@@ -257,8 +257,8 @@ namespace Grape
         //get op_params_map
         std::map<std::string,std::vector<OpParams>> op_params_map;
         for(auto tmp:op_path.path_list_){
-            std::string name = tmp.first;
-            std::string path = tmp.second;
+            std::string name = tmp.name;
+            std::string path = tmp.path;
             OpListParams op_list;
             Parser::ParseOpList(path,op_list);
             op_params_map.insert(std::pair<std::string,std::vector<OpParams>>(name,op_list.op_list_));

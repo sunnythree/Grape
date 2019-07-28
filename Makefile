@@ -44,12 +44,17 @@ LDFLAGS += -lstdc++
 ifeq ($(TEST), 1) 
 COMMON+= -Isrc/test/include
 LDFLAGS += -Lsrc/test/lib  -lgtest
+TEST_CPP_SRCS := $(shell find ./src/test -name "*.cpp")
+OBJ_TEST_SRCS := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(TEST_CPP_SRCS))
+TEST_H_SRCS := $(shell find ./src/test -maxdepth 0 -name "*.h" )
 endif
 
 ifeq ($(GPU), 1) 
 COMMON+= -DGPU -I/usr/local/cuda/include/
 CFLAGS+= -DGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
+LIB_CU_SRCS := $(shell find ./src/grape -name "*.cu")
+OBJ_LIB_CU  := $(patsubst ./%.cu, ./$(OBJDIR)%.o, $(LIB_CU_SRCS))
 endif
 
 
@@ -57,19 +62,11 @@ endif
 #srcs
 LIB_CPP_SRCS := $(shell find ./src/grape -name "*.cpp")
 BIN_CPP_SRCS := $(shell find ./src/tools -name "*.cpp")
-TEST_CPP_SRCS := $(shell find ./src/test -name "*.cpp")
-ifeq ($(GPU), 1) 
-LIB_CU_SRCS := $(shell find ./src/grape -name "*.cu")
-endif
-
-$(info $(BIN_CPP_SRCS))
-
 
 #objs
 OBJ_LIB_CPP := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(LIB_CPP_SRCS))
-OBJ_LIB_CU  := $(patsubst ./%.cu, ./$(OBJDIR)%.o, $(LIB_CU_SRCS))
 OBJ_BIN_CPP := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(BIN_CPP_SRCS))
-OBJ_TEST_SRCS := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(TEST_CPP_SRCS))
+
 
 DIRS := obj obj/src obj/src/tools obj/src/grape   
 DIRS += obj/src/grape/util obj/src/grape/op obj/src/grape/optimizer obj/src/grape/parse 
@@ -84,7 +81,7 @@ all: $(DIRS) $(SLIB) $(ALIB) $(EXEC)
 
 test: $(DIRS) $(TEST_EXE)
 
-$(TEST_EXE):$(OBJ_TEST_SRCS) $(OBJ_LIB_CPP)
+$(TEST_EXE):$(OBJ_TEST_SRCS) $(OBJ_LIB_CPP) $(TEST_H_SRCS)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 	
 $(EXEC): $(OBJ_BIN_CPP) $(ALIB) 
