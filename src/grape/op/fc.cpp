@@ -60,16 +60,8 @@ namespace Grape{
             Random::GetInstance().SetSeed(seed);
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
             prev_[1]->shape().count(),0,1);
-            // uint32_t n = prev_[1]->shape().count(); 
-            // float *data = (float *)prev_[1]->mutable_cpu_data();
-            // if(n<1000){
-            //     std::cout<<"w update after"<<std::endl;
-            //     for(int i=0;i<n;i++){
-            //         std::cout<<data[i]<<" ";
-            //     }
-            //     std::cout<<std::endl;
-            // }
-            //fill_cpu(prev_[1]->shape().count(),0.1,(float *)prev_[1]->cpu_data(),1);
+    
+            fill_cpu(prev_[1]->shape().count(),0.01,(float *)prev_[1]->cpu_data(),1);
 #ifdef GPU
             if(cal_mode_ == GPU_MODE){
                 prev_[1]->data_to_gpu();
@@ -110,27 +102,9 @@ namespace Grape{
             float *bias_data = (float *)bias_tensor->mutable_cpu_data();
             add_bias(c, bias_data, batch_size_, out_dim_, 1);
         }
-        // std::cout<<"a"<<std::endl;
-        // for(int i=0;i<in_dim_;i++){
-        //     std::cout<<a[i]<<" ";
-        // }
-        // std::cout<<std::endl;
-        // std::cout<<"b"<<std::endl;
-        // for(int i=0;i<in_dim_*out_dim_;i++){
-        //     std::cout<<c[i]<<" ";
-        // }
-        // std::cout<<std::endl;
-        // std::cout<<"c"<<std::endl;
-        // for(int i=0;i<out_dim_;i++){
-        //     std::cout<<c[i]<<" ";
-        // }
-        // std::cout<<std::endl;
+        
         activate_array(c,batch_size_*out_dim_,LEAKY);
-        // std::cout<<"activate_array after"<<std::endl;
-        // for(int i=0;i<out_dim_;i++){
-        //     std::cout<<c[i]<<" ";
-        // }
-        // std::cout<<std::endl;
+
     } 
 
     void Fc::BackwardCpu()
@@ -144,19 +118,9 @@ namespace Grape{
 
         float *output_data = (float *)out_data_tensor->mutable_cpu_data();
         float *input_diff = (float *)out_data_tensor->mutable_cpu_diff();
-        // for(int i=0;i<out_dim_;i++){
-        //     std::cout<<output_data[i]<<" ";
-        // }
-        // std::cout<<std::endl;
-        // for(int i=0;i<out_dim_;i++){
-        //     std::cout<<input_diff[i]<<" ";
-        // }
-        // std::cout<<std::endl;
+
         gradient_array(output_data,batch_size_*out_dim_,LEAKY,input_diff);
-        // for(int i=0;i<out_dim_;i++){
-        //     std::cout<<input_diff[i]<<" ";
-        // }
-        // std::cout<<std::endl;
+
         int m = out_dim_;
         int k = batch_size_;
         int n = in_dim_;

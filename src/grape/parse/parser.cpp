@@ -301,7 +301,10 @@ namespace Grape
             }
             tmp.second->set_optimizer(opt_map_[tmp.first].get());
         }
-
+        //set up
+        for(auto tmp:graph_map_){
+            tmp.second->Setup(false);
+        }
         //build net
         net_ = std::make_shared<Net>(net_params);
         for(auto tmp:graph_map_){

@@ -24,7 +24,7 @@ namespace Grape
         float *dW = (float *)weights->mutable_cpu_diff(); 
         uint32_t n = weights->shape().count(); 
         if(weights->vtype() == WEIGHTS){
-            axpy_cpu(n, -lambda_, W, 1, dW, 1);
+            //axpy_cpu(n, -lambda_, W, 1, dW, 1);
             axpy_cpu(n, alpha_, dW, 1, W, 1);
             fill_cpu(n,0,dW,1);
         }else{

@@ -33,7 +33,7 @@ namespace Grape
 
     void SoftmaxWithLoss::ForwardCpu()
     {
-        Log::v(TAG,"SoftmaxWithLoss");
+        Log::v(TAG,"ForwardCpu");
         Tensor *intput_tensor = prev_[0].get();
         Tensor *label_tensor = prev_[1].get();
         Tensor *output_tensor = next_[0].get();
