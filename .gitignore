@@ -5,3 +5,4 @@ libGrape.a
 libGrape.so
 Test
 /data
+/model
