@@ -1,5 +1,7 @@
 #include <fstream>
 #include <set>
+#include <map>
+#include "assert.h"
 #include "grape/parse/parser.h"
 #include "cereal/types/vector.hpp"
 #include "cereal/types/map.hpp"
@@ -8,7 +10,7 @@
 #include "grape/optimizer_factory.h"
 #include "grape/net.h"
 #include "grape/util/util.h"
-#include "assert.h"
+#include "grape/log.h"
 
 namespace Grape
 {
@@ -18,7 +20,7 @@ namespace Grape
     static const std::string OP_PATH = "op_paths";
     static const std::string OP_LIST = "ops";
     static const std::string OPTIMIZER_LIST = "optimizers";
-
+    static const std::string TAG = "Parser";
     void Parser::Parse(std::string path,
         OpPathParams& op_path)
     {
@@ -281,14 +283,29 @@ namespace Grape
         for(int i=0;i<connection_list.connection_list_.size();i++){
             ConnectionParams &conn = connection_list.connection_list_[i];
             std::shared_ptr<Graph> &graph = graph_map_[conn.graph_name_];
-            std::map<std::string,std::shared_ptr<Op>> &ops = op_map_[conn.graph_name_];
+            std::map<std::string,std::shared_ptr<Op>> &ops = op_map_[conn.op_list_name_];
             CombineOpAndGraph(conn,graph,ops);
+        }
+        //get optimizer_map
+        for(int i=0;i<optimizer_list.optimizer_list_.size();++i){
+            OptimizerParams &optp = optimizer_list.optimizer_list_[i];
+            std::shared_ptr<Optimizer> opt = OptimizerFactory::Build(optp); 
+            opt_map_.insert(std::pair<std::string,std::shared_ptr<Optimizer>>(optp.graph_name_,opt));
+        }
+
+        //set optimizer for graph
+        for(auto tmp:graph_map_){
+            if(opt_map_.find(tmp.first) == opt_map_.end()){
+                Log::v(TAG,"error: opt_map_ not contain "+tmp.first);
+                continue;
+            }
+            tmp.second->set_optimizer(opt_map_[tmp.first].get());
         }
 
         //build net
-        Net net(net_params);
+        net_ = std::make_shared<Net>(net_params);
         for(auto tmp:graph_map_){
-            net.AddOps(tmp.second.get());
+            net_->AddOps(tmp.second.get());
         }
     }
     

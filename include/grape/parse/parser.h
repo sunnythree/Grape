@@ -9,6 +9,7 @@
 #include "grape/params/optimizer_list_params.h"
 #include "grape/op.h"
 #include "grape/graph.h"
+#include "grape/net.h"
 
 namespace Grape
 {
@@ -86,10 +87,15 @@ namespace Grape
             std::vector<std::string> &outputs
         );
 
+        inline std::map<std::string,std::map<std::string,std::shared_ptr<Op>>> &get_op_map(){return op_map_;};
+        inline std::map<std::string,std::shared_ptr<Graph>> &get_graph_map(){return graph_map_;};
+        inline std::shared_ptr<Net> get_net(){return net_;};
+
     private:
         std::map<std::string,std::map<std::string,std::shared_ptr<Op>>> op_map_;
         std::map<std::string,std::shared_ptr<Graph>> graph_map_;
-
+        std::map<std::string,std::shared_ptr<Optimizer>> opt_map_;
+        std::shared_ptr<Net> net_;
     };
 }
 

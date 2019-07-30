@@ -18,6 +18,7 @@ namespace Grape{
         bool has_bias_;
         bool random_;
         uint32_t sample_count_;
+        
 
         template <class Archive>
         void serialize( Archive & ar )

@@ -4,9 +4,12 @@
 #include "grape/op/softmax.h"
 #include "grape/op/softmax_with_loss.h"
 #include "grape/op/accuracy_test.h"
+#include "grape/op/mnist_data.h"
+#include "grape/log.h"
 
 namespace Grape
 {
+    static std::string TAG = "OpFactory";
     std::shared_ptr<Op> OpFactory::Build(OpParams& opp)
     {
         std::shared_ptr<Op> bop;
@@ -18,6 +21,15 @@ namespace Grape
             bop = std::make_shared<SoftmaxWithLoss>(opp.name_,opp.batch_,opp.in_dim_);
         }else if(opp.type_ == "AccuracyTest"){
             bop = std::make_shared<AccuracyTest>(opp.name_,opp.batch_,opp.in_dim_);
+        }else if(opp.type_ == "MnistData"){
+            bop = std::make_shared<MnistData>(
+                opp.name_,opp.data_path_,
+                opp.label_path_,
+                opp.batch_,
+                opp.random_,
+                opp.sample_count_);
+        }else{
+            Log::e(TAG,"Op type not consist, you input is "+opp.type_);
         }
         return bop;
     }

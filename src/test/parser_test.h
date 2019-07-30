@@ -181,11 +181,11 @@ TEST(paser,parse_all)
 
     //connections
     EXPECT_EQ(connection_list.connection_list_[0].graph_name_,"graph0");
-    EXPECT_EQ(connection_list.connection_list_[0].op_list_name_,"op_list0");
-    EXPECT_EQ(connection_list.connection_list_[0].connections_[0].from,"name0");
-    EXPECT_EQ(connection_list.connection_list_[0].connections_[0].to,"name1");
-    EXPECT_EQ(connection_list.connection_list_[0].connections_[1].from,"name1");
-    EXPECT_EQ(connection_list.connection_list_[0].connections_[1].to,"name2");
+    EXPECT_EQ(connection_list.connection_list_[0].op_list_name_,"mnist");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[0].from,"name0:0");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[0].to,"name1:0");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[1].from,"name1:0");
+    EXPECT_EQ(connection_list.connection_list_[0].connections_[1].to,"name2:0");
 
     //optimizer
     EXPECT_EQ(optimizer_list.optimizer_list_[0].lr_,0.1f);

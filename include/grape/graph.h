@@ -38,6 +38,9 @@ namespace Grape{
         inline void set_cal_mode(CAL_MODE mode){cal_mode_ = mode;};
         inline PHASE get_phase(){return graph_phase_;};
         inline void set_phase(PHASE phase){graph_phase_ = phase;};
+        inline Optimizer *get_optimizer(){return optimizer_;};
+        inline void set_optimizer(Optimizer *optimizer){optimizer_=optimizer;};
+
         
     private:
         std::vector<Op *> ops_;

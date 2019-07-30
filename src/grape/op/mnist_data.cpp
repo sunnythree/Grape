@@ -11,13 +11,13 @@ namespace Grape
     static uint32_t mnist_label_size = 1;
 
     MnistData::MnistData(std::string name, std::string data_path, 
-        std::string label_path, uint32_t batch_size, bool random, uint32_t pic_count):
+        std::string label_path, uint32_t batch_size, bool random, uint32_t sample_count):
     Op({},{DATA,DATA}),
     data_path_(data_path),
     label_path_(label_path),
     batch_size_(batch_size),
     random_(random),
-    pic_count_(pic_count)
+    sample_count_(sample_count)
     {
         type_ = "MnistData";
         name_ = name;
@@ -68,11 +68,11 @@ namespace Grape
             if(random_){
                 unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
                 Random::GetInstance().SetSeed(seed);
-                read_point_ = Random::GetInstance().GetUniformInt(0,pic_count_);
+                read_point_ = Random::GetInstance().GetUniformInt(0,sample_count_);
             }else{
                 read_point_++;
             }
-            if(read_point_>=pic_count_){
+            if(read_point_>=sample_count_){
                 read_point_ = 0;
             }
             data_in_.seekg(read_point_*mnist_data_size+16,std::ios::beg);

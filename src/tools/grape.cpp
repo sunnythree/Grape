@@ -71,12 +71,9 @@ int main(int argc,char **argv)
         std::cout<<"usage: ./Grape cfb_file"<<std::endl;
     }
     Parser parser;
-    //parser.Parse(argv[1]);
-    NetParams net_params;
-    GraphListParams graph_list;
-    ConnectionListParams connection_list;
-    OpPathParams op_path;
-    OptimizerListParams optimizer_list;
-    parser.Serialize(argv[1],op_path,optimizer_list,graph_list,connection_list,net_params);
+    parser.Parse(argv[1]);
+    
+    Net *net =  parser.get_net().get();
+    net->Run();
     return 0;
 }

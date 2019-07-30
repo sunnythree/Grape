@@ -70,7 +70,7 @@ OBJ_BIN_CPP := $(patsubst ./%.cpp, ./$(OBJDIR)%.o, $(BIN_CPP_SRCS))
 
 DIRS := obj obj/src obj/src/tools obj/src/grape   
 DIRS += obj/src/grape/util obj/src/grape/op obj/src/grape/optimizer obj/src/grape/parse 
-DIRS += backup results 
+DIRS += backup results model 
 
 ifeq ($(TEST), 1) 
 	DIRS += obj/src/test
