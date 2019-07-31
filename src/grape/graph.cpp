@@ -113,6 +113,7 @@ namespace Grape{
 
     void Graph::Run()
     {
+        ReConnection();
         if(graph_phase_ == TRAIN){
             Train();
             Save();
@@ -135,7 +136,7 @@ namespace Grape{
         std::vector<tensorptr_t> output_tensors = op->next();
         for(int i=0;i<output_tensors.size();++i){
             std::vector<Op *> consumer_op = output_tensors[i]->next();
-            for(int j=0;j>consumer_op.size();j++){
+            for(int j=0;j<consumer_op.size();j++){
                 uint32_t index = consumer_op[j]->PrevPort(*output_tensors[i].get());
                 OpConnectionPoint opconnp;
                 opconnp.head = op;

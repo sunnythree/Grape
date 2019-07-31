@@ -14,7 +14,7 @@ namespace Grape
     in_dim_(in_dim),
     temperature_(1.)
     {
-        type_ = "SoftmaxWithLoss";
+        type_ = "Softmax";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,in_dim_}),DATA,cal_mode_);

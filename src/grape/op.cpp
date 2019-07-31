@@ -76,8 +76,8 @@ namespace Grape{
         if (!head->next_[head_index]) {
             throw Error("output edge must not be null");
         }
-        Log::v(TAG,head->type_+"["+std::to_string(head_index)+"] << "
-        +tail->type_+"["+std::to_string(tail_index)+"]");
+        Log::v(TAG,head->name_+"["+std::to_string(head_index)+"] << "
+        +tail->name_+"["+std::to_string(tail_index)+"]");
         tail->prev_[tail_index] = head->next_[head_index];
         tail->prev_[tail_index]->add_next_op(tail);
     }
