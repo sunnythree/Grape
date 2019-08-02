@@ -21,7 +21,7 @@ using namespace std;
 using namespace Grape;
 
 void code_net(){
-   int batch = 10;
+   int batch = 100;
     MnistData input_train("input_train","data/train-images-idx3-ubyte",
         "data/train-labels-idx1-ubyte",batch,false,50000);  
     MnistData input_test("input_test","data/t10k-images-idx3-ubyte",
@@ -37,11 +37,11 @@ void code_net(){
     input_train<<fc1<<fc2<<fc3<<sml;
     connect_op(&input_train,&sml,1,1);
     
-    Graph graph("data/test",JSON,5000,TRAIN,CPU_MODE);
+    Graph graph("data/test",JSON,1000,TRAIN,CPU_MODE);
     graph.set_phase(TRAIN);
     graph.Construct({&input_train},{&sml});
     graph.Setup(false);
-    SGDOptimizer sgd(0.1);
+    SGDOptimizer sgd(0.01);
     graph.set_optimizer(&sgd);
 
     NetParams params;
@@ -52,7 +52,7 @@ void code_net(){
 
     input_test<<fc1<<fc2<<fc3<<sm<<accuracy;
     connect_op(&input_test,&accuracy,1,1);
-    Graph graph1("data/test",JSON,1000,TEST,CPU_MODE);
+    Graph graph1("data/test",JSON,100,TEST,CPU_MODE);
     graph1.set_phase(TEST);
     graph1.Construct({&input_test},{&accuracy});
     net.AddOps(&graph1);

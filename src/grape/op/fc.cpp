@@ -61,7 +61,7 @@ namespace Grape{
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
             prev_[1]->shape().count(),0,1);
     
-            fill_cpu(prev_[1]->shape().count(),0.01,(float *)prev_[1]->cpu_data(),1);
+            fill_cpu(prev_[1]->shape().count(),0,(float *)prev_[1]->mutable_cpu_diff(),1);
 #ifdef GPU
             if(cal_mode_ == GPU_MODE){
                 prev_[1]->data_to_gpu();
@@ -69,7 +69,8 @@ namespace Grape{
 #endif
             if(has_bias_){
                 //Log::v(TAG,"create bias");
-                fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->cpu_data(),1);
+                fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->mutable_cpu_data(),1);
+                fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->mutable_cpu_diff(),1);
 #ifdef GPU
                 if(cal_mode_ == GPU_MODE){
                     prev_[2]->data_to_gpu();
