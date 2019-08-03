@@ -13,4 +13,14 @@ namespace Grape{
 
     }
 
+    void Ops::OnNetRunBegin()
+    {
+
+    }
+
+    void Ops::OnNetRunEnd()
+    {
+
+    }
+
 }

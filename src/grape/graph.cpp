@@ -32,6 +32,34 @@ namespace Grape{
 
     }
 
+    Graph::Graph(GraphParams &graph_params)
+    {
+        save_path_ = graph_params.save_path_;
+        max_iter_ = graph_params.max_iter_;
+        display_iter_ = graph_params.display_iter_;
+        //seiralize type
+        if(graph_params.serialize_type_ == SERIALIZE_TYPE_BINARY_STRING){
+            serialize_type_ = BINARY;
+        }else if(graph_params.serialize_type_== SERIALIZE_TYPE_JSON_STRING){
+            serialize_type_ = JSON;
+        }else if(graph_params.serialize_type_== SERIALIZE_TYPE_XML_STRING){
+            serialize_type_ = XML;
+        }
+        //phase
+        if(graph_params.phase_ == PHASE_TRAIN_STRING){
+            graph_phase_ = TRAIN;
+        }else if(graph_params.phase_== PHASE_TEST_STRING){
+            graph_phase_ = TEST;
+        }
+        //cal mode
+        if(graph_params.cal_mode_ == CAL_MODE_CPU_STRING){
+            cal_mode_ = CPU_MODE;
+        }else if(graph_params.cal_mode_== CAL_MODE_GPU_STRING){
+            cal_mode_ = GPU_MODE;
+        }
+
+    }
+
     Graph::~Graph()
     {
 
@@ -105,6 +133,7 @@ namespace Grape{
         }
         for(uint32_t i=0;i<max_iter_;i++){
             TrainOnce();
+            optimizer_->CheckLrUpdate(run_iter_*max_iter_+i);
             if((i+1)%display_iter_==0){
                 for(auto o:ops_){
                     o->Display();
@@ -148,6 +177,7 @@ namespace Grape{
         }else{
             Test();
         }
+        run_iter_++;
     }
 
     void Graph::RunOnce()
@@ -256,6 +286,15 @@ namespace Grape{
         }
     }
 
+    void Graph::OnNetRunBegin()
+    {
+        run_iter_ = 0;
+    }
+
+    void Graph::OnNetRunEnd()
+    {
+        run_iter_ = 0;
+    }
 
     PHASE Graph::GetPhase()
     {

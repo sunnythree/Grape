@@ -23,7 +23,7 @@ using namespace Grape;
 void code_net(){
    int batch = 100;
     MnistData input_train("input_train","data/train-images-idx3-ubyte",
-        "data/train-labels-idx1-ubyte",batch,true,50000);  
+        "data/train-labels-idx1-ubyte",batch,false,50000);  
     MnistData input_test("input_test","data/t10k-images-idx3-ubyte",
         "data/t10k-labels-idx1-ubyte",batch,false,10000);      
     Fc fc1("fc1",batch,784,100);
@@ -37,11 +37,12 @@ void code_net(){
     input_train<<fc1<<fc2<<fc3<<sml;
     connect_op(&input_train,&sml,1,1);
     
-    Graph graph("data/test",JSON,1000,100,TRAIN,CPU_MODE);
+    Graph graph("data/test",JSON,500,100,TRAIN,CPU_MODE);
     graph.set_phase(TRAIN);
     graph.Construct({&input_train},{&sml});
     graph.Setup(false);
     SGDOptimizer sgd(0.01);
+    sgd.set_momentum(0.9);
     graph.set_optimizer(&sgd);
 
     NetParams params;

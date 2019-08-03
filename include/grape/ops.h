@@ -24,6 +24,8 @@ namespace Grape{
         virtual void SetMaxIter(uint32_t iter) = 0;
         virtual void Save();
         virtual void Load();
+        virtual void OnNetRunBegin();
+        virtual void OnNetRunEnd();
     };
 }
 

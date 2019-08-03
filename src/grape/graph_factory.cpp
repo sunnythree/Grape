@@ -9,14 +9,7 @@ namespace Grape
             // CAL_MODE cal_mode
     std::shared_ptr<Graph> GraphFactory::Build(GraphParams& gp)
     {
-        return std::make_shared<Graph>(
-            gp.save_path_,
-            gp.serialize_type_,
-            gp.max_iter_,
-            gp.display_iter_,
-            gp.phase_,
-            gp.cal_mode_
-            );
+        return std::make_shared<Graph>(gp);
     }
 
     std::vector<std::shared_ptr<Graph>> GraphFactory::Build(std::vector<GraphParams> gps)

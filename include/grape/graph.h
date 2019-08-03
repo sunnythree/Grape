@@ -3,6 +3,7 @@
 
 #include "grape/ops.h"
 #include "grape/global_config.h"
+#include "grape/params/graph_params.h"
 
 namespace Grape{
     class Graph:public Ops{
@@ -14,6 +15,9 @@ namespace Grape{
             int32_t display_iter,
             PHASE graph_phase,
             CAL_MODE cal_mode
+        );
+        explicit Graph(
+            GraphParams &graph_params
         );
         virtual ~Graph();
         void Backward(void);
@@ -31,6 +35,8 @@ namespace Grape{
         void RunOnce();
         void Save();
         void Load();
+        void OnNetRunBegin();
+        void OnNetRunEnd();
         PHASE GetPhase();
         void SetPhase(PHASE phase);
         uint32_t GetMaxIter();
@@ -41,7 +47,6 @@ namespace Grape{
         inline void set_phase(PHASE phase){graph_phase_ = phase;};
         inline Optimizer *get_optimizer(){return optimizer_;};
         inline void set_optimizer(Optimizer *optimizer){optimizer_=optimizer;};
-
         
     private:
         std::vector<Op *> ops_;
@@ -58,6 +63,7 @@ namespace Grape{
         void SnapShotConnections();
         void GetConnection(Op *op,std::vector<OpConnectionPoint> &connections);
         void ReConnection();
+        uint32_t run_iter_ = 0;
     };
 }
 

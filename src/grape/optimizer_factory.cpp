@@ -4,12 +4,12 @@
 
 namespace Grape
 {
-    std::shared_ptr<Optimizer> OptimizerFactory::Build(OptimizerParams& gp)
+    std::shared_ptr<Optimizer> OptimizerFactory::Build(OptimizerParams& opt)
     {
-        switch (gp.type_)
+        switch (opt.type_)
         {
         case SGD:
-            return std::make_shared<SGDOptimizer>(gp.lr_);
+            return std::make_shared<SGDOptimizer>(opt);
             break;
         case SGDM:
             break;

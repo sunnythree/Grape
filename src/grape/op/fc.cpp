@@ -127,12 +127,12 @@ namespace Grape{
         float *c = (float *)weight_tensor->mutable_cpu_diff();
 
         gemm(1,0,m,n,k,1,a,m,b,n,1,c,n);
-        scal_cpu(in_dim_*out_dim_,1./batch_size_,c,1);
+        //scal_cpu(in_dim_*out_dim_,1./batch_size_,c,1);
         if(has_bias_) {
-            float *bias_diff = (float *)bias_tensor->mutable_cpu_data();
+            float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
             
             backward_bias(bias_diff, a, batch_size_, out_dim_, 1);
-            scal_cpu(out_dim_,1./batch_size_,bias_diff,1);
+            //scal_cpu(out_dim_,1./batch_size_,bias_diff,1);
         }
 
         m = batch_size_;
@@ -148,9 +148,9 @@ namespace Grape{
 
     void Fc::UpdateWeightsCpu(Optimizer &opt)
     {
-        opt.UpdateCpu( prev_[1].get());
+        opt.UpdateCpu( prev_[1].get(),batch_size_);
         if(has_bias_){
-            opt.UpdateCpu( prev_[2].get());
+            opt.UpdateCpu( prev_[2].get(),batch_size_);
         }
     }
 
