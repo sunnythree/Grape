@@ -26,12 +26,11 @@ namespace Grape
 
     void Softmax::Setup()
     {
-        Log::v(TAG,"Setup");
+
     }
 
     void Softmax::ForwardCpu()
     {
-        Log::v(TAG,"SoftmaxWithLoss");
         Tensor *intput_tensor = prev_[0].get();
         Tensor *output_tensor = next_[0].get();
         float *intput_data = (float *)intput_tensor->mutable_cpu_data();
@@ -43,7 +42,7 @@ namespace Grape
 
     void Softmax::BackwardCpu()
     {
-        Log::v(TAG,"BackwardCpu");
+        
     }
 
     void Softmax::UpdateWeightsCpu(Optimizer &opt)

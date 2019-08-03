@@ -13,6 +13,7 @@ namespace Grape
             gp.save_path_,
             gp.serialize_type_,
             gp.max_iter_,
+            gp.display_iter_,
             gp.phase_,
             gp.cal_mode_
             );

@@ -48,7 +48,6 @@ namespace Grape{
 
     void Fc::Setup()
     {
-        Log::v(TAG," Setup");
         //create input tensor,only weights and bias
         if(prev_.size()==0){
             Log::v(TAG,"skip init weights");
@@ -82,7 +81,6 @@ namespace Grape{
 
     void Fc::ForwardCpu()
     {
-        Log::v(TAG,"ForwardCpu");
         //get data
         Tensor* data_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
@@ -110,7 +108,6 @@ namespace Grape{
 
     void Fc::BackwardCpu()
     {
-        Log::v(TAG,"BackwardCpu");
         //get data
         Tensor* data_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
@@ -151,7 +148,6 @@ namespace Grape{
 
     void Fc::UpdateWeightsCpu(Optimizer &opt)
     {
-        Log::v(TAG,"UpdateWeightsCpu");
         opt.UpdateCpu( prev_[1].get());
         if(has_bias_){
             opt.UpdateCpu( prev_[2].get());

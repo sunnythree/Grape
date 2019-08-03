@@ -68,10 +68,21 @@ namespace Grape{
         return vecs;
     }
 
+    bool exist_op_check(const std::vector<Op *> &op_list,Op *op)
+    {
+        for(auto tmp_op:op_list){
+            if(tmp_op->get_name() == op->get_name()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     void connect_op(Op *head,
                         Op *tail,
                         int32_t head_index,
-                        int32_t tail_index) {
+                        int32_t tail_index) 
+    {
 
         if (!head->next_[head_index]) {
             throw Error("output edge must not be null");
@@ -79,7 +90,9 @@ namespace Grape{
         Log::v(TAG,head->name_+"["+std::to_string(head_index)+"] << "
         +tail->name_+"["+std::to_string(tail_index)+"]");
         tail->prev_[tail_index] = head->next_[head_index];
-        tail->prev_[tail_index]->add_next_op(tail);
+        if(!exist_op_check(tail->prev_[tail_index]->next(),tail)){
+            tail->prev_[tail_index]->add_next_op(tail);
+        }
     }
 
     std::vector<Op *> operator,(Op &lhs, Op &rhs)
@@ -135,13 +148,4 @@ namespace Grape{
         return rhs;
     }
 
-    void Op::Save(std::string path, SERIALIZE_TYPE type)
-    {
-
-    }
-
-    void Op::Load(std::string path, SERIALIZE_TYPE type)
-    {
-
-    }
 }

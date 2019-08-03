@@ -23,17 +23,14 @@ namespace Grape
 
     void Input::Setup()
     {
-        Log::v(TAG,"Setup");
     }
 
     void Input::ForwardCpu()
     {
-        Log::v(TAG,"ForwardCpu");
     } 
 
     void Input::BackwardCpu()
     {
-        Log::v(TAG,"BackwardCpu");
     }
 
     void Input::UpdateWeightsCpu(Optimizer &opt)

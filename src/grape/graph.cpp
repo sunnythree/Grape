@@ -14,11 +14,18 @@
 namespace Grape{
     static std::string TAG = "Grape";
 
-    Graph::Graph(std::string save_path, SERIALIZE_TYPE serialize_type,
-            int32_t max_iter,PHASE graph_phase,CAL_MODE cal_mode):
+    Graph::Graph(
+        std::string save_path,
+        SERIALIZE_TYPE serialize_type,
+        int32_t max_iter,
+        int32_t display_iter,
+        PHASE graph_phase,
+        CAL_MODE cal_mode
+    ):
     save_path_(save_path),
     serialize_type_(serialize_type),
     max_iter_(max_iter),
+    display_iter_(display_iter),
     graph_phase_(graph_phase),
     cal_mode_(cal_mode)
     {
@@ -45,7 +52,6 @@ namespace Grape{
     }
     void Graph::Forward()
     {
-        Log::v(TAG,"Forward");
         for(auto o:ops_){
             if(cal_mode_ == CPU_MODE){
                 o->ForwardCpu();
@@ -94,8 +100,19 @@ namespace Grape{
 
     void Graph::Train()
     {
+        for(auto o:ops_){
+            o->OnTrainBegin();
+        }
         for(uint32_t i=0;i<max_iter_;i++){
             TrainOnce();
+            if((i+1)%display_iter_==0){
+                for(auto o:ops_){
+                    o->Display();
+                }
+            }
+        }
+        for(auto o:ops_){
+            o->OnTrainEnd();
         }
     }
 
@@ -106,8 +123,19 @@ namespace Grape{
 
     void Graph::Test()
     {
+        for(auto o:ops_){
+            o->OnTestBegin();
+        }
         for(uint32_t i=0;i<max_iter_;i++){
             Forward();
+            if((i+1)%display_iter_==0){
+                for(auto o:ops_){
+                    o->Display();
+                }
+            }
+        }
+        for(auto o:ops_){
+            o->OnTestEnd();
         }
     }
 
@@ -187,7 +215,7 @@ namespace Grape{
                         std::vector<uint8_t>(next[i]->PrevDataOps().size(), 0);
                 }
 
-                std::vector<uint8_t> &removed = removed_edge[next[i]];
+                auto &removed = removed_edge[next[i]];
                 removed[FindIndex(next[i]->PrevDataOps(), curr)] = 1;
 
                 if (std::all_of(removed.begin(), removed.end(),

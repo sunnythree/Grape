@@ -23,7 +23,6 @@
     }
     void AccuracyTest::ForwardCpu()
     {
-        Log::v(TAG,"ForwardCpu");
         Tensor *intput_tensor = prev_[0].get();
         Tensor *label_tensor = prev_[1].get();
         const float *intput_data = (const float *)intput_tensor->cpu_data();
@@ -33,14 +32,13 @@
         for(int i=0;i<batch_size_;i++){
             data_index = max_index(intput_data+i*in_dim_,in_dim_);
             label_index = max_index(labal_data+i*in_dim_,in_dim_);
-            if(data_index == label_index)accuracy_count_++;
+            if(data_index == label_index){
+                accuracy_count_++;
+            }
             all_count++;
         }
         accuracy_ = accuracy_count_/(float)all_count;
-        Log::v(TAG,"accuracy_ "+std::to_string(accuracy_)
-            +" accuracy_count_ "+std::to_string(accuracy_count_)
-            +" all_count "+std::to_string(all_count)
-            );
+
     }
     void AccuracyTest::BackwardCpu()
     {
@@ -50,6 +48,21 @@
     {
 
     }
+
+    void AccuracyTest::OnTestBegin()
+    {
+        accuracy_count_ = 0;
+        all_count = 0;
+        accuracy_ = 0;
+    }
+    
+    void AccuracyTest::Display()
+    {
+        Log::v(TAG,"accuracy_ "+std::to_string(accuracy_)
+            +" accuracy_count_ "+std::to_string(accuracy_count_)
+            +" all_count "+std::to_string(all_count)
+            );
+    };
 
 #ifdef GPU
     void AccuracyTest::ForwardGpu()

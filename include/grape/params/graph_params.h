@@ -16,6 +16,7 @@ namespace Grape{
         CAL_MODE cal_mode_ = CPU_MODE;
         PHASE phase_ = TRAIN;
         uint32_t device_id_ = 0;
+        uint32_t display_iter_ = 0;
         std::string save_path_ = "data/";
         SERIALIZE_TYPE serialize_type_ = BINARY;
 
@@ -40,6 +41,11 @@ namespace Grape{
             }
             try{
                 ar( cereal::make_nvp("device_id",device_id_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar( cereal::make_nvp("display_iter",display_iter_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }

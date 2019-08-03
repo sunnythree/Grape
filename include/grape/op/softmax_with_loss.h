@@ -7,16 +7,17 @@ namespace Grape{
     class SoftmaxWithLoss :public Op{
     public:
         SoftmaxWithLoss(std::string name, uint32_t batch_size, uint32_t in_dim);
-        ~SoftmaxWithLoss();
-        void Setup();
-        void ForwardCpu(); 
-        void BackwardCpu();
-        void UpdateWeightsCpu(Optimizer &opt);
+        virtual ~SoftmaxWithLoss();
+        virtual void Setup();
+        virtual void ForwardCpu(); 
+        virtual void BackwardCpu();
+        virtual void UpdateWeightsCpu(Optimizer &opt);
+        virtual void Display();
 
 #ifdef GPU
-        void ForwardGpu(); 
-        void BackwardGpu();
-        void UpdateWeightsGpu(Optimizer &opt);
+        virtual void ForwardGpu(); 
+        virtual void BackwardGpu();
+        virtual void UpdateWeightsGpu(Optimizer &opt);
 #endif
     private:
         uint32_t batch_size_;

@@ -63,8 +63,15 @@ public:
     virtual void UpdateWeightsGpu(Optimizer &opt) = 0;
 #endif
 
-    virtual void Save(std::string path, SERIALIZE_TYPE type);
-    virtual void Load(std::string path, SERIALIZE_TYPE type);
+    virtual void Save(std::string path, SERIALIZE_TYPE type){};
+    virtual void Load(std::string path, SERIALIZE_TYPE type){};
+    virtual void OnTrainBegin(){};
+    virtual void OnTrainEnd(){};
+    virtual void OnTestBegin(){};
+    virtual void OnTestEnd(){};
+    virtual void Display(){};
+
+
 
     inline CAL_MODE get_cal_mode(){return cal_mode_;};
     inline void set_cal_mode(CAL_MODE mode){cal_mode_ = mode;};

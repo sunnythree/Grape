@@ -11,6 +11,7 @@ namespace Grape{
             std::string save_path,
             SERIALIZE_TYPE serialize_type,
             int32_t max_iter,
+            int32_t display_iter,
             PHASE graph_phase,
             CAL_MODE cal_mode
         );
@@ -50,6 +51,7 @@ namespace Grape{
         SERIALIZE_TYPE serialize_type_ = BINARY;
         CAL_MODE cal_mode_ = CPU_MODE;
         uint32_t max_iter_ = 0;
+        uint32_t display_iter_ = 0;
         PHASE graph_phase_ = TRAIN;
         Optimizer *optimizer_;
         std::vector<OpConnectionPoint> connections_;

@@ -24,16 +24,16 @@ namespace Grape
 
     SoftmaxWithLoss::~SoftmaxWithLoss()
     {
+        
     }
 
     void SoftmaxWithLoss::Setup()
     {
-        Log::v(TAG,"Setup");
+
     }
 
     void SoftmaxWithLoss::ForwardCpu()
     {
-        Log::v(TAG,"ForwardCpu");
         Tensor *intput_tensor = prev_[0].get();
         Tensor *label_tensor = prev_[1].get();
         Tensor *output_tensor = next_[0].get();
@@ -66,13 +66,11 @@ namespace Grape
         //     std::cout<<intput_diff[i]<<" ";
         // }
         // std::cout<<std::endl;
-        float cost_sum = sum_array(cost_data,n)/batch_size_;
-        Log::v(TAG,"cost_sum is "+ std::to_string(cost_sum));
+        
     }
 
     void SoftmaxWithLoss::BackwardCpu()
     {
-        Log::v(TAG,"BackwardCpu");
         // Tensor *intput_tensor = prev_[0].get();
         // Tensor *output_tensor = inner_.get();
         // float *intput_diff = (float *)output_tensor->mutable_cpu_diff();
@@ -89,6 +87,13 @@ namespace Grape
     void SoftmaxWithLoss::UpdateWeightsCpu(Optimizer &opt)
     {
 
+    }
+
+    void SoftmaxWithLoss::Display()
+    {
+        float *cost_data = (float *)cost_->mutable_cpu_data();
+        float cost_sum = sum_array(cost_data,cost_->shape().count())/batch_size_;
+        Log::v(TAG,"cost_sum is "+ std::to_string(cost_sum));
     }
 
 #ifdef GPU

@@ -50,13 +50,11 @@ namespace Grape
 
     void MnistData::Setup()
     {
-        Log::v(TAG,"Setup");
 
     }
 
     void MnistData::ForwardCpu()
     {
-        Log::v(TAG,"ForwardCpu");
         Tensor *data_tensor = next_[0].get();
         Tensor *label_tensor = next_[1].get();
         float *data = (float *)data_tensor->mutable_cpu_data();
@@ -105,7 +103,6 @@ namespace Grape
 
     void MnistData::BackwardCpu()
     {
-        Log::v(TAG,"BackwardCpu");
     }
 
     void MnistData::UpdateWeightsCpu(Optimizer &opt)
