@@ -3,7 +3,7 @@
         "path_list": [
             {
                 "name": "mnist",
-                "path": "cfg/test_op.json"
+                "path": "src/test/data/test_op.json"
             }
         ]
     },
@@ -28,7 +28,8 @@
     "optimizers": {
         "optimizer_list": [
             {
-                "type": 0,
+                "graph_name":"graph0",
+                "type": "sgd",
                 "lr": 0.1
             }
         ]
@@ -38,8 +39,8 @@
             {
                 "name": "graph0",
                 "max_iter": 100,
-                "cal_mode": 0,
-                "phase": 0,
+                "cal_mode": "cpu",
+                "phase": "train",
                 "device_id": 0,
                 "save_path": "test"
             }

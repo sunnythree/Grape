@@ -82,7 +82,7 @@ namespace Grape
         for(i = 0; i < n; ++i){
             float t = truth[i];
             float p = pred[i];
-            error[i] = (t>0)&&(p!=0) ? -log(p) : 0;
+            error[i] = (t>0)/*&&(p!=0)*/ ? -log(p) : 0;
             delta[i] = t-p;
             // if((t>0)&&(p!=0)){
             //     printf("t=%f,p=%f\n",t,p);

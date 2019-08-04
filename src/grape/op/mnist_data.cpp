@@ -53,6 +53,8 @@ namespace Grape
 
     }
 
+
+
     void MnistData::ForwardCpu()
     {
         Tensor *data_tensor = next_[0].get();
@@ -63,13 +65,7 @@ namespace Grape
         std::cout.setf(std::ios::showpoint);//显示小数点
         std::cout.precision(2);//设置输出精度为0位小数
         for(int i=0;i<batch_size_;i++){
-            if(random_){
-                unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-                Random::GetInstance().SetSeed(seed);
-                read_point_ = Random::GetInstance().GetUniformInt(0,sample_count_);
-            }else{
-                read_point_++;
-            }
+            read_point_ = read_sequence[iter_cout*batch_size_+i];
             if(read_point_>=sample_count_){
                 read_point_ = 0;
             }
@@ -77,7 +73,7 @@ namespace Grape
             // std::cout<<"rand_point: "<<rand_point<<std::endl;
             data_in_.read(tmp_data_.data(), mnist_data_size);
             for(int ii=0;ii<mnist_data_size;ii++){
-                data[ii+i*mnist_data_size] = ((float)(tmp_data_[ii]&0xff))/255.0;
+                data[ii+i*mnist_data_size] = ((float)(tmp_data_[ii]&0xff))/256.0;
                 // std::cout<<(tmp_data_[ii]?1:0)<<" ";
                 // if((ii+1)%28==0){
                 //     std::cout<<std::endl;
@@ -98,7 +94,7 @@ namespace Grape
                 }
             }
         }
-
+        iter_cout++;
     } 
 
     void MnistData::BackwardCpu()
@@ -136,5 +132,29 @@ namespace Grape
 
     }
 #endif
+
+    void MnistData::gen_sequence()
+    {
+        read_sequence.resize(sample_count_);
+        read_sequence.shrink_to_fit();
+        for(int i=0;i<sample_count_;i++){
+            read_sequence[i] = i;
+        }
+        if(random_){
+            std::random_shuffle(read_sequence.begin(),read_sequence.end());
+        }
+    }
+
+    void MnistData::OnTrainBegin()
+    {
+        gen_sequence();
+        iter_cout = 0;
+    }
+
+    void MnistData::OnTestBegin()
+    {
+        gen_sequence();
+        iter_cout = 0;
+    }
 } // namespace Grapevoid Input::Setup()
   

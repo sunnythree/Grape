@@ -65,11 +65,11 @@ TEST(paser,graph_list)
     GraphListParams graph_list;
     for(int i=0;i<3;i++){
         GraphParams graph_param;
-        graph_param.cal_mode_ = CPU_MODE;
+        graph_param.cal_mode_ = "cpu";
         graph_param.device_id_ = i;
         graph_param.max_iter_ = i*100;
         graph_param.name_ = "name"+std::to_string(i);
-        graph_param.phase_ = TRAIN;
+        graph_param.phase_ = "train";
         graph_param.save_path_ = "test";
         graph_list.graph_list_.emplace_back(graph_param);
     }
@@ -79,11 +79,11 @@ TEST(paser,graph_list)
     Parser::Parse("obj/test_graph_list_params.json",graph_list1);
     for(int i=0;i<3;i++){
         GraphParams &graph_param = graph_list1.graph_list_[i];
-        EXPECT_EQ(graph_param.cal_mode_ , CPU_MODE);
+        EXPECT_EQ(graph_param.cal_mode_ , "cpu");
         EXPECT_EQ(graph_param.device_id_ , i);
         EXPECT_EQ(graph_param.max_iter_ , i*100);
         EXPECT_EQ(graph_param.name_ , "name"+std::to_string(i));
-        EXPECT_EQ(graph_param.phase_ , TRAIN);
+        EXPECT_EQ(graph_param.phase_ , "train");
         EXPECT_EQ(graph_param.save_path_ , "test");
     }
 }
@@ -124,7 +124,7 @@ TEST(paser,optimizer_list)
     OptimizerListParams optimizer_list;
     for(int i=0;i<3;i++){
         OptimizerParams op;
-        op.type_ = SGD,
+        op.type_ = "sgd",
         op.lr_ = 0.01f;
         optimizer_list.optimizer_list_.emplace_back(op);
     }
@@ -134,7 +134,7 @@ TEST(paser,optimizer_list)
     Parser::Parse("obj/test_optimizer_list_params.json",optimizer_list1);
     for(int i=0;i<3;i++){
         OptimizerParams &op = optimizer_list1.optimizer_list_[i];
-        EXPECT_EQ(op.type_ , SGD);
+        EXPECT_EQ(op.type_ , "sgd");
         EXPECT_EQ(op.lr_,0.01f);
     }
 }
@@ -175,8 +175,8 @@ TEST(paser,parse_all)
     //graph
     EXPECT_EQ(graph_list.graph_list_[0].name_,"graph0");
     EXPECT_EQ(graph_list.graph_list_[0].max_iter_,100);
-    EXPECT_EQ(graph_list.graph_list_[0].cal_mode_,0);
-    EXPECT_EQ(graph_list.graph_list_[0].phase_,0);
+    EXPECT_EQ(graph_list.graph_list_[0].cal_mode_,"cpu");
+    EXPECT_EQ(graph_list.graph_list_[0].phase_,"train");
     EXPECT_EQ(graph_list.graph_list_[0].save_path_,"test");
 
     //connections
@@ -189,7 +189,7 @@ TEST(paser,parse_all)
 
     //optimizer
     EXPECT_EQ(optimizer_list.optimizer_list_[0].lr_,0.1f);
-    EXPECT_EQ(optimizer_list.optimizer_list_[0].type_,0);
+    EXPECT_EQ(optimizer_list.optimizer_list_[0].type_,"sgd");
 
     //net
     EXPECT_EQ(net_params.max_iter_,1000);

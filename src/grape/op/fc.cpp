@@ -103,7 +103,6 @@ namespace Grape{
         }
         
         activate_array(c,batch_size_*out_dim_,LEAKY);
-
     } 
 
     void Fc::BackwardCpu()
@@ -119,21 +118,19 @@ namespace Grape{
 
         gradient_array(output_data,batch_size_*out_dim_,LEAKY,input_diff);
 
+        if(has_bias_) {
+            float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
+            backward_bias(bias_diff,input_diff, batch_size_, out_dim_, 1);
+        }
+
         int m = out_dim_;
         int k = batch_size_;
         int n = in_dim_;
-        float *a = (float *)out_data_tensor->mutable_cpu_diff();
+        float *a = (float *)input_diff;
         float *b = (float *)data_tensor->mutable_cpu_data();
         float *c = (float *)weight_tensor->mutable_cpu_diff();
-
         gemm(1,0,m,n,k,1,a,m,b,n,1,c,n);
-        //scal_cpu(in_dim_*out_dim_,1./batch_size_,c,1);
-        if(has_bias_) {
-            float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
-            
-            backward_bias(bias_diff, a, batch_size_, out_dim_, 1);
-            //scal_cpu(out_dim_,1./batch_size_,bias_diff,1);
-        }
+
 
         m = batch_size_;
         k = out_dim_;

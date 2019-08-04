@@ -6,10 +6,20 @@
 namespace Grape
 {
     typedef enum{
-        LOGISTIC, RELU, RELIE, LINEAR,
-        RAMP, TANH, PLSE, LEAKY, 
-        ELU, LOGGY, STAIR, HARDTAN,
-        LHTAN, SELU
+        LOGISTIC, 
+        RELU,
+        RELIE,
+        LINEAR,
+        RAMP,
+        TANH,
+        PLSE,
+        LEAKY, 
+        ELU,
+        LOGGY,
+        STAIR,
+        HARDTAN,
+        LHTAN,
+        SELU
     } ACTIVATION;
 
     ACTIVATION get_activation(char *s);

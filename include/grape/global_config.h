@@ -14,7 +14,6 @@ namespace Grape{
 
     enum OPTIMIZER_TYPE{
         SGD,
-        SGDM,
         ADAM
     };
 

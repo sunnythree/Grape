@@ -24,7 +24,7 @@ namespace Grape
 
     SoftmaxWithLoss::~SoftmaxWithLoss()
     {
-        
+
     }
 
     void SoftmaxWithLoss::Setup()
@@ -54,7 +54,7 @@ namespace Grape
         //     std::cout<<label_data[i]<<" ";
         // }
         // std::cout<<std::endl;
-        for(int i=0;i<batch_size_;i++){
+        for(int i=0;i<batch_size_;++i){
             softmax(intput_data+i*in_dim_, in_dim_, temperature_, 1, output_data+i*in_dim_);
         }
         // for(int i=0;i<in_dim_*batch_size_;i++){

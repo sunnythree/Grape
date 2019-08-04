@@ -1,8 +1,10 @@
 #include "grape/optimizer/sgd.h"
 #include "grape/util/blas.h"
+#include "grape/log.h"
 
 namespace Grape
 {
+    static const std::string TAG = "SGDOptimizer";
     SGDOptimizer::SGDOptimizer(float lr):
     lr_(lr)
     {
@@ -61,19 +63,24 @@ namespace Grape
 
     void SGDOptimizer::UpdateLr(uint32_t iter_cout)
     {
+        if(iter_cout==0){
+            return;
+        }
         switch (policy_)
         {
         case POLICY_FIXED:
             break;
         case POLICY_STEP:
-            if((iter_cout+1)%step_){
+            if(iter_cout%step_==0){
                 lr_ *= gamma_;
+                Log::v(TAG,"lr_ change to "+std::to_string(lr_));
             }
             break;
         case POLICY_MUTISTEP:
             for(auto tmp:muti_step_){
-                if(tmp == (iter_cout+1)){
+                if(tmp == iter_cout){
                     lr_ *= gamma_;
+                    Log::v(TAG,"lr_ change to "+std::to_string(lr_));
                 }
             }
             break;

@@ -41,7 +41,7 @@
         "optimizer_list": [
             {
                 "graph_name":"graph0",
-                "type": 0,
+                "type": "sgd",
                 "lr": 0.1
             }
         ]

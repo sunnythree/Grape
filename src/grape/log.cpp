@@ -3,7 +3,7 @@
 
 namespace Grape{
 
-    LOG_LEVEL Log::log_level_= DEBUG;
+    LOG_LEVEL Log::log_level_= VERBOSE;
 
     void Log::log_print(std::string tag,std::string log)
     {

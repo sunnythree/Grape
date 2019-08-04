@@ -6,12 +6,18 @@ namespace Grape
 {
     std::shared_ptr<Optimizer> OptimizerFactory::Build(OptimizerParams& opt)
     {
-        switch (opt.type_)
+        OPTIMIZER_TYPE opt_type;
+        if(opt.type_ == "sgd"){
+            opt_type = SGD;
+        }else if(opt.type_ == "adam"){
+            opt_type = ADAM;
+        }
+        switch (opt_type)
         {
         case SGD:
             return std::make_shared<SGDOptimizer>(opt);
             break;
-        case SGDM:
+        case ADAM:
             break;
         default:
             break;
