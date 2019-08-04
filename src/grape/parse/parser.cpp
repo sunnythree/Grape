@@ -310,6 +310,7 @@ namespace Grape
         for(auto tmp:graph_map_){
             net_->AddOps(tmp.second.get());
         }
+        Log::i(TAG,"parse over");
     }
     
 } // namespace Grape

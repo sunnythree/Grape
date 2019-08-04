@@ -42,7 +42,11 @@
             {
                 "graph_name":"graph0",
                 "type": "sgd",
-                "lr": 0.1
+                "lr": 0.01,
+                "momentum":0.9,
+                "policy":"step",
+                "step":10000,
+                "gamma":0.8
             }
         ]
     },
@@ -50,11 +54,12 @@
         "graph_list": [
             {
                 "name": "graph0",
-                "max_iter": 10000,
-                "cal_mode": 0,
-                "phase": 0,
+                "max_iter": 2500,
+                "cal_mode": "cpu",
+                "phase": "train",
                 "device_id": 0,
-                "save_path": "model/mnist"
+                "save_path": "model/mnist",
+                "display_iter":500
             }
         ]
     },

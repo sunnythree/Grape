@@ -4,7 +4,7 @@
             {
                 "name": "data",
                 "type": "MnistData",
-                "batch": 10,
+                "batch": 20,
                 "data_path": "data/train-images-idx3-ubyte",
                 "label_path": "data/train-labels-idx1-ubyte",
                 "sample_count":50000,
@@ -13,7 +13,7 @@
             {
                 "name": "fc0",
                 "type": "Fc",
-                "batch": 10,
+                "batch": 20,
                 "in_dim": 784,
                 "out_dim": 100,
                 "has_bias": true
@@ -21,7 +21,7 @@
             {
                 "name": "fc1",
                 "type": "Fc",
-                "batch": 10,
+                "batch": 20,
                 "in_dim": 100,
                 "out_dim": 30,
                 "has_bias": true
@@ -29,7 +29,7 @@
             {
                 "name": "fc2",
                 "type": "Fc",
-                "batch": 10,
+                "batch": 20,
                 "in_dim": 30,
                 "out_dim": 10,
                 "has_bias": true
@@ -37,7 +37,7 @@
             {
                 "name": "loss",
                 "type": "SoftmaxWithLoss",
-                "batch": 10,
+                "batch": 20,
                 "in_dim": 10
             }
         ]
