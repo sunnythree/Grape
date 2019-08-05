@@ -25,7 +25,7 @@ namespace Grape{
         type_ = "Fc";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({batch_size_,out_dim_}),DATA,cal_mode_);
+            Shape({batch_size_,out_dim_}),DATA);
         //reverve size
         if(has_bias_){
             prev_.reserve(3);
@@ -34,11 +34,11 @@ namespace Grape{
         }
 
         prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({out_dim_,in_dim_}),WEIGHTS,cal_mode_);
+            Shape({out_dim_,in_dim_}),WEIGHTS);
 
         if(has_bias_){
             prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({out_dim_}),BIAS,cal_mode_);
+                Shape({out_dim_}),BIAS);
         }
     }
 
@@ -61,20 +61,11 @@ namespace Grape{
             prev_[1]->shape().count(),0,1);
     
             fill_cpu(prev_[1]->shape().count(),0,(float *)prev_[1]->mutable_cpu_diff(),1);
-#ifdef GPU
-            if(cal_mode_ == GPU_MODE){
-                prev_[1]->data_to_gpu();
-            }
-#endif
+
             if(has_bias_){
                 //Log::v(TAG,"create bias");
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->mutable_cpu_data(),1);
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->mutable_cpu_diff(),1);
-#ifdef GPU
-                if(cal_mode_ == GPU_MODE){
-                    prev_[2]->data_to_gpu();
-                }
-#endif
             }
         }
     }

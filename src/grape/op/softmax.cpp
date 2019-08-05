@@ -17,7 +17,7 @@ namespace Grape
         type_ = "Softmax";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,in_dim_}),DATA,cal_mode_);
+        Shape({batch_size_,in_dim_}),DATA);
     }
 
     Softmax::~Softmax()
@@ -42,7 +42,7 @@ namespace Grape
 
     void Softmax::BackwardCpu()
     {
-        
+
     }
 
     void Softmax::UpdateWeightsCpu(Optimizer &opt)

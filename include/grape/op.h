@@ -73,8 +73,6 @@ public:
 
 
 
-    inline CAL_MODE get_cal_mode(){return cal_mode_;};
-    inline void set_cal_mode(CAL_MODE mode){cal_mode_ = mode;};
     inline void set_name(std::string name){name_ = name;};
     inline std::string get_name(){return name_;};
 protected:
@@ -87,7 +85,6 @@ protected:
     int32_t in_size_ = 0;
     int32_t out_size_ = 0;
     std::string name_ = "";
-    CAL_MODE cal_mode_  = CPU_MODE;
 };
 
 void connection_mismatch(const Op &from, const Op &to);

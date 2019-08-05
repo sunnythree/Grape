@@ -110,7 +110,7 @@ namespace Grape
     }
 
 #ifdef GPU
-    void SGDOptimizer::UpdateGpu(Tensor *weights, uint32_t iter_cout, uint32_t batch)
+    void SGDOptimizer::UpdateGpu(Tensor *weights, uint32_t batch)
     {
 
     }

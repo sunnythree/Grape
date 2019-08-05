@@ -22,9 +22,9 @@ namespace Grape
         type_ = "MnistData";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,784}),DATA,cal_mode_);
+        Shape({batch_size_,784}),DATA);
         next_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,10}),DATA,cal_mode_);
+        Shape({batch_size_,10}),DATA);
 
         data_in_.open(data_path_,std::ios::binary);
         if(!data_in_.is_open()){
@@ -109,17 +109,7 @@ namespace Grape
 #ifdef GPU
     void MnistData::ForwardGpu()
     {
-        auto out_tensor = GetOutputTensor();
-        float *cpu_data = (float *)out_tensor->mutable_cpu_data();
-        fill_cpu(batch_size_*out_dim_,0,cpu_data,1);
-        for(int i=0;i<batch_size_;i++){
-            file_in_.read(tmp_data_.data(), out_dim_);
-            for(int i=0;i<out_dim_;i++){
-                cpu_data[i] = (float)(tmp_data_.data()[i]&0xff);
-                //Log::v("",std::to_string(cpu_data[i]));
-            }
-        }
-        out_tensor->data_to_gpu();
+
     } 
 
     void MnistData::BackwardGpu()

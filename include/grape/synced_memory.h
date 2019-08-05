@@ -8,23 +8,29 @@
 namespace Grape {
     class SyncedMemory {
     public:
-        explicit SyncedMemory(uint32_t size,CAL_MODE mode);
+        explicit SyncedMemory();
+        explicit SyncedMemory(uint32_t size);
         virtual ~SyncedMemory();
         const void* cpu_data();
         const void* gpu_data();
+        void set_cpu_data(void* data);
+        void set_gpu_data(void* data);
         void* mutable_cpu_data();
         void* mutable_gpu_data();
+        enum SyncedHead { UNINITIALIZED, HEAD_AT_CPU, HEAD_AT_GPU, SYNCED };
+        SyncedHead head() const { return head_; }
         uint32_t size() const { return size_; }
+
+    private:
         void to_cpu();
         void to_gpu();
-    private:
-        SyncedMemory() = delete;
-
         void* cpu_ptr_;
         void* gpu_ptr_;
         uint32_t size_;
-        uint32_t device_;
-        CAL_MODE mode_;
+        SyncedHead head_;
+        bool own_cpu_data_;
+        bool own_gpu_data_;
+        int device_;
     };  // class SyncedMemory
 }  
 

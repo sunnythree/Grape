@@ -93,17 +93,7 @@ namespace Grape
 #ifdef GPU
     void BinaryData::ForwardGpu()
     {
-        auto out_tensor = GetOutputTensor();
-        float *cpu_data = (float *)out_tensor->mutable_cpu_data();
-        fill_cpu(batch_size_*out_dim_,0,cpu_data,1);
-        for(int i=0;i<batch_size_;i++){
-            file_in_.read(tmp_data_.data(), out_dim_);
-            for(int i=0;i<out_dim_;i++){
-                cpu_data[i] = (float)(tmp_data_.data()[i]&0xff);
-                //Log::v("",std::to_string(cpu_data[i]));
-            }
-        }
-        out_tensor->data_to_gpu();
+
     } 
 
     void BinaryData::BackwardGpu()

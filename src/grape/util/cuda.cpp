@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 #ifdef GPU
-    #include "Grape/util/cuda.h"
-    #include "Grape/util/blas.h"
-    #include "Grape/log.h"
+    #include "grape/util/cuda.h"
+    #include "grape/util/blas.h"
+    #include "grape/log.h"
 #endif
 
 namespace Grape

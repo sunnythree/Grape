@@ -14,7 +14,7 @@ namespace Grape
         type_ = "Input";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,out_dim_}),DATA,cal_mode_);
+        Shape({batch_size_,out_dim_}),DATA);
     }
     
     Input::~Input()

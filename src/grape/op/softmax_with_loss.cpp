@@ -17,9 +17,9 @@ namespace Grape
         type_ = "SoftmaxWithLoss";
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,in_dim_}),DATA,cal_mode_);
+        Shape({batch_size_,in_dim_}),DATA);
         cost_ = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,in_dim_}),DATA,cal_mode_);
+        Shape({batch_size_,in_dim_}),DATA);
     }
 
     SoftmaxWithLoss::~SoftmaxWithLoss()

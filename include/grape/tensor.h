@@ -18,11 +18,14 @@ namespace Grape{
     class Op;
     class Tensor {
     public:
-        Tensor(Op *prev,Shape shape,TENSOR_TYPE type,CAL_MODE mode)
-        : prev_(prev),shape_(shape),type_(type),mode_(mode){
+        Tensor(Op *prev,Shape shape,TENSOR_TYPE type): 
+        prev_(prev),
+        shape_(shape),
+        type_(type)
+        {
             //std::cout<<" Tensor "<<shape_.count()*sizeof(float)<<std::endl;
-            data_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float),mode_);
-            diff_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float),mode_);
+            data_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float));
+            diff_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float));
         }
         virtual ~Tensor() {};
 
@@ -40,16 +43,11 @@ namespace Grape{
         inline void *mutable_cpu_diff(){return diff_->mutable_cpu_data();};
         inline void *mutable_gpu_data(){return data_->mutable_gpu_data();};
         inline void *mutable_gpu_diff(){return diff_->mutable_gpu_data();};
-        inline void data_to_cpu(){data_->to_cpu();};
-        inline void data_to_gpu(){data_->to_gpu();};
-        inline void diff_to_cpu(){diff_->to_cpu();};
-        inline void diff_to_gpu(){diff_->to_gpu();};
 
         template <class Archive>
         void serialize(Archive & ar)
         {
-            data_to_cpu();
-            float *data = (float *)mutable_cpu_data();
+            float *data = (float *)cpu_data();
             for(int i=0;i<shape_.count();++i){
                 ar(data[i]);
             }
@@ -60,7 +58,6 @@ namespace Grape{
         Op *prev_;                // previous node, "producer" of this tensor
         Shape shape_;
         TENSOR_TYPE type_;
-        CAL_MODE mode_;
         std::vector<Op *> next_;  // next nodes, "consumers" of this tensor
     };
 }
