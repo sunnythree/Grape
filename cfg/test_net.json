@@ -42,7 +42,7 @@
             {
                 "graph_name":"graph0",
                 "type": "sgd",
-                "lr": 0.01,
+                "lr": 0.001,
                 "momentum":0.9,
                 "policy":"step",
                 "step":10000,
@@ -59,7 +59,7 @@
                 "phase": "train",
                 "device_id": 0,
                 "save_path": "model/mnist",
-                "display_iter":1
+                "display_iter":100
             }
         ]
     },

@@ -43,11 +43,20 @@ namespace Grape
         float *output_data = (float *)output_tensor->mutable_cpu_data();
         float *cost_data = (float *)cost_->mutable_cpu_data();
         int32_t n = intput_tensor->shape().count();
+        // for(int i=0;i<n;i++){
+        //     std::cout<<intput_data[i]<<" ";
+        // }
+        // std::cout<<std::endl;
+        // for(int i=0;i<n;i++){
+        //     std::cout<<label_data[i]<<" ";
+        // }
+        // std::cout<<std::endl;
         for(int i=0;i<batch_size_;++i){
             softmax(intput_data+i*in_dim_, in_dim_, temperature_, 1, output_data+i*in_dim_);
         }
 
         softmax_x_ent_cpu(in_dim_*batch_size_, output_data, label_data, intput_diff, cost_data);
+
     }
 
     void SoftmaxWithLoss::BackwardCpu()

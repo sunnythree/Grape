@@ -129,7 +129,7 @@ namespace Grape{
         k = out_dim_;
         n = in_dim_;
 
-        a = (float *)output_data;
+        a = (float *)input_diff;
         b = (float *)weight_tensor->cpu_data();
         c = (float *)data_tensor->mutable_cpu_diff();
         fill_cpu(batch_size_*in_dim_,0,c,1);
@@ -203,7 +203,7 @@ namespace Grape{
         k = out_dim_;
         n = in_dim_;
 
-        a = (float *)output_data;
+        a = (float *)input_diff;
         b = (float *)weight_tensor->gpu_data();
         c = (float *)data_tensor->mutable_gpu_diff();
         fill_gpu(batch_size_*in_dim_,0,c,1);
