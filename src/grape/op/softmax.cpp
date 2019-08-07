@@ -53,7 +53,13 @@ namespace Grape
 #ifdef GPU
     void Softmax::ForwardGpu()
     {
-
+        Tensor *intput_tensor = prev_[0].get();
+        Tensor *output_tensor = next_[0].get();
+        float *intput_data = (float *)intput_tensor->gpu_data();
+        float *output_data = (float *)output_tensor->mutable_gpu_data();
+        for(int i=0;i<batch_size_;i++){
+            softmax_gpu(intput_data+i*in_dim_, in_dim_, temperature_, 1, output_data+i*in_dim_);
+        }
     } 
 
     void Softmax::BackwardGpu()

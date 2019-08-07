@@ -3,8 +3,8 @@
 #include "cublas_v2.h"
 
 extern "C" {
-#include "Grape/util/activations.h"
-#include "Grape/util/cuda.h"
+#include "grape/util/activations.h"
+#include "grape/util/cuda.h"
 }
 
 namespace Grape
@@ -164,7 +164,7 @@ namespace Grape
     extern "C" void binary_gradient_array_gpu(float *x, float *dx, int n, int size, BINARY_ACTIVATION a, float *y) 
     {
         binary_gradient_array_kernel<<<cuda_gridsize(n/2), BLOCK>>>(x, dx, n/2, size, a, y);
-        check_error(cudaPeekAtLastError());
+        cuda_check_error(cudaPeekAtLastError());
     }
     __global__ void binary_activate_array_kernel(float *x, int n, int s, BINARY_ACTIVATION a, float *y)
     {
@@ -179,7 +179,7 @@ namespace Grape
     extern "C" void binary_activate_array_gpu(float *x, int n, int size, BINARY_ACTIVATION a, float *y) 
     {
         binary_activate_array_kernel<<<cuda_gridsize(n/2), BLOCK>>>(x, n/2, size, a, y);
-        check_error(cudaPeekAtLastError());
+        cuda_check_error(cudaPeekAtLastError());
     }
 
     __global__ void activate_array_kernel(float *x, int n, ACTIVATION a)
@@ -197,13 +197,13 @@ namespace Grape
     extern "C" void activate_array_gpu(float *x, int n, ACTIVATION a) 
     {
         activate_array_kernel<<<cuda_gridsize(n), BLOCK>>>(x, n, a);
-        check_error(cudaPeekAtLastError());
+        cuda_check_error(cudaPeekAtLastError());
     }
 
     extern "C" void gradient_array_gpu(float *x, int n, ACTIVATION a, float *delta) 
     {
         gradient_array_kernel<<<cuda_gridsize(n), BLOCK>>>(x, n, a, delta);
-        check_error(cudaPeekAtLastError());
+        cuda_check_error(cudaPeekAtLastError());
     }
 }//Grape
 

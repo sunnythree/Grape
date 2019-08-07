@@ -57,6 +57,7 @@ LIB_CU_SRCS := $(shell find ./src/grape -name "*.cu")
 OBJ_LIB_CU  := $(patsubst ./%.cu, ./$(OBJDIR)%.o, $(LIB_CU_SRCS))
 endif
 
+$(info $(LIB_CU_SRCS))
 
 
 #srcs
@@ -81,16 +82,16 @@ all: $(DIRS) $(SLIB) $(ALIB) $(EXEC)
 
 test: $(DIRS) $(TEST_EXE)
 
-$(TEST_EXE):$(OBJ_TEST_SRCS) $(OBJ_LIB_CPP) $(TEST_H_SRCS)
+$(TEST_EXE):$(OBJ_TEST_SRCS) $(OBJ_LIB_CPP) $(OBJ_LIB_CU) $(TEST_H_SRCS) 
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 	
-$(EXEC): $(OBJ_BIN_CPP) $(ALIB) 
+$(EXEC): $(OBJ_BIN_CPP) $(OBJ_LIB_CU) $(ALIB) 
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(ALIB)
 
-$(ALIB): $(OBJ_LIB_CPP)
+$(ALIB): $(OBJ_LIB_CPP) $(OBJ_LIB_CU)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(SLIB): $(OBJ_LIB_CPP)
+$(SLIB): $(OBJ_LIB_CPP) $(OBJ_LIB_CU)
 	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.cpp

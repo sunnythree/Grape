@@ -11,7 +11,7 @@
 namespace Grape
 {
 #ifdef GPU
-
+    extern "C"{
     void cuda_set_device(int n);
     int  cuda_get_device();
     void cuda_check_error(cudaError_t status);
@@ -28,6 +28,7 @@ namespace Grape
     cudnnHandle_t cudnn_handle();
     #endif
     cublasHandle_t cuda_blas_handle();
+    }
 #endif
 } // namespace Grape
 

@@ -51,9 +51,9 @@ namespace Grape {
             break;
         case HEAD_AT_GPU:
         #ifdef GPU
-            if (cpu_ptr_ == NULL) {
-            cuda_malloc(&cpu_ptr_, size_);
-            own_cpu_data_ = true;
+            if (cpu_ptr_ == nullptr) {
+                cpu_ptr_ = malloc(size_);
+                own_cpu_data_ = true;
             }
             cuda_pull_array(gpu_ptr_, cpu_ptr_, size_);
             head_ = SYNCED;

@@ -10,6 +10,7 @@
 #include "grape/global_config.h"
 #include "grape/log.h"
 #include "grape/optimizer/sgd.h"
+#include "grape/util/cuda.h"
 
 namespace Grape{
     static std::string TAG = "Grape";
@@ -37,6 +38,7 @@ namespace Grape{
         save_path_ = graph_params.save_path_;
         max_iter_ = graph_params.max_iter_;
         display_iter_ = graph_params.display_iter_;
+        device_id_ = graph_params.device_id_;
         //seiralize type
         if(graph_params.serialize_type_ == SERIALIZE_TYPE_BINARY_STRING){
             serialize_type_ = BINARY;
@@ -170,6 +172,9 @@ namespace Grape{
 
     void Graph::Run()
     {
+        #ifdef GPU
+            cuda_set_device(device_id_);
+        #endif
         ReConnection();
         if(graph_phase_ == TRAIN){
             Train();

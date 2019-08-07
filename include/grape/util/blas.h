@@ -1,12 +1,10 @@
 #ifndef __GRAPE_BLAS_H__
 #define __GRAPE_BLAS_H__
 
-#ifdef GPU
-#include "grape/util/cuda.h"
-#endif
 
 namespace Grape
 {
+    extern "C"{
     void mul_cpu(int N, float *X, int INCX, float *Y, int INCY);
     void pow_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY);
     void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY);
@@ -34,7 +32,7 @@ namespace Grape
     void scale_mask_gpu(int N, float * X, float mask_num, float * mask, float scale);
     void const_gpu(int N, float ALPHA, float *X, int INCX);
     void add_gpu(int N, float ALPHA, float * X, int INCX);
-    void scal_cpu(int N, float ALPHA, float *X, int INCX);
+    void scal_gpu(int N, float ALPHA, float *X, int INCX);
     void fill_gpu(int N, float ALPHA, float * X, int INCX);
     void mult_add_into_gpu(int num, float *a, float *b, float *c);
     void softmax_gpu(float *input, int n, float temp, int stride, float *output);
@@ -45,6 +43,7 @@ namespace Grape
     void add_bias_gpu(float *output, float *biases, int batch, int n, int size);
     void backward_bias_gpu(float *bias_updates, float *delta, int batch, int n, int size);
     #endif
+    }
 }
 
 #endif

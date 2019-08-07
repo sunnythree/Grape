@@ -57,6 +57,7 @@ namespace Grape{
         CAL_MODE cal_mode_ = CPU_MODE;
         uint32_t max_iter_ = 1;
         uint32_t display_iter_ = 1;
+        uint32_t device_id_ = 0;
         PHASE graph_phase_ = TRAIN;
         Optimizer *optimizer_;
         std::vector<OpConnectionPoint> connections_;

@@ -6,6 +6,10 @@
 namespace Grape
 {
     typedef enum{
+        MULT, ADD, SUB, DIV
+    } BINARY_ACTIVATION;
+
+    typedef enum{
         LOGISTIC, 
         RELU,
         RELIE,
@@ -21,6 +25,8 @@ namespace Grape
         LHTAN,
         SELU
     } ACTIVATION;
+
+    extern "C"{
 
     ACTIVATION get_activation(char *s);
 
@@ -100,7 +106,7 @@ namespace Grape
     static inline float leaky_gradient(float x){return (x>0) ? 1 : .1;}
     static inline float tanh_gradient(float x){return 1-x*x;}
     static inline float plse_gradient(float x){return (x < 0 || x > 1) ? .01 : .125;}
-
+    }
 } // namespace Grape
 
 

@@ -109,7 +109,7 @@ namespace Grape
 #ifdef GPU
     void MnistData::ForwardGpu()
     {
-
+        ForwardCpu();
     } 
 
     void MnistData::BackwardGpu()

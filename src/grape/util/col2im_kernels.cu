@@ -3,8 +3,8 @@
 #include "cublas_v2.h"
 
 extern "C" {
-#include "Grape/util/col2im.h"
-#include "Grape/util/cuda.h"
+#include "grape/util/col2im.h"
+#include "grape/util/cuda.h"
 }
 
 namespace Grape

@@ -7,6 +7,9 @@
 #include "grape/util/blas.h"
 #include "grape/util/util.h"
 
+
+
+
 namespace Grape
 {
     void mul_cpu(int N, float *X, int INCX, float *Y, int INCY)
@@ -91,39 +94,39 @@ namespace Grape
     }
 
 
-void add_bias(float *output, float *biases, int batch, int n, int size)
-{
-    int i,j,b;
-    for(b = 0; b < batch; ++b){
-        for(i = 0; i < n; ++i){
-            for(j = 0; j < size; ++j){
-                output[(b*n + i)*size + j] += biases[i];
+    void add_bias(float *output, float *biases, int batch, int n, int size)
+    {
+        int i,j,b;
+        for(b = 0; b < batch; ++b){
+            for(i = 0; i < n; ++i){
+                for(j = 0; j < size; ++j){
+                    output[(b*n + i)*size + j] += biases[i];
+                }
             }
         }
     }
-}
 
-void scale_bias(float *output, float *scales, int batch, int n, int size)
-{
-    int i,j,b;
-    for(b = 0; b < batch; ++b){
-        for(i = 0; i < n; ++i){
-            for(j = 0; j < size; ++j){
-                output[(b*n + i)*size + j] *= scales[i];
+    void scale_bias(float *output, float *scales, int batch, int n, int size)
+    {
+        int i,j,b;
+        for(b = 0; b < batch; ++b){
+            for(i = 0; i < n; ++i){
+                for(j = 0; j < size; ++j){
+                    output[(b*n + i)*size + j] *= scales[i];
+                }
             }
         }
     }
-}
 
-void backward_bias(float *bias_updates, float *delta, int batch, int n, int size)
-{
-    int i,b;
-    for(b = 0; b < batch; ++b){
-        for(i = 0; i < n; ++i){
-            bias_updates[i] += sum_array(delta+size*(i+b*n), size);
+    void backward_bias(float *bias_updates, float *delta, int batch, int n, int size)
+    {
+        int i,b;
+        for(b = 0; b < batch; ++b){
+            for(i = 0; i < n; ++i){
+                bias_updates[i] += sum_array(delta+size*(i+b*n), size);
+            }
         }
     }
-}
 
 } // namespace Grape
 

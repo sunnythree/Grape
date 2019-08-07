@@ -112,7 +112,17 @@ namespace Grape
 #ifdef GPU
     void SGDOptimizer::UpdateGpu(Tensor *weights, uint32_t batch)
     {
-
+        float *W = (float *)weights->mutable_gpu_data();
+        float *dW = (float *)weights->mutable_gpu_diff(); 
+        uint32_t n = weights->shape().count(); 
+        if(weights->vtype() == WEIGHTS){
+            axpy_gpu(n, -decay_*batch, W, 1, dW, 1);
+            axpy_gpu(n, lr_/batch, dW, 1, W, 1);
+            scal_gpu(n, momentum_, dW, 1);
+        }else{
+            axpy_gpu(n, lr_/batch, dW, 1, W, 1);
+            scal_gpu(n, momentum_, dW, 1);
+        }
     }
 #endif
 } // namespace Grape
