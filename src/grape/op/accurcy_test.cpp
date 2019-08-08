@@ -67,7 +67,7 @@
 #ifdef GPU
     void AccuracyTest::ForwardGpu()
     {
-
+        ForwardCpu();
     } 
     void AccuracyTest::BackwardGpu()
     {
