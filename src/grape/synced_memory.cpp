@@ -80,7 +80,7 @@ namespace Grape {
                 cuda_malloc(&gpu_ptr_, size_);
                 own_gpu_data_ = true;
             }
-            cuda_pull_array(gpu_ptr_, cpu_ptr_, size_);
+            cuda_push_array(gpu_ptr_, cpu_ptr_, size_);
             head_ = SYNCED;
             break;
         case HEAD_AT_GPU:
