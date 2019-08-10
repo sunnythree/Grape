@@ -101,6 +101,9 @@ namespace Grape
     void activate_array(float *x, const int n, const ACTIVATION a)
     {
         int i;
+        if(a == NONE){
+            return;
+        }
         for(i = 0; i < n; ++i){
             x[i] = activate(x[i], a);
         }
@@ -144,6 +147,9 @@ namespace Grape
     void gradient_array(const float *x, const int n, const ACTIVATION a, float *delta)
     {
         int i;
+        if(a == NONE){
+            return;
+        }
         for(i = 0; i < n; ++i){
             delta[i] *= gradient(x[i], a);
         }

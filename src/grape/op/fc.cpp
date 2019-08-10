@@ -6,7 +6,6 @@
 #include "grape/op/fc.h"
 #include "grape/log.h"
 #include "grape/util/random.h"
-#include "grape/util/activations.h"
 #include "cereal/archives/binary.hpp"
 #include "cereal/archives/xml.hpp"
 #include "cereal/archives/json.hpp"
@@ -17,12 +16,20 @@
 
 namespace Grape{
     static std::string TAG = "Fc";
-    Fc::Fc(std::string name, uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias)
-    : Op({DATA,WEIGHTS,BIAS}, {DATA}),
+    Fc::Fc(
+        std::string name, 
+        uint32_t batch_size,
+        uint32_t in_dim,
+        uint32_t out_dim,
+        bool has_bias,
+        ACTIVATION activation): 
+    Op({DATA,WEIGHTS,BIAS}, 
+    {DATA}),
     batch_size_(batch_size),
     in_dim_(in_dim),
     out_dim_(out_dim),
-    has_bias_(has_bias)
+    has_bias_(has_bias),
+    activation_(activation)
     {
         type_ = "Fc";
         name_ = name;
@@ -95,7 +102,7 @@ namespace Grape{
             add_bias(c, bias_data, batch_size_, out_dim_, 1);
         }
         
-        activate_array(c,batch_size_*out_dim_,LEAKY);
+        activate_array(c,batch_size_*out_dim_,activation_);
     } 
 
     void Fc::BackwardCpu()
@@ -109,7 +116,7 @@ namespace Grape{
         float *output_data = (float *)out_data_tensor->cpu_data();
         float *input_diff = (float *)out_data_tensor->mutable_cpu_diff();
 
-        gradient_array(output_data,batch_size_*out_dim_,LEAKY,input_diff);
+        gradient_array(output_data,batch_size_*out_dim_,activation_,input_diff);
 
         if(has_bias_) {
             float *bias_diff = (float *)bias_tensor->cpu_diff();
@@ -169,7 +176,7 @@ namespace Grape{
             add_bias_gpu(c, bias_data, batch_size_, out_dim_, 1);
         }
         
-        activate_array_gpu(c,batch_size_*out_dim_,LEAKY);
+        activate_array_gpu(c,batch_size_*out_dim_,activation_);
     }
 
     void Fc::BackwardGpu()
@@ -183,7 +190,7 @@ namespace Grape{
         float *output_data = (float *)out_data_tensor->gpu_data();
         float *input_diff = (float *)out_data_tensor->mutable_gpu_diff();
 
-        gradient_array_gpu(output_data,batch_size_*out_dim_,LEAKY,input_diff);
+        gradient_array_gpu(output_data,batch_size_*out_dim_,activation_,input_diff);
 
         if(has_bias_) {
             float *bias_diff = (float *)bias_tensor->gpu_diff();

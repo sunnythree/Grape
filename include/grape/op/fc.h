@@ -2,11 +2,20 @@
 #define __GRAPE_FC_H__
 
 #include "grape/op.h"
+#include "grape/util/activations.h"
+
 namespace Grape{
     class Fc : public Op{
     public:
         Fc() = delete;
-        explicit Fc(std::string name, uint32_t batch_size,uint32_t in_dim,uint32_t out_dim,bool has_bias = true);
+        explicit Fc(
+            std::string name, 
+            uint32_t batch_size,
+            uint32_t in_dim,
+            uint32_t out_dim,
+            bool has_bias = true,
+            ACTIVATION activation = LEAKY
+            );
         virtual ~Fc();
         void Setup();
         void ForwardCpu(); 
@@ -26,6 +35,7 @@ namespace Grape{
         uint32_t in_dim_;
         uint32_t out_dim_;
         bool has_bias_;
+        ACTIVATION activation_;
     };
 }
 

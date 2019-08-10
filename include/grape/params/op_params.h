@@ -6,6 +6,23 @@
 #include "cereal/cereal.hpp"
 #include "cereal/archives/json.hpp"
 namespace Grape{
+
+    static const std::string ACTIVATION_NONE = "none";
+    static const std::string ACTIVATION_LOGISTIC = "logistic";
+    static const std::string ACTIVATION_RELU = "relu";
+    static const std::string ACTIVATION_RELIE = "relie";
+    static const std::string ACTIVATION_LINEAR = "linear";
+    static const std::string ACTIVATION_RAMP = "ramp";
+    static const std::string ACTIVATION_TANH = "tanh";
+    static const std::string ACTIVATION_PLSE = "plse";
+    static const std::string ACTIVATION_LEAKY = "leaky";
+    static const std::string ACTIVATION_ELU = "elu";
+    static const std::string ACTIVATION_LOGGY = "loggy";
+    static const std::string ACTIVATION_STAIR = "stair";
+    static const std::string ACTIVATION_HARDTAN = "hardtan";
+    static const std::string ACTIVATION_LHTAN = "lhtan";
+    static const std::string ACTIVATION_SELU = "selu";
+
     class OpParams{
     public:
         std::string name_;
@@ -18,6 +35,7 @@ namespace Grape{
         bool has_bias_;
         bool random_;
         uint32_t sample_count_;
+        std::string activation_;
         
 
         template <class Archive>
@@ -51,17 +69,22 @@ namespace Grape{
                 ar.setNextName(nullptr);
             }
             try{
-                ar(cereal::make_nvp("has_bias",has_bias_));
-            }  catch(cereal::Exception&){
-                ar.setNextName(nullptr);
-            }
-            try{
                 ar(cereal::make_nvp("random",random_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
             try{
                 ar(cereal::make_nvp("sample_count",sample_count_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("sample_count",sample_count_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("activation",activation_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }

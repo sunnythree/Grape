@@ -21,7 +21,7 @@ using namespace std;
 using namespace Grape;
 
 void code_net(){
-   int batch = 10;
+   int batch = 20;
     MnistData input_train("input_train","data/train-images-idx3-ubyte",
         "data/train-labels-idx1-ubyte",batch,true,50000);  
     MnistData input_test("input_test","data/t10k-images-idx3-ubyte",
@@ -37,14 +37,14 @@ void code_net(){
     input_train<<fc1<<fc2<<fc3<<sml;
     connect_op(&input_train,&sml,1,1);
     
-    Graph graph("data/test",JSON,5000,100,TRAIN,CPU_MODE);
+    Graph graph("data/test",JSON,2500,100,TRAIN,GPU_MODE);
     graph.set_phase(TRAIN);
     graph.Construct({&input_train},{&sml});
     graph.Setup(false);
     SGDOptimizer sgd(0.01);
     sgd.set_momentum(0.9);
     sgd.set_policy(POLICY_STEP);
-    sgd.set_step(10000);
+    sgd.set_step(5000);
     sgd.set_gamma(0.9);
     graph.set_optimizer(&sgd);
 
@@ -56,7 +56,7 @@ void code_net(){
 
     input_test<<fc1<<fc2<<fc3<<sm<<accuracy;
     connect_op(&input_test,&accuracy,1,1);
-    Graph graph1("data/test",JSON,1000,1000,TEST,CPU_MODE);
+    Graph graph1("data/test",JSON,500,500,TEST,GPU_MODE);
     graph1.set_phase(TEST);
     graph1.Construct({&input_test},{&accuracy});
     net.AddOps(&graph1);
@@ -66,15 +66,15 @@ void code_net(){
 
 int main(int argc,char **argv)
 {
-    if(argc != 2){
-        std::cout<<"usage: ./Grape cfb_file"<<std::endl;
-        return -1;
-    }
-    Parser parser;
-    parser.Parse(argv[1]);
+    // if(argc != 2){
+    //     std::cout<<"usage: ./Grape cfb_file"<<std::endl;
+    //     return -1;
+    // }
+    // Parser parser;
+    // parser.Parse(argv[1]);
     
-    Net *net =  parser.get_net().get();
-    net->Run();
-    // code_net();
+    // Net *net =  parser.get_net().get();
+    // net->Run();
+    code_net();
     return 0;
 }

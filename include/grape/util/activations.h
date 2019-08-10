@@ -10,6 +10,7 @@ namespace Grape
     } BINARY_ACTIVATION;
 
     typedef enum{
+        NONE,
         LOGISTIC, 
         RELU,
         RELIE,

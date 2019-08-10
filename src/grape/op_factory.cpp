@@ -6,15 +6,64 @@
 #include "grape/op/accuracy_test.h"
 #include "grape/op/mnist_data.h"
 #include "grape/log.h"
+#include "grape/error.h"
 
 namespace Grape
 {
     static std::string TAG = "OpFactory";
+    ACTIVATION OpFactory::GetActivationByString(std::string activation)
+    {
+        if(activation.empty()){
+            return NONE;
+        }
+
+        if(activation == ACTIVATION_NONE){
+            return NONE;
+        }else if(activation == ACTIVATION_LOGISTIC){
+            return LOGISTIC;
+        }else if(activation == ACTIVATION_RELU){
+            return RELU;
+        }else if(activation == ACTIVATION_RELIE){
+            return RELIE;
+        }else if(activation == ACTIVATION_LINEAR){
+            return LINEAR;
+        }else if(activation == ACTIVATION_RAMP){
+            return RAMP;
+        }else if(activation == ACTIVATION_TANH){
+            return TANH;
+        }else if(activation == ACTIVATION_PLSE){
+            return PLSE;
+        }else if(activation == ACTIVATION_LEAKY){
+            return LEAKY;
+        }else if(activation == ACTIVATION_ELU){
+            return ELU;
+        }else if(activation == ACTIVATION_LOGGY){
+            return LOGGY;
+        }else if(activation == ACTIVATION_STAIR){
+            return STAIR;
+        }else if(activation == ACTIVATION_HARDTAN){
+            return HARDTAN;
+        }else if(activation == ACTIVATION_LHTAN){
+            return LHTAN;
+        }else if(activation == ACTIVATION_SELU){
+            return SELU;
+        }else{
+            throw NotimplementedError();
+        }
+    }
+
     std::shared_ptr<Op> OpFactory::Build(OpParams& opp)
     {
         std::shared_ptr<Op> bop;
         if(opp.type_ == "Fc"){
-            bop = std::make_shared<Fc>(opp.name_,opp.batch_,opp.in_dim_,opp.out_dim_,opp.has_bias_);
+            bop = std::make_shared<Fc>(
+                opp.name_,
+                opp.batch_,
+                opp.in_dim_,
+                opp.out_dim_,
+                opp.has_bias_,
+                GetActivationByString(opp.activation_)
+                );
         }else if(opp.type_ == "Softmax"){
             bop = std::make_shared<Softmax>(opp.name_,opp.batch_,opp.in_dim_);
         }else if(opp.type_ == "SoftmaxWithLoss"){

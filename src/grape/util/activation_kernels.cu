@@ -196,12 +196,18 @@ namespace Grape
 
     extern "C" void activate_array_gpu(float *x, int n, ACTIVATION a) 
     {
+        if(a == NONE){
+            return;
+        }
         activate_array_kernel<<<cuda_gridsize(n), BLOCK>>>(x, n, a);
         cuda_check_error(cudaPeekAtLastError());
     }
 
     extern "C" void gradient_array_gpu(float *x, int n, ACTIVATION a, float *delta) 
     {
+        if(a == NONE){
+            return;
+        }
         gradient_array_kernel<<<cuda_gridsize(n), BLOCK>>>(x, n, a, delta);
         cuda_check_error(cudaPeekAtLastError());
     }
