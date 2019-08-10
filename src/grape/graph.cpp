@@ -106,7 +106,7 @@ namespace Grape{
     }
     void Graph::Setup(bool load)
     {
-        std::cout<<ops_.size()<<std::endl;
+        //std::cout<<ops_.size()<<std::endl;
         #ifdef GPU
             cuda_set_device(device_id_);
         #endif

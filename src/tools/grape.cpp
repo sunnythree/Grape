@@ -66,15 +66,15 @@ void code_net(){
 
 int main(int argc,char **argv)
 {
-    // if(argc != 2){
-    //     std::cout<<"usage: ./Grape cfb_file"<<std::endl;
-    //     return -1;
-    // }
-    // Parser parser;
-    // parser.Parse(argv[1]);
+    if(argc != 2){
+        std::cout<<"usage: ./Grape cfb_file"<<std::endl;
+        return -1;
+    }
+    Parser parser;
+    parser.Parse(argv[1]);
     
-    // Net *net =  parser.get_net().get();
-    // net->Run();
-    code_net();
+    Net *net =  parser.get_net().get();
+    net->Run();
+    //code_net();
     return 0;
 }

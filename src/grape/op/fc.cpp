@@ -29,7 +29,8 @@ namespace Grape{
     in_dim_(in_dim),
     out_dim_(out_dim),
     has_bias_(has_bias),
-    activation_(activation)
+    activation_(activation),
+    setuped_(false)
     {
         type_ = "Fc";
         name_ = name;
@@ -57,6 +58,9 @@ namespace Grape{
 
     void Fc::Setup()
     {
+        if(setuped_){
+            return;
+        }
         //create input tensor,only weights and bias
         if(prev_.size()==0){
             Log::v(TAG,"skip init weights");
@@ -76,6 +80,7 @@ namespace Grape{
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->mutable_cpu_data(),1);
                 fill_cpu(prev_[2]->shape().count(),0,(float *)prev_[2]->mutable_cpu_diff(),1);
             }
+            setuped_ = true;
         }
     }
 

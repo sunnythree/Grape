@@ -34,8 +34,9 @@ namespace Grape{
         uint32_t batch_size_;
         uint32_t in_dim_;
         uint32_t out_dim_;
-        bool has_bias_;
-        ACTIVATION activation_;
+        bool has_bias_ = true;
+        ACTIVATION activation_ = LEAKY;
+        bool setuped_ = false;
     };
 }
 

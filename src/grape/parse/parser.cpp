@@ -296,7 +296,7 @@ namespace Grape
         //set optimizer for graph
         for(auto tmp:graph_map_){
             if(opt_map_.find(tmp.first) == opt_map_.end()){
-                Log::v(TAG,"error: opt_map_ not contain "+tmp.first);
+                Log::v(TAG,"not set optimizer for "+tmp.first);
                 continue;
             }
             tmp.second->set_optimizer(opt_map_[tmp.first].get());
@@ -307,8 +307,8 @@ namespace Grape
         }
         //build net
         net_ = std::make_shared<Net>(net_params);
-        for(auto tmp:graph_map_){
-            net_->AddOps(tmp.second.get());
+        for(auto tmp:graph_list.graph_list_){
+            net_->AddOps(graph_map_[tmp.name_].get());
         }
         Log::i(TAG,"parse over");
     }
