@@ -9,6 +9,9 @@
 #include <algorithm>
 #include "grape/optimizer/optimizer.h"
 #include "grape/error.h"
+#include "cereal/archives/binary.hpp"
+#include "cereal/archives/xml.hpp"
+#include "cereal/archives/json.hpp"
 
 
 namespace Grape{
@@ -63,8 +66,13 @@ public:
     virtual void UpdateWeightsGpu(Optimizer &opt) = 0;
 #endif
 
-    virtual void Save(std::string path, SERIALIZE_TYPE type){};
-    virtual void Load(std::string path, SERIALIZE_TYPE type){};
+    virtual void Load(cereal::BinaryInputArchive &archive){};
+    virtual void Load(cereal::JSONInputArchive &archive){};
+    virtual void Load(cereal::XMLInputArchive &archive){};
+    virtual void Save(cereal::BinaryOutputArchive &archive){};
+    virtual void Save(cereal::JSONOutputArchive &archive){};
+    virtual void Save(cereal::XMLOutputArchive &archive){};
+
     virtual void OnTrainBegin(){};
     virtual void OnTrainEnd(){};
     virtual void OnTestBegin(){};

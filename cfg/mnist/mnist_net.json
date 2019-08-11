@@ -88,16 +88,19 @@
                 "cal_mode": "gpu",
                 "phase": "train",
                 "device_id": 0,
-                "save_path": "model/mnist",
-                "display_iter":500
+                "serialize_type":"json",
+                "save_path": "model/mnist_model",
+                "display_iter":500,
+                "snapshot_iter":1000
             },
             {
                 "name": "graph_mnist_test",
                 "max_iter": 500,
                 "cal_mode": "gpu",
+                "serialize_type":"json",
                 "phase": "test",
                 "device_id": 0,
-                "save_path": "model/mnist",
+                "save_path": "model/mnist_model",
                 "display_iter":500
             }
         ]

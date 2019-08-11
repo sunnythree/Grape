@@ -37,7 +37,7 @@ void code_net(){
     input_train<<fc1<<fc2<<fc3<<sml;
     connect_op(&input_train,&sml,1,1);
     
-    Graph graph("data/test",JSON,2500,100,TRAIN,GPU_MODE);
+    Graph graph("data/test",JSON,2500,100,500,TRAIN,GPU_MODE);
     graph.set_phase(TRAIN);
     graph.Construct({&input_train},{&sml});
     graph.Setup(false);
@@ -56,7 +56,7 @@ void code_net(){
 
     input_test<<fc1<<fc2<<fc3<<sm<<accuracy;
     connect_op(&input_test,&accuracy,1,1);
-    Graph graph1("data/test",JSON,500,500,TEST,GPU_MODE);
+    Graph graph1("data/test",JSON,500,500,0,TEST,GPU_MODE);
     graph1.set_phase(TEST);
     graph1.Construct({&input_test},{&accuracy});
     net.AddOps(&graph1);

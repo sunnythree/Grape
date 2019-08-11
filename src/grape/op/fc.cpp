@@ -6,9 +6,6 @@
 #include "grape/op/fc.h"
 #include "grape/log.h"
 #include "grape/util/random.h"
-#include "cereal/archives/binary.hpp"
-#include "cereal/archives/xml.hpp"
-#include "cereal/archives/json.hpp"
 #include "grape/util/gemm.h"
 
 #include "grape/util/cuda.h"
@@ -231,75 +228,51 @@ namespace Grape{
     }
 #endif
 
-    void Fc::Save(std::string path, SERIALIZE_TYPE type)
+    void Fc::Load(cereal::BinaryInputArchive &archive)
     {
-        switch (type)
-        {
-        case BINARY:{
-            std::ofstream os(path+"/"+name_+".binary");
-            cereal::BinaryOutputArchive archive(os);
-            archive(cereal::make_nvp("weight", *prev_[1].get()));
-            if(has_bias_){
-                archive(cereal::make_nvp("bias", *prev_[2].get()));
-            }
-            break;
-        }
-        case JSON:{
-            std::ofstream os(path+"/"+name_+".json");
-            cereal::JSONOutputArchive archive(os);
-            archive(cereal::make_nvp("weight", *prev_[1].get()));
-            if(has_bias_){
-                archive(cereal::make_nvp("bias", *prev_[2].get()));
-            }
-            break;
-        }
-        case XML:{
-            std::ofstream os(path+"/"+name_+".xml");
-            cereal::XMLOutputArchive archive(os);
-            archive(cereal::make_nvp("weight", *prev_[1].get()));
-            if(has_bias_){
-                archive(cereal::make_nvp("bias", *prev_[2].get()));
-            }
-            break;
-        }
-        default:
-            break;
+        archive(cereal::make_nvp("weight", *prev_[1].get()));
+        if(has_bias_){
+            archive(cereal::make_nvp("bias", *prev_[2].get()));
         }
     }
 
-    void Fc::Load(std::string path, SERIALIZE_TYPE type)
+    void Fc::Load(cereal::JSONInputArchive &archive)
     {
-        switch (type)
-        {
-        case BINARY:{
-            std::ifstream is(path+"/"+name_+".binary");
-            cereal::BinaryInputArchive archive(is);
-            archive(cereal::make_nvp("weight", *prev_[1].get()));
-            if(has_bias_){
-                archive(cereal::make_nvp("bias", *prev_[2].get()));
-            }
-            break;
+        archive(cereal::make_nvp("weight", *prev_[1].get()));
+        if(has_bias_){
+            archive(cereal::make_nvp("bias", *prev_[2].get()));
         }
-        case JSON:{
-            std::ifstream is(path+"/"+name_+".json");
-            cereal::JSONInputArchive archive(is);
-            archive(cereal::make_nvp("weight", *prev_[1].get()));
-            if(has_bias_){
-                archive(cereal::make_nvp("bias", *prev_[2].get()));
-            }
-            break;
+    }
+
+    void Fc::Load(cereal::XMLInputArchive &archive)
+    {
+        archive(cereal::make_nvp("weight", *prev_[1].get()));
+        if(has_bias_){
+            archive(cereal::make_nvp("bias", *prev_[2].get()));
         }
-        case XML:{
-            std::ifstream is(path+"/"+name_+".xml");
-            cereal::XMLInputArchive archive(is);
-            archive(cereal::make_nvp("weight", *prev_[1].get()));
-            if(has_bias_){
-                archive(cereal::make_nvp("bias", *prev_[2].get()));
-            }
-            break;
+    }
+
+    void Fc::Save(cereal::BinaryOutputArchive &archive)
+    {
+        archive(cereal::make_nvp("weight", *prev_[1].get()));
+        if(has_bias_){
+            archive(cereal::make_nvp("bias", *prev_[2].get()));
         }
-        default:
-            break;
+    }
+
+    void Fc::Save(cereal::JSONOutputArchive &archive)
+    {
+        archive(cereal::make_nvp("weight", *prev_[1].get()));
+        if(has_bias_){
+            archive(cereal::make_nvp("bias", *prev_[2].get()));
+        }
+    }
+
+    void Fc::Save(cereal::XMLOutputArchive &archive)
+    {
+        archive(cereal::make_nvp("weight", *prev_[1].get()));
+        if(has_bias_){
+            archive(cereal::make_nvp("bias", *prev_[2].get()));
         }
     }
 }

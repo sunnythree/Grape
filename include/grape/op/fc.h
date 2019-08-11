@@ -3,6 +3,8 @@
 
 #include "grape/op.h"
 #include "grape/util/activations.h"
+#include "cereal/archives/json.hpp"
+
 
 namespace Grape{
     class Fc : public Op{
@@ -27,8 +29,14 @@ namespace Grape{
         void BackwardGpu();
         void UpdateWeightsGpu(Optimizer &opt);
 #endif
-        void Save(std::string path, SERIALIZE_TYPE type);
-        void Load(std::string path, SERIALIZE_TYPE type);
+
+        void Load(cereal::BinaryInputArchive &archive);
+        void Load(cereal::JSONInputArchive &archive);
+        void Load(cereal::XMLInputArchive &archive);
+        void Save(cereal::BinaryOutputArchive &archive);
+        void Save(cereal::JSONOutputArchive &archive);
+        void Save(cereal::XMLOutputArchive &archive);
+
 
     private:
         uint32_t batch_size_;

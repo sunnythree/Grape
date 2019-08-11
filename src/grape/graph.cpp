@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <fstream>
 #include <algorithm>
 #include "grape/graph.h"
 #include "grape/error.h"
@@ -20,6 +21,7 @@ namespace Grape{
         SERIALIZE_TYPE serialize_type,
         int32_t max_iter,
         int32_t display_iter,
+        int32_t snapshot_iter,
         PHASE graph_phase,
         CAL_MODE cal_mode
     ):
@@ -27,6 +29,7 @@ namespace Grape{
     serialize_type_(serialize_type),
     max_iter_(max_iter),
     display_iter_(display_iter),
+    snapshot_iter_(snapshot_iter),
     graph_phase_(graph_phase),
     cal_mode_(cal_mode)
     {
@@ -38,6 +41,7 @@ namespace Grape{
         save_path_ = graph_params.save_path_;
         max_iter_ = graph_params.max_iter_;
         display_iter_ = graph_params.display_iter_;
+        snapshot_iter_ = graph_params.snapshot_iter_;
         device_id_ = graph_params.device_id_;
         //seiralize type
         if(graph_params.serialize_type_ == SERIALIZE_TYPE_BINARY_STRING){
@@ -111,9 +115,7 @@ namespace Grape{
             cuda_set_device(device_id_);
         #endif
         if(load){
-            for(auto o:ops_){
-                o->Load(save_path_,serialize_type_);
-            }
+            Load(save_path_);
         }else
         {
             for(auto o:ops_){
@@ -139,10 +141,13 @@ namespace Grape{
         for(uint32_t i=0;i<max_iter_;i++){
             TrainOnce();
             optimizer_->CheckLrUpdate(run_iter_*max_iter_+i);
-            if((i+1)%display_iter_==0){
+            if((run_iter_*max_iter_+i+1)%display_iter_==0){
                 for(auto o:ops_){
                     o->Display();
                 }
+            }
+            if(snapshot_iter_>0 && (run_iter_*max_iter_+i+1)%snapshot_iter_==0){
+                Save(save_path_+std::to_string((run_iter_*max_iter_+i+1)/snapshot_iter_));
             }
         }
         for(auto o:ops_){
@@ -181,7 +186,7 @@ namespace Grape{
         ReConnection();
         if(graph_phase_ == TRAIN){
             Train();
-            Save();
+            Save(save_path_);
         }else{
             Test();
         }
@@ -280,17 +285,71 @@ namespace Grape{
         throw Error("invalid connection");
     }
 
-    void Graph::Save()
+    void Graph::Save(std::string path)
     {
-        for(auto o:ops_){
-            o->Save(save_path_,serialize_type_);
+        
+        switch (serialize_type_)
+        {
+        case BINARY:{
+            std::ofstream save_stream(path+".binary");
+            cereal::BinaryOutputArchive archive(save_stream);
+            for(auto o:ops_){
+                o->Save(archive);
+            }
+        }
+        break;
+        case JSON:{
+            std::ofstream save_stream(path+".json");
+            cereal::JSONOutputArchive archive(save_stream);
+            for(auto o:ops_){
+                o->Save(archive);
+            }
+        }
+        break;
+        case XML:{
+            std::ofstream save_stream(path+".xml");
+            cereal::XMLOutputArchive archive(save_stream);
+            for(auto o:ops_){
+                o->Save(archive);
+            }
+        }
+        break;
+        default:
+            break;
         }
     }
 
-    void Graph::Load()
+    void Graph::Load(std::string path)
     {
-        for(auto o:ops_){
-            o->Load(save_path_,serialize_type_);
+      
+        switch (serialize_type_)
+        {
+        case BINARY:{
+            std::ifstream load_stream(path+".binary");
+            cereal::BinaryInputArchive archive(load_stream);
+            for(auto o:ops_){
+                o->Load(archive);
+            }
+        }
+        break;
+        case JSON:{
+            std::ifstream load_stream(path+".json");
+            cereal::JSONInputArchive archive(load_stream);
+            for(auto o:ops_){
+                o->Load(archive);
+            }
+        }
+        break;
+        case XML:{
+            std::ifstream load_stream(path+".xml");
+            cereal::XMLInputArchive archive(load_stream);
+            for(auto o:ops_){
+                o->Load(archive);
+            }
+        }
+        break;
+        default:
+            break;
         }
     }
 

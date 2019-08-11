@@ -13,6 +13,7 @@ namespace Grape{
             SERIALIZE_TYPE serialize_type,
             int32_t max_iter,
             int32_t display_iter,
+            int32_t snapshot_iter,
             PHASE graph_phase,
             CAL_MODE cal_mode
         );
@@ -33,8 +34,8 @@ namespace Grape{
         void Test();
         void Run();
         void RunOnce();
-        void Save();
-        void Load();
+        void Save(std::string path);
+        void Load(std::string path);
         void OnNetRunBegin();
         void OnNetRunEnd();
         PHASE GetPhase();
@@ -52,11 +53,12 @@ namespace Grape{
         std::vector<Op *> ops_;
         std::vector<Op *> input_ops_;
         std::vector<Op *> output_ops_;
-        std::string save_path_ = ".";
+        std::string save_path_ = "";
         SERIALIZE_TYPE serialize_type_ = BINARY;
         CAL_MODE cal_mode_ = CPU_MODE;
         uint32_t max_iter_ = 1;
         uint32_t display_iter_ = 1;
+        uint32_t snapshot_iter_ = 10000;
         uint32_t device_id_ = 0;
         PHASE graph_phase_ = TRAIN;
         Optimizer *optimizer_;
