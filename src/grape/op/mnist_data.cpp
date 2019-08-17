@@ -6,7 +6,8 @@
 
 namespace Grape
 {
-    static std::string TAG = "MnistData";
+    const static std::string TAG = "MnistData";
+    const static std::string MNIST_DATA_TYPE = "MnistData";
     static uint32_t mnist_data_size = 784;
     static uint32_t mnist_label_size = 1;
 
@@ -19,12 +20,12 @@ namespace Grape
     random_(random),
     sample_count_(sample_count)
     {
-        type_ = "MnistData";
+        type_ = MNIST_DATA_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,784}),DATA);
+        Shape({batch_size_,784}),DATA,sizeof(float));
         next_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-        Shape({batch_size_,10}),DATA);
+        Shape({batch_size_,10}),DATA,sizeof(float));
 
         data_in_.open(data_path_,std::ios::binary);
         if(!data_in_.is_open()){

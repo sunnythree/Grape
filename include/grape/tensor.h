@@ -14,18 +14,19 @@ namespace Grape{
         BIAS,
         LABEL,
         AUX,
+        INDEX
     };
     class Op;
     class Tensor {
     public:
-        Tensor(Op *prev,Shape shape,TENSOR_TYPE type): 
+        Tensor(Op *prev,Shape shape,TENSOR_TYPE type,int type_size): 
         prev_(prev),
         shape_(shape),
         type_(type)
         {
             //std::cout<<" Tensor "<<shape_.count()*sizeof(float)<<std::endl;
-            data_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float));
-            diff_ = std::make_shared<SyncedMemory>(shape_.count()*sizeof(float));
+            data_ = std::make_shared<SyncedMemory>(shape_.count()*type_size);
+            diff_ = std::make_shared<SyncedMemory>(shape_.count()*type_size);
         }
         virtual ~Tensor() {};
 

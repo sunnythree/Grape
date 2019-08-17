@@ -12,7 +12,8 @@
 #include "grape/util/blas.h"
 
 namespace Grape{
-    static std::string TAG = "Fc";
+    const static std::string TAG = "Fc";
+    const static std::string FC_TYPE = "Fc";
     Fc::Fc(
         std::string name, 
         uint32_t batch_size,
@@ -20,8 +21,7 @@ namespace Grape{
         uint32_t out_dim,
         bool has_bias,
         ACTIVATION activation): 
-    Op({DATA,WEIGHTS,BIAS}, 
-    {DATA}),
+    Op({DATA,WEIGHTS,BIAS}, {DATA}),
     batch_size_(batch_size),
     in_dim_(in_dim),
     out_dim_(out_dim),
@@ -29,10 +29,10 @@ namespace Grape{
     activation_(activation),
     setuped_(false)
     {
-        type_ = "Fc";
+        type_ = FC_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({batch_size_,out_dim_}),DATA);
+            Shape({batch_size_,out_dim_}),DATA,sizeof(float));
         //reverve size
         if(has_bias_){
             prev_.reserve(3);
@@ -41,11 +41,11 @@ namespace Grape{
         }
 
         prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({out_dim_,in_dim_}),WEIGHTS);
+            Shape({out_dim_,in_dim_}),WEIGHTS,sizeof(float));
 
         if(has_bias_){
             prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({out_dim_}),BIAS);
+                Shape({out_dim_}),BIAS,sizeof(float));
         }
     }
 
