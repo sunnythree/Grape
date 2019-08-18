@@ -1,17 +1,17 @@
  #include "grape/op/accuracy_test.h"
  #include "grape/log.h"
  #include "grape/util/util.h"
+ #include "grape/global_config.h"
 
  namespace Grape{
     const static std::string TAG = "AccuracyTest";
-    const static std::string ACCURACY_TEST_TYPE = "AccuracyTest";
 
     AccuracyTest::AccuracyTest(std::string name, uint32_t batch_size, uint32_t in_dim):
     Op({DATA,DATA},{}),
     batch_size_(batch_size),
     in_dim_(in_dim)
     {
-        type_ = ACCURACY_TEST_TYPE;
+        type_ = STRING_ACCURACY_TEST_TYPE;
         name_ = name;
     }
     AccuracyTest::~AccuracyTest()

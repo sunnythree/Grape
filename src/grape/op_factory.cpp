@@ -5,8 +5,12 @@
 #include "grape/op/softmax_with_loss.h"
 #include "grape/op/accuracy_test.h"
 #include "grape/op/mnist_data.h"
+#include "grape/op/pool_max.h"
+#include "grape/op/pool_mean.h"
+#include "grape/op/conv2d.h"
 #include "grape/log.h"
 #include "grape/error.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
@@ -63,21 +67,70 @@ namespace Grape
                 opp.out_dim_,
                 opp.has_bias_,
                 GetActivationByString(opp.activation_)
-                );
-        }else if(opp.type_ == "Softmax"){
-            bop = std::make_shared<Softmax>(opp.name_,opp.batch_,opp.in_dim_);
-        }else if(opp.type_ == "SoftmaxWithLoss"){
-            bop = std::make_shared<SoftmaxWithLoss>(opp.name_,opp.batch_,opp.in_dim_);
-        }else if(opp.type_ == "AccuracyTest"){
-            bop = std::make_shared<AccuracyTest>(opp.name_,opp.batch_,opp.in_dim_);
-        }else if(opp.type_ == "MnistData"){
+            );
+        }else if(opp.type_ == STRING_SOFTMAX_TYPE){
+            bop = std::make_shared<Softmax>(
+                opp.name_,
+                opp.batch_,
+                opp.in_dim_
+            );
+        }else if(opp.type_ == STRING_SOFTMAX_WITH_LOSS_TYPE){
+            bop = std::make_shared<SoftmaxWithLoss>(
+                opp.name_,
+                opp.batch_,
+                opp.in_dim_
+            );
+        }else if(opp.type_ == STRING_ACCURACY_TEST_TYPE){
+            bop = std::make_shared<AccuracyTest>(
+                opp.name_,
+                opp.batch_,
+                opp.in_dim_
+            );
+        }else if(opp.type_ == STRING_MNIST_DATA_TYPE){
             bop = std::make_shared<MnistData>(
-                opp.name_,opp.data_path_,
+                opp.name_,
+                opp.data_path_,
                 opp.label_path_,
                 opp.batch_,
                 opp.random_,
-                opp.sample_count_);
-        }else{
+                opp.sample_count_
+            );
+        }else if(opp.type_ == STRING_POOL_MAX_TYPE){
+            bop = std::make_shared<PoolMax>(
+                opp.name_,
+                opp.batch_,
+                opp.in_c_,
+                opp.in_h_,
+                opp.in_w_,
+                opp.ksize_,
+                opp.stride_,
+                opp.padding_
+            );
+        }else if(opp.type_ == STRING_POOL_MAX_TYPE){
+            bop = std::make_shared<PoolMean>(
+                opp.name_,
+                opp.batch_,
+                opp.in_c_,
+                opp.in_h_,
+                opp.in_w_
+            );
+        }else if(opp.type_ == STRING_POOL_MAX_TYPE){
+            bop = std::make_shared<Conv2d>(
+                opp.name_,
+                opp.batch_,
+                opp.in_c_,
+                opp.in_h_,
+                opp.in_w_,
+                opp.out_c_,
+                opp.group_,
+                opp.ksize_,
+                opp.stride_,
+                opp.padding_,
+                opp.has_bias_,
+                GetActivationByString(opp.activation_)
+            );
+        }
+        else{
             Log::e(TAG,"Op type not consist, you input is "+opp.type_);
         }
         return bop;

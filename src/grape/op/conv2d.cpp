@@ -7,11 +7,12 @@
 #include "grape/util/col2im.h"
 #include "grape/util/col2im.h"
 #include "grape/util/random.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "Conv2d";
-    const static std::string CONV_TYPE = "Conv2d";
+    
     Conv2d::Conv2d(
             std::string name, 
             uint32_t batch_size,
@@ -39,7 +40,7 @@ namespace Grape
         has_bias_(has_bias),
         activation_(activation)
     {
-        type_ = CONV_TYPE;
+        type_ = STRING_CONV_TYPE;
         name_ = name;
         out_w_ = (in_w_+ 2*padding_-ksize_)/stride_ + 1;
         out_h_ = (in_h_+ 2*padding_-ksize_)/stride_ + 1;

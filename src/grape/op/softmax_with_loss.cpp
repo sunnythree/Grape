@@ -3,19 +3,20 @@
 #include "grape/util/blas.h"
 #include "grape/util/util.h"
 #include "grape/log.h"
+#include "grape/global_config.h"
 
 
 namespace Grape
 {
     const static std::string TAG = "SoftmaxWithLoss";
-    const static std::string POOL_SOFTMAX_WITH_LOSS_TYPE = "SoftmaxWithLoss";
+    
     SoftmaxWithLoss::SoftmaxWithLoss(std::string name, uint32_t batch_size, uint32_t in_dim):
     Op({DATA,DATA},{DATA}),
     batch_size_(batch_size),
     in_dim_(in_dim),
     temperature_(1.)
     {
-        type_ = POOL_SOFTMAX_WITH_LOSS_TYPE;
+        type_ = STRING_SOFTMAX_WITH_LOSS_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,in_dim_}),DATA,sizeof(float));

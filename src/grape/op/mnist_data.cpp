@@ -3,11 +3,12 @@
 #include "grape/util/blas.h"
 #include "grape/util/random.h"
 #include "grape/log.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "MnistData";
-    const static std::string MNIST_DATA_TYPE = "MnistData";
+    
     static uint32_t mnist_data_size = 784;
     static uint32_t mnist_label_size = 1;
 
@@ -20,7 +21,7 @@ namespace Grape
     random_(random),
     sample_count_(sample_count)
     {
-        type_ = MNIST_DATA_TYPE;
+        type_ = STRING_MNIST_DATA_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,784}),DATA,sizeof(float));

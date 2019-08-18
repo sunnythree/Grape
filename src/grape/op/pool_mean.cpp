@@ -1,16 +1,17 @@
 #include "grape/op/pool_mean.h"
 #include "grape/util/pool.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "PoolMean";
-    const static std::string POOL_MEAN_TYPE = "PoolMean";
+    
     PoolMean::PoolMean(
             std::string name, 
             uint32_t batch_size,
-            uint32_t in_w,
+            uint32_t in_c,
             uint32_t in_h,
-            uint32_t in_c
+            uint32_t in_w
             ):
         Op({DATA,WEIGHTS,BIAS}, {DATA}),
         batch_size_(batch_size),
@@ -18,6 +19,8 @@ namespace Grape
         in_h_(in_h),
         in_c_(in_c)
     {
+        name_ = name;
+        type_ = STRING_POOL_MEAN_TYPE;
         int output_size = in_c * batch_size;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
             Shape({batch_size_,in_c}),DATA,sizeof(float));

@@ -3,11 +3,12 @@
 #include "grape/util/blas.h"
 #include "grape/util/util.h"
 #include "grape/log.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "Softmax";
-    const static std::string POOL_SOFTMAX_TYPE = "Softmax";
+    
 
     Softmax::Softmax(std::string name, uint32_t batch_size, uint32_t in_dim):
     Op({DATA},{DATA}),
@@ -15,7 +16,7 @@ namespace Grape
     in_dim_(in_dim),
     temperature_(1.)
     {
-        type_ = POOL_SOFTMAX_TYPE;
+        type_ = STRING_SOFTMAX_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
         Shape({batch_size_,in_dim_}),DATA,sizeof(float));

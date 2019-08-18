@@ -1,5 +1,12 @@
+#include "cuda_runtime.h"
+#include "curand.h"
+#include "cublas_v2.h"
 
-namespace grape{
+#include "grape/util/im2col.h"
+#include "grape/util/cuda.h"
+
+
+namespace Grape{
 
     __global__ void forward_maxpool_kernel(int n, int in_h, int in_w, int in_c, int stride, int size, int pad, float *input, float *output, int *indexes)
     {
@@ -92,7 +99,7 @@ namespace grape{
     {
         backward_maxpool_kernel<<<cuda_gridsize(n), BLOCK>>>(n, h, w, c, stride,
             size, pad, in_diff, out_diff, indexes);
-        check_error(cudaPeekAtLastError());
+        cuda_check_error(cudaPeekAtLastError());
     }
 
     
@@ -144,7 +151,7 @@ namespace grape{
     {
         backward_avgpool_kernel<<<cuda_gridsize(n), BLOCK>>>(
             n, w, h, c, in_diff, out_diff);
-        check_error(cudaPeekAtLastError());
+        cuda_check_error(cudaPeekAtLastError());
     }
 
 }

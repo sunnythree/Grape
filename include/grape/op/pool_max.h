@@ -11,9 +11,9 @@ namespace Grape{
         explicit PoolMax(
             std::string name, 
             uint32_t batch_size,
-            uint32_t in_w,
-            uint32_t in_h,
             uint32_t in_c,
+            uint32_t in_h,
+            uint32_t in_w,
             uint32_t ksize,
             uint32_t stride,
             uint32_t padding

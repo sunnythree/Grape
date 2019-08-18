@@ -36,6 +36,17 @@ namespace Grape{
         bool random_;
         uint32_t sample_count_;
         std::string activation_;
+        //conv2d and pool
+        uint32_t in_c_;
+        uint32_t in_h_;
+        uint32_t in_w_;
+        uint32_t out_c_;
+        uint32_t out_h_;
+        uint32_t out_w_;
+        uint32_t group_;
+        uint32_t ksize_;
+        uint32_t stride_;
+        uint32_t padding_;
         
 
         template <class Archive>
@@ -79,12 +90,57 @@ namespace Grape{
                 ar.setNextName(nullptr);
             }
             try{
-                ar(cereal::make_nvp("sample_count",sample_count_));
+                ar(cereal::make_nvp("activation",activation_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
             try{
-                ar(cereal::make_nvp("activation",activation_));
+                ar(cereal::make_nvp("in_c",in_c_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("in_h",in_h_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("in_w",in_w_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("out_c",out_c_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("out_h",out_h_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("out_w",out_w_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("group",group_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("ksize",ksize_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("stride",stride_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("padding",padding_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }

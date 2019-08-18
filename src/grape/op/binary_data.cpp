@@ -3,12 +3,12 @@
 #include "grape/util/blas.h"
 #include "grape/util/random.h"
 #include "grape/log.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "BinaryData";
-    const static std::string BINARY_DATA_TYPE = "BinaryData";
-    
+
     BinaryData::BinaryData(std::string name, std::string file_path, uint32_t batch_size, uint32_t in_dim,
     uint32_t out_dim, uint32_t data_offset, bool one_hot):
     Op({},{DATA,DATA}),
@@ -18,7 +18,7 @@ namespace Grape
     in_dim_(in_dim),
     out_dim_(out_dim)
     {
-        type_ = BINARY_DATA_TYPE;
+        type_ = STRING_BINARY_DATA_TYPE;
         name_ = name;
         tmp_data_.reserve(in_dim);
         file_in_.open(file_path_,std::ios::binary);

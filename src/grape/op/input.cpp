@@ -1,18 +1,19 @@
 #include <string>
 #include "grape/op/input.h"
 #include "grape/log.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "Input";
-    const static std::string MNIST_INPUT_TYPE = "Input";
+    
 
     Input::Input(std::string name, uint32_t batch_size, uint32_t out_dim):
     Op({},{DATA}),
     batch_size_(batch_size),
     out_dim_(out_dim)
     {
-        type_ = MNIST_INPUT_TYPE;
+        type_ = STRING_INPUT_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
             Shape({batch_size_,out_dim_}),DATA,sizeof(float));

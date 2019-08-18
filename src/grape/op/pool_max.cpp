@@ -1,16 +1,17 @@
 #include "grape/op/pool_max.h"
 #include "grape/util/pool.h"
+#include "grape/global_config.h"
 
 namespace Grape
 {
     const static std::string TAG = "PoolMax";
-    const static std::string POOL_MAX_TYPE = "PoolMax";
+    
     PoolMax::PoolMax(
             std::string name, 
             uint32_t batch_size,
-            uint32_t in_w,
-            uint32_t in_h,
             uint32_t in_c,
+            uint32_t in_h,
+            uint32_t in_w,
             uint32_t ksize,
             uint32_t stride,
             uint32_t padding
@@ -24,6 +25,8 @@ namespace Grape
         stride_(stride),
         padding_(padding)
     {
+        name_ = name;
+        type_ = STRING_POOL_MAX_TYPE;
         out_w_ = (in_w_ + padding - ksize_)/stride + 1;
         out_h_ = (in_h_ + padding - ksize_)/stride + 1;
         out_c_ = in_c_;

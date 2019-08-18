@@ -11,9 +11,9 @@ namespace Grape{
         explicit PoolMean(
             std::string name, 
             uint32_t batch_size,
-            uint32_t in_w,
+            uint32_t in_c,
             uint32_t in_h,
-            uint32_t in_c
+            uint32_t in_w
             );
         virtual ~PoolMean();
         void Setup();

@@ -2,10 +2,8 @@
 #include "curand.h"
 #include "cublas_v2.h"
 
-extern "C" {
 #include "grape/util/im2col.h"
 #include "grape/util/cuda.h"
-}
 
 namespace Grape
 {

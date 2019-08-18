@@ -13,7 +13,7 @@
 
 namespace Grape{
     const static std::string TAG = "Fc";
-    const static std::string FC_TYPE = "Fc";
+    
     Fc::Fc(
         std::string name, 
         uint32_t batch_size,
@@ -29,7 +29,7 @@ namespace Grape{
     activation_(activation),
     setuped_(false)
     {
-        type_ = FC_TYPE;
+        type_ = STRING_FC_TYPE;
         name_ = name;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
             Shape({batch_size_,out_dim_}),DATA,sizeof(float));
