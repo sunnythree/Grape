@@ -53,7 +53,7 @@
                 "cnnections": [
                     {
                         "from": "test_data:0",
-                        "to": "fc0:0"
+                        "to": "conv0:0"
                     },
                     {
                         "from": "conv0:0",
@@ -109,7 +109,7 @@
             {
                 "name": "graph_mnist_train",
                 "max_iter": 2500,
-                "cal_mode": "gpu",
+                "cal_mode": "cpu",
                 "phase": "train",
                 "device_id": 0,
                 "serialize_type":"json",
@@ -120,7 +120,7 @@
             {
                 "name": "graph_mnist_test",
                 "max_iter": 500,
-                "cal_mode": "gpu",
+                "cal_mode": "cpu",
                 "serialize_type":"json",
                 "phase": "test",
                 "device_id": 0,

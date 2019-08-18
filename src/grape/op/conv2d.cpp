@@ -16,9 +16,9 @@ namespace Grape
     Conv2d::Conv2d(
             std::string name, 
             uint32_t batch_size,
-            uint32_t in_w,
-            uint32_t in_h,
             uint32_t in_c,
+            uint32_t in_h,
+            uint32_t in_w,
             uint32_t out_c,
             uint32_t group,
             uint32_t ksize,
@@ -65,7 +65,7 @@ namespace Grape
         }
 
         im_col_tensor_ = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({out_c_/group_*ksize*ksize,out_w_*out_h_}),WEIGHTS,sizeof(float));
+            Shape({in_c_/group_*ksize*ksize,out_w_*out_h_}),WEIGHTS,sizeof(float));
     }
     Conv2d::~Conv2d()
     {
@@ -73,7 +73,7 @@ namespace Grape
     }
     void Conv2d::Setup()
     {
-   if(setuped_){
+        if(setuped_){
             return;
         }
         //create input tensor,only weights and bias
@@ -103,14 +103,12 @@ namespace Grape
     {
         Tensor* in_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
-        Tensor* bias_tensor = prev_[2].get();
         Tensor* out_tensor = next_[0].get();
         Tensor* im_col_tensor = im_col_tensor_.get();
 
         float *in_data = (float *)in_tensor->cpu_data();
         float *out_data = (float *)out_tensor->mutable_cpu_data();
         float *weight_data = (float *)weight_tensor->cpu_data();
-        float *bias_data = (float *)bias_tensor->cpu_data();
         float *im_col_data = (float *)im_col_tensor->mutable_cpu_data();
 
         fill_cpu(batch_size_*out_c_*out_h_*out_w_, 0, out_data, 1);
@@ -134,6 +132,8 @@ namespace Grape
         }
 
         if(has_bias_) {
+            Tensor* bias_tensor = prev_[2].get();
+            float *bias_data = (float *)bias_tensor->cpu_data();
             add_bias(out_data, bias_data, batch_size_, out_c_, out_w_*out_h_);
         }
 
@@ -149,7 +149,6 @@ namespace Grape
 
         Tensor* in_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
-        Tensor* bias_tensor = prev_[2].get();
         Tensor* out_tensor = next_[0].get();
         Tensor* im_col_tensor = im_col_tensor_.get();
 
@@ -159,12 +158,13 @@ namespace Grape
         float *in_diff = (float *)out_tensor->cpu_diff();
         float *weight_data = (float *)weight_tensor->cpu_data();
         float *weight_diff = (float *)weight_tensor->mutable_cpu_diff();
-        float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
         float *im_col_data = (float *)im_col_tensor->cpu_data();
 
         gradient_array(out_data, in_c_*in_w_*in_h_*batch_size_, activation_, in_diff);
 
         if(has_bias_){
+            Tensor* bias_tensor = prev_[2].get();
+            float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
             backward_bias(bias_diff, in_diff, batch_size_, in_c_, k);
         }
 
