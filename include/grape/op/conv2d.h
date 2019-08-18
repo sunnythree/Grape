@@ -16,7 +16,8 @@ namespace Grape{
             uint32_t in_w,
             uint32_t in_h,
             uint32_t in_c,
-            uint32_t knum,
+            uint32_t out_c,
+            uint32_t group,
             uint32_t ksize,
             uint32_t stride,
             uint32_t padding,
@@ -48,13 +49,19 @@ namespace Grape{
         uint32_t in_w_;
         uint32_t in_h_;
         uint32_t in_c_;
-        uint32_t knum_;
+        uint32_t out_w_;
+        uint32_t out_h_;
+        uint32_t out_c_;
+        uint32_t group_;
         uint32_t ksize_;
         uint32_t stride_;
         uint32_t padding_;
         bool has_bias_ = true;
         ACTIVATION activation_ = LEAKY;
         bool setuped_ = false;
+        std::shared_ptr<Tensor> im_col_tensor_;
+        uint32_t noutputs_;
+        uint32_t nweights_;
     };
 }
 
