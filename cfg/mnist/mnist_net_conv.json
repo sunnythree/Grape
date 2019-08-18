@@ -23,7 +23,7 @@
                     },
                     {
                         "from": "pool0:0",
-                        "to": "conv01:0"
+                        "to": "conv1:0"
                     },
                     {
                         "from": "conv1:0",
@@ -61,7 +61,7 @@
                     },
                     {
                         "from": "pool0:0",
-                        "to": "conv01:0"
+                        "to": "conv1:0"
                     },
                     {
                         "from": "conv1:0",

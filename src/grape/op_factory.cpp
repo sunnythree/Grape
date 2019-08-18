@@ -106,7 +106,7 @@ namespace Grape
                 opp.stride_,
                 opp.padding_
             );
-        }else if(opp.type_ == STRING_POOL_MAX_TYPE){
+        }else if(opp.type_ == STRING_POOL_MEAN_TYPE){
             bop = std::make_shared<PoolMean>(
                 opp.name_,
                 opp.batch_,
@@ -114,7 +114,7 @@ namespace Grape
                 opp.in_h_,
                 opp.in_w_
             );
-        }else if(opp.type_ == STRING_POOL_MAX_TYPE){
+        }else if(opp.type_ == STRING_CONV2D_TYPE){
             bop = std::make_shared<Conv2d>(
                 opp.name_,
                 opp.batch_,

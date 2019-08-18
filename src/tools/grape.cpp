@@ -16,6 +16,7 @@
 #include "grape/parse/parser.h"
 #include "grape/op_factory.h"
 #include "grape/graph_factory.h"
+#include "grape/log.h"
 
 using namespace std;
 using namespace Grape;
@@ -70,6 +71,7 @@ int main(int argc,char **argv)
         std::cout<<"usage: ./Grape cfb_file"<<std::endl;
         return -1;
     }
+    Log::set_log_level(VERBOSE);
     Parser parser;
     parser.Parse(argv[1]);
     

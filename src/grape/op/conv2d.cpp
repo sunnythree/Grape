@@ -40,7 +40,7 @@ namespace Grape
         has_bias_(has_bias),
         activation_(activation)
     {
-        type_ = STRING_CONV_TYPE;
+        type_ = STRING_CONV2D_TYPE;
         name_ = name;
         out_w_ = (in_w_+ 2*padding_-ksize_)/stride_ + 1;
         out_h_ = (in_h_+ 2*padding_-ksize_)/stride_ + 1;
