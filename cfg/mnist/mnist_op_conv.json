@@ -1,0 +1,112 @@
+{
+    "ops": {
+        "op_list": [
+            {
+                "name": "train_data",
+                "type": "MnistData",
+                "batch": 20,
+                "data_path": "data/mnist/train-images-idx3-ubyte",
+                "label_path": "data/mnist/train-labels-idx1-ubyte",
+                "sample_count":50000,
+                "random": false
+            },
+            {
+                "name": "test_data",
+                "type": "MnistData",
+                "batch": 20,
+                "data_path": "data/mnist/t10k-images-idx3-ubyte",
+                "label_path": "data/mnist/t10k-labels-idx1-ubyte",
+                "sample_count":10000,
+                "random": false
+            },
+            {
+                "name": "conv0",
+                "type": "Conv2d",
+                "batch": 20,
+                "in_c": 1,
+                "in_h": 28,
+                "in_w": 28,
+                "out_c": 6,
+                "group": 1,
+                "ksize": 3,
+                "stride": 1,
+                "padding": 2,
+                "has_bias": true,
+                "activation":"leaky"
+            },
+            {
+                "name": "pool0",
+                "type": "PoolMax",
+                "batch": 20,
+                "in_c": 6,
+                "in_h": 28,
+                "in_w": 28,
+                "ksize": 2,
+                "stride": 2,
+                "padding": 0
+            },
+            {
+                "name": "conv1",
+                "type": "Conv2d",
+                "batch": 20,
+                "in_c": 6,
+                "in_h": 28,
+                "in_w": 28,
+                "out_c": 24,
+                "group": 1,
+                "ksize": 3,
+                "stride": 1,
+                "padding": 2,
+                "has_bias": true,
+                "activation":"leaky"
+            },
+            {
+                "name": "pool1",
+                "type": "PoolMax",
+                "batch": 20,
+                "in_c": 24,
+                "in_h": 28,
+                "in_w": 28,
+                "ksize": 2,
+                "stride": 2,
+                "padding": 0
+            },
+            {
+                "name": "fc0",
+                "type": "Fc",
+                "batch": 20,
+                "in_dim": 256,
+                "out_dim": 64,
+                "has_bias": true,
+                "activation":"leaky"
+            },
+            {
+                "name": "fc1",
+                "type": "Fc",
+                "batch": 20,
+                "in_dim": 64,
+                "out_dim": 10,
+                "has_bias": true,
+                "activation":"leaky"
+            },
+            {
+                "name": "softmax_loss",
+                "type": "SoftmaxWithLoss",
+                "batch": 20,
+                "in_dim": 10
+            },
+            {
+                "name": "softmax",
+                "type": "Softmax",
+                "batch": 20,
+                "in_dim": 10
+            },
+            {
+                "name": "accuracy_test",
+                "type": "AccuracyTest",
+                "batch": 20,
+                "in_dim": 10
+            }
+        ]
+    }
+}

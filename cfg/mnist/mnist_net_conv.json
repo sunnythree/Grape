@@ -1,0 +1,135 @@
+{
+    "op_paths": {
+        "path_list": [
+            {
+                "name": "mnist_op",
+                "path": "cfg/mnist/mnist_op_conv.json"
+            }
+        ]
+    },
+    "connections": {
+        "connection_list": [
+            {
+                "op_list_name": "mnist_op",
+                "graph_name": "graph_mnist_train",
+                "cnnections": [
+                    {
+                        "from": "train_data:0",
+                        "to": "conv0:0"
+                    },
+                    {
+                        "from": "conv0:0",
+                        "to": "pool0:0"
+                    },
+                    {
+                        "from": "pool0:0",
+                        "to": "conv01:0"
+                    },
+                    {
+                        "from": "conv1:0",
+                        "to": "pool1:0"
+                    },
+                    {
+                        "from": "pool1:0",
+                        "to": "fc0:0"
+                    },
+                    {
+                        "from": "fc0:0",
+                        "to": "fc1:0"
+                    },
+                    {
+                        "from": "fc1:0",
+                        "to": "softmax_loss:0"
+                    },
+                    {
+                        "from": "train_data:1",
+                        "to": "softmax_loss:1"
+                    }
+                ]
+            },
+            {
+                "op_list_name": "mnist_op",
+                "graph_name": "graph_mnist_test",
+                "cnnections": [
+                    {
+                        "from": "test_data:0",
+                        "to": "fc0:0"
+                    },
+                    {
+                        "from": "conv0:0",
+                        "to": "pool0:0"
+                    },
+                    {
+                        "from": "pool0:0",
+                        "to": "conv01:0"
+                    },
+                    {
+                        "from": "conv1:0",
+                        "to": "pool1:0"
+                    },
+                    {
+                        "from": "pool1:0",
+                        "to": "fc0:0"
+                    },
+                    {
+                        "from": "fc0:0",
+                        "to": "fc1:0"
+                    },
+                    {
+                        "from": "fc1:0",
+                        "to": "softmax:0"
+                    },
+                    {
+                        "from": "softmax:0",
+                        "to": "accuracy_test:0"
+                    },
+                    {
+                        "from": "test_data:1",
+                        "to": "accuracy_test:1"
+                    }
+                ]
+            }
+        ]
+    },
+    "optimizers": {
+        "optimizer_list": [
+            {
+                "graph_name":"graph_mnist_train",
+                "type": "sgd",
+                "lr": 0.01,
+                "momentum":0.9,
+                "policy":"step",
+                "step":10000,
+                "gamma":0.8
+            }
+        ]
+    },
+    "graphs": {
+        "graph_list": [
+            {
+                "name": "graph_mnist_train",
+                "max_iter": 2500,
+                "cal_mode": "gpu",
+                "phase": "train",
+                "device_id": 0,
+                "serialize_type":"json",
+                "save_path": "model/mnist_model",
+                "display_iter":1,
+                "snapshot_iter":1000
+            },
+            {
+                "name": "graph_mnist_test",
+                "max_iter": 500,
+                "cal_mode": "gpu",
+                "serialize_type":"json",
+                "phase": "test",
+                "device_id": 0,
+                "save_path": "model/mnist_model",
+                "display_iter":500
+            }
+        ]
+    },
+    "net": {
+        "max_iter": 30
+    }
+}
