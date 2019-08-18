@@ -8,8 +8,13 @@ namespace Grape
     class BatchNorm : public Op
     {
     public:
-        BatchNorm(std::string name, std::string file_path, uint32_t batch_size, uint32_t in_dim,uint32_t out_dim, 
-        uint32_t data_offset, bool one_hot = false);
+        BatchNorm(
+            std::string name,
+            uint32_t batch_size_,
+            uint32_t in_c_,
+            uint32_t in_h_,
+            uint32_t in_w_
+        );
         virtual ~BatchNorm();
 
         virtual void Setup();
@@ -24,12 +29,10 @@ namespace Grape
         virtual void UpdateWeightsGpu(Optimizer &opt);
 #endif
     private:
-        std::string file_path_;
-        std::string file_size_;
-        uint32_t data_offset_;
-        bool one_hot_;
-        uint32_t out_dim_;
-        uint32_t in_dim_;
+        uint32_t batch_size_;
+        uint32_t in_c_;
+        uint32_t in_h_;
+        uint32_t in_w_;
     };
     
 } // namespace Grape
