@@ -96,7 +96,7 @@
             {
                 "graph_name":"graph_mnist_train",
                 "type": "sgd",
-                "lr": 0.1,
+                "lr": 0.01,
                 "momentum":0.9,
                 "policy":"step",
                 "step":10000,
@@ -114,8 +114,8 @@
                 "device_id": 0,
                 "serialize_type":"json",
                 "save_path": "model/mnist_model",
-                "display_iter":1,
-                "snapshot_iter":1000
+                "display_iter":100,
+                "snapshot_iter":10000
             },
             {
                 "name": "graph_mnist_test",

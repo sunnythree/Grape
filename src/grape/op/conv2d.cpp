@@ -61,7 +61,7 @@ namespace Grape
 
         if(has_bias_){
             prev_[2] = std::make_shared<Tensor>(static_cast<Op *>(this),
-                Shape({in_c_/group_*out_c_}),BIAS,sizeof(float));
+                Shape({out_c_}),BIAS,sizeof(float));
         }
 
         im_col_tensor_ = std::make_shared<Tensor>(static_cast<Op *>(this),
@@ -83,12 +83,13 @@ namespace Grape
             //Log::v(TAG,"create weights");
             //assert(prev_[0].get() != nullptr);
 
+            float scale = sqrt(2./(ksize_*ksize_*in_c_/group_));
+            int n = prev_[1]->shape().count();
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
             Random::GetInstance().SetSeed(seed);
-            Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
-            prev_[1]->shape().count(),0,0.1);
+            Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),n,0,scale);
     
-            fill_cpu(prev_[1]->shape().count(),0,(float *)prev_[1]->mutable_cpu_diff(),1);
+            fill_cpu(n,0,(float *)prev_[1]->mutable_cpu_diff(),1);
 
             if(has_bias_){
                 //Log::v(TAG,"create bias");
