@@ -86,7 +86,7 @@ namespace Grape
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
             Random::GetInstance().SetSeed(seed);
             Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
-            prev_[1]->shape().count(),0,1);
+            prev_[1]->shape().count(),0,0.1);
     
             fill_cpu(prev_[1]->shape().count(),0,(float *)prev_[1]->mutable_cpu_diff(),1);
 
@@ -112,7 +112,7 @@ namespace Grape
         float *im_col_data = (float *)im_col_tensor->mutable_cpu_data();
 
         fill_cpu(batch_size_*out_c_*out_h_*out_w_, 0, out_data, 1);
-        int m = in_c_/group_;
+        int m = out_c_/group_;
         int k = ksize_*ksize_*in_c_/group_;
         int n = out_w_*out_h_;
         for(int i = 0; i < batch_size_; ++i){
@@ -143,7 +143,7 @@ namespace Grape
 
     void Conv2d::BackwardCpu()
     {
-        int m = in_c_/group_;
+        int m = out_c_/group_;
         int n = ksize_*ksize_*in_c_/group_;
         int k = out_w_*out_h_;
 
@@ -175,7 +175,7 @@ namespace Grape
                 float *c = weight_diff +  j*nweights_/group_;
 
                 float *im  = in_data + (i*group_ + j)*in_c_/group_*in_h_*in_w_;
-                float *imd = in_diff + (i*group_ + j)*in_c_/group_*in_h_*in_w_;
+                float *imd = out_diff + (i*group_ + j)*in_c_/group_*in_h_*in_w_;
 
                 if(ksize_ == 1){
                     b = im;
