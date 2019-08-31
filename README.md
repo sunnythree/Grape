@@ -1,8 +1,8 @@
 ![Grape](/doc/pics/logo.png)
 
-## What is Grape?<br />  
+## What is Grape?  
 Grape is a machine learning framework implemented by c++ and cuda.  
-##Introduction<br />  
+## Introduction  
 When I began to learn deep leanring,I feel that [caffe](https://github.com/BVLC/caffe) has too   
 mach dependences,[darknet](https://github.com/pjreddie/darknet) is written by c but c++,  
 and [tiny_dnn](https://github.com/tiny-dnn/tiny-dnn) does not support cuda well。  
@@ -17,7 +17,7 @@ Grape has several advantages:
 * build network by JSON.(JSON is more readable than protobuf)  
 * c++ and cuda (specially cuda)is very fast.  
 
-##Examples<br />  
+## Examples  
 
 For now,mnist example is offered,Fully connected neural networks can easily reach 98%  
 and convolutional neural networks can easily reach 99%.  
@@ -27,7 +27,7 @@ and convolutional neural networks can easily reach 99%.
 QQ group: 704153141  
 EMAIL:1318288270@qq.com  
 
-##Thranks  
+## Thranks  
 * [tiny_dnn](https://github.com/tiny-dnn/tiny-dnn) 
 * [caffe](https://github.com/BVLC/caffe)
 * [tiny_dnn](https://github.com/tiny-dnn/tiny-dnn)
