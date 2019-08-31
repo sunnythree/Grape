@@ -25,12 +25,10 @@ Grape has several advantages:
 For now,mnist example is offered,Fully connected neural networks can easily reach 98% 
 and convolutional neural networks can easily reach 99%.
 
-
 ## communicate with
 
 QQ group: 704153141
 EMAIL:1318288270@qq.com
-
 
 ##Thranks
 
