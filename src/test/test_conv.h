@@ -12,10 +12,10 @@ TEST(conv,conv2d)
     std::vector<tensorptr_t> & tttt = (std::vector<tensorptr_t> &)conv.prev();
     tttt[0] = tmp;
     float a[16] = {
-        1,1,1,1,
-        1,1,1,1,
-        1,1,1,1,
-        1,1,1,1
+        1,1,1,-1,
+        0,0,0,-1,
+        1,1,1,-1,
+        2,2,2,-1
     };
     float *in_cpu_data = (float *)tmp->mutable_cpu_data();
     for(int i=0;i<16;i++){

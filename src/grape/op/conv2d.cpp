@@ -84,11 +84,11 @@ namespace Grape
             //assert(prev_[0].get() != nullptr);
 
             unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-            //Random::GetInstance().SetSeed(seed);
-            //Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
-            //prev_[1]->shape().count(),0,0.1);
-            fill_cpu(prev_[1]->shape().count(),1,(float *)prev_[1]->mutable_cpu_data(),1);
-            //fill_cpu(prev_[1]->shape().count(),0,(float *)prev_[1]->mutable_cpu_diff(),1);
+            Random::GetInstance().SetSeed(seed);
+            Random::GetInstance().SetNormalFloat((float *)prev_[1]->mutable_cpu_data(),
+            prev_[1]->shape().count(),0,0.1);
+    
+            fill_cpu(prev_[1]->shape().count(),0,(float *)prev_[1]->mutable_cpu_diff(),1);
 
             if(has_bias_){
                 //Log::v(TAG,"create bias");

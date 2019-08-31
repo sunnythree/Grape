@@ -96,7 +96,7 @@
             {
                 "graph_name":"graph_mnist_train",
                 "type": "sgd",
-                "lr": 0.01,
+                "lr": 0.1,
                 "momentum":0.9,
                 "policy":"step",
                 "step":10000,
@@ -109,7 +109,7 @@
             {
                 "name": "graph_mnist_train",
                 "max_iter": 2500,
-                "cal_mode": "cpu",
+                "cal_mode": "gpu",
                 "phase": "train",
                 "device_id": 0,
                 "serialize_type":"json",
@@ -120,7 +120,7 @@
             {
                 "name": "graph_mnist_test",
                 "max_iter": 500,
-                "cal_mode": "cpu",
+                "cal_mode": "gpu",
                 "serialize_type":"json",
                 "phase": "test",
                 "device_id": 0,

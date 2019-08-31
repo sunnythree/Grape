@@ -1,6 +1,7 @@
 #include "grape/op/pool_max.h"
 #include "grape/util/pool.h"
 #include "grape/global_config.h"
+#include "grape/util/blas.h"
 
 namespace Grape
 {
@@ -67,7 +68,9 @@ namespace Grape
         float* out_diff = (float *)in_data_tensor->mutable_cpu_diff();
         float* in_diff = (float *)out_data_tensor->cpu_diff();
         int* indexes = (int *)index_tensor->cpu_data();
-        backward_maxpool_cpu(index_tensor->shape().count(),in_diff,out_diff,indexes);
+        int n = index_tensor->shape().count();
+        fill_cpu(n,0,out_diff,1);
+        backward_maxpool_cpu(n,in_diff,out_diff,indexes);
     }
 
     void PoolMax::UpdateWeightsCpu(Optimizer &opt)
@@ -84,7 +87,7 @@ namespace Grape
         float* in_data = (float *)in_data_tensor->gpu_data();
         float* out_data = (float *)out_data_tensor->mutable_gpu_data();
         int* indexes = (int *)index_tensor->mutable_gpu_data();
-        int n = index_tensor->shape().count();
+        int n = out_data_tensor->shape().count();
         forward_maxpool_gpu(n,in_w_,in_h_,in_c_,stride_,ksize_,padding_,in_data,out_data,indexes);
     } 
 
@@ -96,7 +99,8 @@ namespace Grape
         float* out_diff = (float *)in_data_tensor->mutable_gpu_diff();
         float* in_diff = (float *)out_data_tensor->gpu_diff();
         int* indexes = (int *)index_tensor->gpu_data();
-        int n = index_tensor->shape().count();
+        int n = out_data_tensor->shape().count();
+        fill_gpu(n,0,out_diff,1);
         backward_maxpool_gpu(n,in_w_,in_h_,in_c_,stride_,ksize_,padding_,in_diff,out_diff,indexes);
     }
 
