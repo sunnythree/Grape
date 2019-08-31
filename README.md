@@ -2,8 +2,9 @@
 ![LOGO](/doc/pics/logo.png)<br />
 
 ## Introduction
-    When I began to learn deep leanring,I feel that caffe has too mach dependences,
-    darknet is written by c but c++,and tiny_dnn does not support cuda well。
+    When I began to learn deep leanring,I feel that <a href="https://github.com/BVLC/caffe">caffe</a> has too 
+    mach dependences,<a href="https://github.com/pjreddie/darknet">darknet</a> is written by c but c++,
+    and <a href="https://github.com/tiny-dnn/tiny-dnn">tiny_dnn</a> does not support cuda well。
     I hope I can combine the advantages and disadvantages of the three.
     So,Grape uses many of darknet's tool functions, and draws lessons from caffe's 
     synced_memory design and tiny_dnn's calculation diagram design.Thanks very 
