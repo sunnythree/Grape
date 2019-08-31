@@ -111,7 +111,7 @@ namespace Grape
         float *weight_data = (float *)weight_tensor->cpu_data();
         float *im_col_data = (float *)im_col_tensor->mutable_cpu_data();
 
-        fill_cpu(noutputs_, 0, out_data, 1);
+        fill_cpu(out_tensor->shape().count(), 0, out_data, 1);
         int m = out_c_/group_;
         int k = ksize_*ksize_*in_c_/group_;
         int n = out_w_*out_h_;
@@ -137,7 +137,7 @@ namespace Grape
             add_bias(out_data, bias_data, batch_size_, out_c_, out_w_*out_h_);
         }
 
-        activate_array(out_data, noutputs_, activation_);
+        activate_array(out_data, noutputs_*batch_size_, activation_);
 
     } 
 
@@ -160,7 +160,7 @@ namespace Grape
         float *weight_diff = (float *)weight_tensor->mutable_cpu_diff();
         float *im_col_data = (float *)im_col_tensor->cpu_data();
         fill_cpu(in_tensor->shape().count(), 0, out_diff, 1);
-        gradient_array(out_data, noutputs_, activation_, in_diff);
+        gradient_array(out_data, noutputs_*batch_size_, activation_, in_diff);
 
         if(has_bias_){
             Tensor* bias_tensor = prev_[2].get();
@@ -224,7 +224,7 @@ namespace Grape
         float *weight_data = (float *)weight_tensor->gpu_data();
         float *im_col_data = (float *)im_col_tensor->mutable_gpu_data();
 
-        fill_gpu(noutputs_, 0, out_data, 1);
+        fill_gpu(noutputs_*batch_size_, 0, out_data, 1);
         int m = out_c_/group_;
         int k = ksize_*ksize_*in_c_/group_;
         int n = out_w_*out_h_;
@@ -250,7 +250,7 @@ namespace Grape
             add_bias_gpu(out_data, bias_data, batch_size_, out_c_, out_w_*out_h_);
         }
 
-        activate_array_gpu(out_data, noutputs_, activation_);
+        activate_array_gpu(out_data, noutputs_*batch_size_, activation_);
     } 
 
     void Conv2d::BackwardGpu()
@@ -272,7 +272,7 @@ namespace Grape
         float *weight_diff = (float *)weight_tensor->mutable_gpu_diff();
         float *im_col_data = (float *)im_col_tensor->gpu_data();
         fill_gpu(in_tensor->shape().count(), 0, out_diff, 1);
-        gradient_array_gpu(out_data, noutputs_, activation_, in_diff);
+        gradient_array_gpu(out_data, noutputs_*batch_size_, activation_, in_diff);
 
         if(has_bias_){
             Tensor* bias_tensor = prev_[2].get();

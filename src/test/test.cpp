@@ -3,6 +3,7 @@
 #include "util_test.h"
 #include "parser_test.h"
 #include "log_test.h"
+#include "test_pool.h"
 
 
 using namespace std;

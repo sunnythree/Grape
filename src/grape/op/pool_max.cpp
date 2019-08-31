@@ -16,7 +16,7 @@ namespace Grape
             uint32_t stride,
             uint32_t padding
             ):
-        Op({DATA,WEIGHTS}, {DATA}),
+        Op({DATA,INDEX}, {DATA}),
         batch_size_(batch_size),
         in_w_(in_w),
         in_h_(in_h),
@@ -30,11 +30,10 @@ namespace Grape
         out_w_ = (in_w_ + padding - ksize_)/stride + 1;
         out_h_ = (in_h_ + padding - ksize_)/stride + 1;
         out_c_ = in_c_;
-        unsigned int output_size = out_w_ * out_h_ * out_c_ * batch_size_;
         next_[0] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({(unsigned int)(output_size*sizeof(float))}),DATA,sizeof(float));
+            Shape({batch_size_,out_c_,out_h_,out_w_}),DATA,sizeof(float));
         prev_[1] = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({(unsigned int)(output_size*sizeof(int))}),INDEX,sizeof(float));
+            Shape({batch_size_,out_c_,out_h_,out_w_}),INDEX,sizeof(int));
     }
     PoolMax::~PoolMax()
     {
@@ -50,6 +49,7 @@ namespace Grape
         Tensor* in_data_tensor = prev_[0].get();
         Tensor* out_data_tensor = next_[0].get();
         Tensor* index_tensor = prev_[1].get();
+        assert(in_data_tensor!=nullptr);
         float* in_data = (float *)in_data_tensor->cpu_data();
         float* out_data = (float *)out_data_tensor->mutable_cpu_data();
         int* indexes = (int *)index_tensor->mutable_cpu_data();
