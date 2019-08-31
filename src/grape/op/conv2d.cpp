@@ -65,7 +65,7 @@ namespace Grape
         }
 
         im_col_tensor_ = std::make_shared<Tensor>(static_cast<Op *>(this),
-            Shape({in_c_/group_*ksize*ksize,out_w_*out_h_}),WEIGHTS,sizeof(float));
+            Shape({in_c_/group_*ksize*ksize,out_w_*out_h_}),AUX,sizeof(float));
     }
     Conv2d::~Conv2d()
     {
@@ -111,7 +111,7 @@ namespace Grape
         float *weight_data = (float *)weight_tensor->cpu_data();
         float *im_col_data = (float *)im_col_tensor->mutable_cpu_data();
 
-        fill_cpu(batch_size_*out_c_*out_h_*out_w_, 0, out_data, 1);
+        fill_cpu(noutputs_, 0, out_data, 1);
         int m = out_c_/group_;
         int k = ksize_*ksize_*in_c_/group_;
         int n = out_w_*out_h_;
@@ -137,7 +137,7 @@ namespace Grape
             add_bias(out_data, bias_data, batch_size_, out_c_, out_w_*out_h_);
         }
 
-        activate_array(out_data, out_c_*out_h_*out_w_*batch_size_, activation_);
+        activate_array(out_data, noutputs_, activation_);
 
     } 
 
@@ -159,13 +159,13 @@ namespace Grape
         float *weight_data = (float *)weight_tensor->cpu_data();
         float *weight_diff = (float *)weight_tensor->mutable_cpu_diff();
         float *im_col_data = (float *)im_col_tensor->cpu_data();
-
-        gradient_array(out_data, in_c_*in_w_*in_h_*batch_size_, activation_, in_diff);
+        fill_cpu(in_tensor->shape().count(), 0, out_diff, 1);
+        gradient_array(out_data, noutputs_, activation_, in_diff);
 
         if(has_bias_){
             Tensor* bias_tensor = prev_[2].get();
             float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
-            backward_bias(bias_diff, in_diff, batch_size_, in_c_, k);
+            backward_bias(bias_diff, in_diff, batch_size_, out_c_, k);
         }
 
         for(int i = 0; i < batch_size_; ++i){
@@ -216,18 +216,16 @@ namespace Grape
     {
         Tensor* in_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
-        Tensor* bias_tensor = prev_[2].get();
         Tensor* out_tensor = next_[0].get();
         Tensor* im_col_tensor = im_col_tensor_.get();
 
-        float *in_data = (float *)in_tensor->cpu_data();
-        float *out_data = (float *)out_tensor->mutable_cpu_data();
-        float *weight_data = (float *)weight_tensor->cpu_data();
-        float *bias_data = (float *)bias_tensor->cpu_data();
-        float *im_col_data = (float *)im_col_tensor->mutable_cpu_data();
+        float *in_data = (float *)in_tensor->gpu_data();
+        float *out_data = (float *)out_tensor->mutable_gpu_data();
+        float *weight_data = (float *)weight_tensor->gpu_data();
+        float *im_col_data = (float *)im_col_tensor->mutable_gpu_data();
 
-        fill_gpu(batch_size_*out_c_*out_h_*out_w_, 0, out_data, 1);
-        int m = in_c_/group_;
+        fill_gpu(noutputs_, 0, out_data, 1);
+        int m = out_c_/group_;
         int k = ksize_*ksize_*in_c_/group_;
         int n = out_w_*out_h_;
         for(int i = 0; i < batch_size_; ++i){
@@ -247,37 +245,39 @@ namespace Grape
         }
 
         if(has_bias_) {
+            Tensor* bias_tensor = prev_[2].get();
+            float *bias_data = (float *)bias_tensor->gpu_data();
             add_bias_gpu(out_data, bias_data, batch_size_, out_c_, out_w_*out_h_);
         }
 
-        activate_array_gpu(out_data, out_c_*out_h_*out_w_*batch_size_, activation_);
+        activate_array_gpu(out_data, noutputs_, activation_);
     } 
 
     void Conv2d::BackwardGpu()
     {
-        int m = in_c_/group_;
+        int m = out_c_/group_;
         int n = ksize_*ksize_*in_c_/group_;
         int k = out_w_*out_h_;
 
         Tensor* in_tensor = prev_[0].get();
         Tensor* weight_tensor = prev_[1].get();
-        Tensor* bias_tensor = prev_[2].get();
         Tensor* out_tensor = next_[0].get();
         Tensor* im_col_tensor = im_col_tensor_.get();
 
-        float *in_data = (float *)in_tensor->cpu_data();
-        float *out_diff = (float *)in_tensor->mutable_cpu_diff();
-        float *out_data = (float *)out_tensor->cpu_data();
-        float *in_diff = (float *)out_tensor->cpu_diff();
-        float *weight_data = (float *)weight_tensor->cpu_data();
-        float *weight_diff = (float *)weight_tensor->mutable_cpu_diff();
-        float *bias_diff = (float *)bias_tensor->mutable_cpu_diff();
-        float *im_col_data = (float *)im_col_tensor->cpu_data();
-
-        gradient_array_gpu(out_data, in_c_*in_w_*in_h_*batch_size_, activation_, in_diff);
+        float *in_data = (float *)in_tensor->gpu_data();
+        float *out_diff = (float *)in_tensor->mutable_gpu_diff();
+        float *out_data = (float *)out_tensor->gpu_data();
+        float *in_diff = (float *)out_tensor->gpu_diff();
+        float *weight_data = (float *)weight_tensor->gpu_data();
+        float *weight_diff = (float *)weight_tensor->mutable_gpu_diff();
+        float *im_col_data = (float *)im_col_tensor->gpu_data();
+        fill_gpu(in_tensor->shape().count(), 0, out_diff, 1);
+        gradient_array_gpu(out_data, noutputs_, activation_, in_diff);
 
         if(has_bias_){
-            backward_bias_gpu(bias_diff, in_diff, batch_size_, in_c_, k);
+            Tensor* bias_tensor = prev_[2].get();
+            float *bias_diff = (float *)bias_tensor->mutable_gpu_diff();
+            backward_bias_gpu(bias_diff, in_diff, batch_size_, out_c_, k);
         }
 
         for(int i = 0; i < batch_size_; ++i){
@@ -287,7 +287,7 @@ namespace Grape
                 float *c = weight_diff +  j*nweights_/group_;
 
                 float *im  = in_data + (i*group_ + j)*in_c_/group_*in_h_*in_w_;
-                float *imd = in_diff + (i*group_ + j)*in_c_/group_*in_h_*in_w_;
+                float *imd = out_diff + (i*group_ + j)*in_c_/group_*in_h_*in_w_;
 
                 if(ksize_ == 1){
                     b = im;

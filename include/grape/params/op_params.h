@@ -80,6 +80,11 @@ namespace Grape{
                 ar.setNextName(nullptr);
             }
             try{
+                ar(cereal::make_nvp("has_bias",has_bias_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
                 ar(cereal::make_nvp("random",random_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
