@@ -28,7 +28,7 @@ QQ group: 704153141
 EMAIL:1318288270@qq.com  
 
 ## Thranks  
-* [tiny_dnn](https://github.com/tiny-dnn/tiny-dnn) 
+* [darknet](https://github.com/pjreddie/darknet) 
 * [caffe](https://github.com/BVLC/caffe)
 * [tiny_dnn](https://github.com/tiny-dnn/tiny-dnn)
 * [cereal](https://github.com/USCiLab/cereal)
