@@ -4,6 +4,7 @@
 #include "parser_test.h"
 #include "log_test.h"
 #include "test_pool.h"
+#include "test_conv.h"
 
 
 using namespace std;

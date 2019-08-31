@@ -1,18 +1,25 @@
 #include "gtest/gtest.h"
-#include "grape/op/pool_max.h"
+#include "grape/op/conv2d.h"
 
 using namespace Grape;
 
-TEST(pool,max)
+TEST(conv,conv2d)
 {
-    PoolMax pm("poolmax",1,1,4,4,2,2,0);
-    std::shared_ptr<Tensor> tmp = std::make_shared<Tensor>(static_cast<Op *>(&pm),
+    Conv2d conv("conv2d",1,1,4,4,1,1,3,1,0,true,LEAKY);
+    std::shared_ptr<Tensor> tmp = std::make_shared<Tensor>(static_cast<Op *>(&conv),
             Shape({1,1,4,4}),DATA,sizeof(float));
-    std::vector<tensorptr_t> & tttt = (std::vector<tensorptr_t> &)pm.prev();
+    conv.Setup();
+    std::vector<tensorptr_t> & tttt = (std::vector<tensorptr_t> &)conv.prev();
     tttt[0] = tmp;
+    float a[16] = {
+        1,1,1,1,
+        1,1,1,1,
+        1,1,1,1,
+        1,1,1,1
+    };
     float *in_cpu_data = (float *)tmp->mutable_cpu_data();
     for(int i=0;i<16;i++){
-        in_cpu_data[i] = i;
+        in_cpu_data[i] = a[i];
     }
     printf("in_cpu_data\n");
     for(int i=0;i<4;i++){
@@ -22,8 +29,8 @@ TEST(pool,max)
         printf("\n");
     }
     printf("\n");
-    pm.ForwardCpu();
-    const std::vector<tensorptr_t> & ttttt = pm.next();
+    conv.ForwardCpu();
+    const std::vector<tensorptr_t> & ttttt = conv.next();
     Tensor* output = ttttt[0].get();
     float *out_cpu_data = (float *)output->cpu_data();
     printf("out_cpu_data\n");
