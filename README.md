@@ -24,14 +24,13 @@ Grape has several advantages:
 linux:  
 change Makefile to open/close GPU,OPENMP,DEBUG,TEST  
 and then just excute:  
-    make  
+  make  
 os x:  
-os x do not support cuda,so disable GPU option,and change "CC" and "CPP" In Makefile  
-to set one gcc compiler,and then you just need excute:  
-    make  
+os x do not support cuda,so disable GPU option,and then you just need excute:  
+  make  
 after excute make,Grape and libGrape.so(libGrape.dylib in os x) libGrape.a will generated.
 if you want compile unit test,just excute:  
-    make test  
+  make test  
 
 ## Examples  
 
