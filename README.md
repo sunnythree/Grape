@@ -26,7 +26,7 @@ change Makefile to open/close GPU,OPENMP,DEBUG,TEST
 and then just excute:  
   `make ` 
 * os x:  
-os x do not support cuda,so disable GPU option,and then you just need excute:  
+os x may do not support cuda,so disable GPU option,and then you just need excute:  
   `make`  
 after excute make,Grape and libGrape.so(libGrape.dylib in os x) libGrape.a will generated.
 if you want compile unit test,just excute:  
