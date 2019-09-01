@@ -1,4 +1,6 @@
-![Grape](/doc/pics/logo.png)
+![Grape](/doc/pics/logo.png)  
+
+[中文文档](https://blog.csdn.net/u011913612/article/details/100180166)  
 
 ## What is Grape?  
 Grape is a machine learning framework implemented by c++ and cuda.  
