@@ -37,9 +37,9 @@ if you want compile unit test,just excute:
 For now,mnist example is offered,Fully connected neural networks can easily reach 98%  
 and convolutional neural networks can easily reach 99%.  
 for running full connected neural network to train and test on mnist dataset, excute:  
-    ./Grape cfg/mnist/mnist_net.json  
+  `./Grape cfg/mnist/mnist_net.json`  
 for running convolution neural network to train and test on mnist dataset,excute:  
-    ./Grape cfg/mnist/mnist_net_conv.json  
+  `./Grape cfg/mnist/mnist_net_conv.json`  
 
 ## Design Thought  
 net contains a lot of graphs:  
