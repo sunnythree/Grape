@@ -19,10 +19,28 @@ Grape has several advantages:
 * build network by JSON.(JSON is more readable than protobuf)  
 * c++ and cuda (specially cuda)is very fast.  
 
+## Compile
+
+linux:  
+change Makefile to open/close GPU,OPENMP,DEBUG,TEST  
+and then just excute:  
+    make  
+os x:  
+os x do not support cuda,so disable GPU option,and change "CC" and "CPP" In Makefile  
+to set one gcc compiler,and then you just need excute:  
+    make  
+after excute make,Grape and libGrape.so(libGrape.dylib in os x) libGrape.a will generated.
+if you want compile unit test,just excute:  
+    make test  
+
 ## Examples  
 
 For now,mnist example is offered,Fully connected neural networks can easily reach 98%  
 and convolutional neural networks can easily reach 99%.  
+for running full connected neural network to train and test on mnist dataset, excute:  
+    ./Grape cfg/mnist/mnist_net.json  
+for running convolution neural network to train and test on mnist dataset,excute:  
+    ./Grape cfg/mnist/mnist_net_conv.json  
 
 ## Design Thought  
 net contains a lot of graphs:  
