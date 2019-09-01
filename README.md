@@ -24,6 +24,12 @@ Grape has several advantages:
 For now,mnist example is offered,Fully connected neural networks can easily reach 98%  
 and convolutional neural networks can easily reach 99%.  
 
+## Design Thought  
+net contains a lot of graphs:  
+![Grape](/doc/pics/net.png)  
+the relationship beteen op and tensor:  
+![Grape](/doc/pics/op.png)  
+
 ## communicate with  
 
 QQ group: 704153141  
