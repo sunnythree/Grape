@@ -47,7 +47,7 @@ net contains a lot of graphs:
 the relationship beteen operations and tensor:  
 ![Grape](/doc/pics/op.png)  
 Tensor contains data and connect the operations.The tensor which type is DATA transmit
-data from one op to another,The WEIGHT tensor and bias tensor only hold data for the op
+data from one op to another,The WEIGHT tensor and BIAS tensor only hold data for the op
 which create it.
 
 ## communicate with  
