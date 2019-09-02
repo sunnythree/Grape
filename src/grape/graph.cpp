@@ -282,7 +282,7 @@ namespace Grape{
         for (int32_t i = 0; i < ops.size(); i++) {
             if (ops[i] == static_cast<Op *>(&*target)) return i;
         }
-        throw Error("invalid connection");
+        throw Error("invalid connection "+target->get_name());
     }
 
     void Graph::Save(std::string path)

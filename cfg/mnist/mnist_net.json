@@ -53,6 +53,10 @@
                     },
                     {
                         "from": "fc1:0",
+                        "to": "dropout:0"
+                    },
+                    {
+                        "from": "dropout:0",
                         "to": "fc2:0"
                     },
                     {
@@ -94,7 +98,7 @@
                 "device_id": 0,
                 "serialize_type":"json",
                 "save_path": "model/mnist_model",
-                "display_iter":1,
+                "display_iter":100,
                 "snapshot_iter":1000
             },
             {
