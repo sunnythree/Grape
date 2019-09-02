@@ -83,7 +83,7 @@
         float *intput_data = (float *)intput_tensor->gpu_data();
         float *output_data = (float *)output_tensor->mutable_gpu_data();
         float *rand_data = (float *)rand_tensor->mutable_gpu_data();
-        forward_dropout_cpu(batch_size_,in_dim_,intput_data,output_data,rand_data,probability_,scale_);
+        forward_dropout_gpu(batch_size_,in_dim_,intput_data,output_data,rand_data,probability_,scale_);
     } 
     void Dropout::BackwardGpu()
     {
