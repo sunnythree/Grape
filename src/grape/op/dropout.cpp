@@ -3,6 +3,7 @@
  #include "grape/util/util.h"
  #include "grape/global_config.h"
  #include "grape/util/dropout_util.h"
+ #include "grape/util/blas.h"
 
  namespace Grape{
     const static std::string TAG = "Dropout";
@@ -34,14 +35,17 @@
     }
     void Dropout::ForwardCpu()
     {
-        if(!is_train_){
-            return;
-        }
         Tensor *intput_tensor = prev_[0].get();
         Tensor *output_tensor = next_[0].get();
-        Tensor *rand_tensor = rand_.get();
+        
         float *intput_data = (float *)intput_tensor->cpu_data();
         float *output_data = (float *)output_tensor->mutable_cpu_data();
+        if(!is_train_){
+            int size = batch_size_*in_dim_;
+            copy_cpu(size,intput_data,1,output_data,1);
+            return;
+        }
+        Tensor *rand_tensor = rand_.get();
         float *rand_data = (float *)rand_tensor->mutable_cpu_data();
         forward_dropout_cpu(batch_size_,in_dim_,intput_data,output_data,rand_data,probability_,scale_);
     }
@@ -74,14 +78,19 @@
 #ifdef GPU
     void Dropout::ForwardGpu()
     {
-        if(!is_train_){
-            return;
-        }
         Tensor *intput_tensor = prev_[0].get();
         Tensor *output_tensor = next_[0].get();
-        Tensor *rand_tensor = rand_.get();
+        
         float *intput_data = (float *)intput_tensor->gpu_data();
         float *output_data = (float *)output_tensor->mutable_gpu_data();
+
+        if(!is_train_){
+            int size = batch_size_*in_dim_;
+            copy_gpu(size,intput_data,1,output_data,1);
+            return;
+        }
+
+        Tensor *rand_tensor = rand_.get();
         float *rand_data = (float *)rand_tensor->mutable_gpu_data();
         forward_dropout_gpu(batch_size_,in_dim_,intput_data,output_data,rand_data,probability_,scale_);
     } 

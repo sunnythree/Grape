@@ -25,7 +25,7 @@ namespace Grape{
     private:
         uint32_t batch_size_ = 0;
         uint32_t in_dim_ = 0;
-        bool is_train_ = true;
+        bool is_train_ = false;
         float probability_ = 0;
         float scale_ = 0;
         std::shared_ptr<Tensor> rand_;
