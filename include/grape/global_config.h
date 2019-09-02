@@ -33,6 +33,7 @@ namespace Grape{
     const static std::string STRING_POOL_MEAN_TYPE = "PoolMean";
     const static std::string STRING_SOFTMAX_WITH_LOSS_TYPE = "SoftmaxWithLoss";
     const static std::string STRING_SOFTMAX_TYPE = "Softmax";
+    const static std::string STRING_DROPOUT_TYPE = "Dropout";
 }
 
 #endif
