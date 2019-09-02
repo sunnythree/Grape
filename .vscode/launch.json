@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Grape",
-            "args": ["cfg/mnist/mnist_net_conv.json"],
+            "args": ["cfg/mnist/mnist_net.json"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

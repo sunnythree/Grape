@@ -23,6 +23,10 @@
                     },
                     {
                         "from": "fc1:0",
+                        "to": "dropout:0"
+                    },
+                    {
+                        "from": "dropout:0",
                         "to": "fc2:0"
                     },
                     {
@@ -85,18 +89,18 @@
             {
                 "name": "graph_mnist_train",
                 "max_iter": 2500,
-                "cal_mode": "gpu",
+                "cal_mode": "cpu",
                 "phase": "train",
                 "device_id": 0,
                 "serialize_type":"json",
                 "save_path": "model/mnist_model",
-                "display_iter":500,
+                "display_iter":1,
                 "snapshot_iter":1000
             },
             {
                 "name": "graph_mnist_test",
                 "max_iter": 500,
-                "cal_mode": "gpu",
+                "cal_mode": "cpu",
                 "serialize_type":"json",
                 "phase": "test",
                 "device_id": 0,

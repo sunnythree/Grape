@@ -8,6 +8,7 @@
 #include "grape/op/pool_max.h"
 #include "grape/op/pool_mean.h"
 #include "grape/op/conv2d.h"
+#include "grape/op/dropout.h"
 #include "grape/log.h"
 #include "grape/error.h"
 #include "grape/global_config.h"
@@ -128,6 +129,13 @@ namespace Grape
                 opp.padding_,
                 opp.has_bias_,
                 GetActivationByString(opp.activation_)
+            );
+        }else if(opp.type_ == STRING_DROPOUT_TYPE){
+            bop = std::make_shared<Dropout>(
+                opp.name_,
+                opp.batch_,
+                opp.in_dim_,
+                opp.probability_
             );
         }
         else{

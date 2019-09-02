@@ -28,7 +28,7 @@ namespace Grape{
         bool is_train_ = true;
         float probability_ = 0;
         float scale_ = 0;
-        tensorptr_t rand_;
+        std::shared_ptr<Tensor> rand_;
     };
 }
 #endif

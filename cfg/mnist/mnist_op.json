@@ -38,6 +38,13 @@
                 "activation":"leaky"
             },
             {
+                "name": "dropout",
+                "type": "Dropout",
+                "batch": 20,
+                "in_dim": 30,
+                "probability": 0.5
+            },
+            {
                 "name": "fc2",
                 "type": "Fc",
                 "batch": 20,

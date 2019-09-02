@@ -47,7 +47,8 @@ namespace Grape{
         uint32_t ksize_;
         uint32_t stride_;
         uint32_t padding_;
-        
+        //dropout
+        float probability_ = 0.5;
 
         template <class Archive>
         void serialize( Archive & ar )
@@ -146,6 +147,11 @@ namespace Grape{
             }
             try{
                 ar(cereal::make_nvp("padding",padding_));
+            }  catch(cereal::Exception&){
+                ar.setNextName(nullptr);
+            }
+            try{
+                ar(cereal::make_nvp("probability",probability_));
             }  catch(cereal::Exception&){
                 ar.setNextName(nullptr);
             }
