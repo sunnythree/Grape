@@ -140,14 +140,14 @@ namespace Grape{
     }
 
 
-    void forward_meanpool_gpu(int n, int w, int h, int c, float *in, float *out)
+    void forward_avgpool_gpu(int n, int w, int h, int c, float *in, float *out)
     {
         forward_avgpool_kernel<<<cuda_gridsize(n), BLOCK>>>(
             n, w, h, c, in, out);
         cuda_check_error(cudaPeekAtLastError());
     } 
 
-    void backward_meanpool_gpu(int n, int w, int h, int c, float *in_diff, float *out_diff)
+    void backward_avgpool_gpu(int n, int w, int h, int c, float *in_diff, float *out_diff)
     {
         backward_avgpool_kernel<<<cuda_gridsize(n), BLOCK>>>(
             n, w, h, c, in_diff, out_diff);

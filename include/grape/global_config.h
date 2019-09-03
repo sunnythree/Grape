@@ -30,7 +30,7 @@ namespace Grape{
     const static std::string STRING_INPUT_TYPE = "Input";
     const static std::string STRING_MNIST_DATA_TYPE = "MnistData";
     const static std::string STRING_POOL_MAX_TYPE = "PoolMax";
-    const static std::string STRING_POOL_MEAN_TYPE = "PoolMean";
+    const static std::string STRING_POOL_AVG_TYPE = "PoolAvg";
     const static std::string STRING_SOFTMAX_WITH_LOSS_TYPE = "SoftmaxWithLoss";
     const static std::string STRING_SOFTMAX_TYPE = "Softmax";
     const static std::string STRING_DROPOUT_TYPE = "Dropout";

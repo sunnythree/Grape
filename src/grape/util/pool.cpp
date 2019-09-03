@@ -44,7 +44,7 @@ namespace Grape
         }
     }
 
-    void forward_meanpool_cpu(int batch, int w, int h, int c, float *in, float *out)
+    void forward_avgpool_cpu(int batch, int w, int h, int c, float *in, float *out)
     {
         for(int b = 0; b < batch; ++b){
             for(int k = 0; k < c; ++k){
@@ -59,7 +59,7 @@ namespace Grape
         }
     }
 
-    void backward_meanpool_cpu(int batch, int w, int h, int c, float *in_diff, float *out_diff)
+    void backward_avgpool_cpu(int batch, int w, int h, int c, float *in_diff, float *out_diff)
     {
         for(int b = 0; b < batch; ++b){
             for(int k = 0; k < c; ++k){

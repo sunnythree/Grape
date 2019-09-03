@@ -52,31 +52,28 @@
                 "in_c": 20,
                 "in_h": 14,
                 "in_w": 14,
-                "out_c": 50,
+                "out_c": 100,
                 "group": 1,
                 "ksize": 3,
                 "stride": 1,
-                "padding": 1,
+                "padding": 0,
                 "has_bias": true,
                 "activation":"leaky"
             },
             {
                 "name": "pool1",
-                "type": "PoolMax",
+                "type": "PoolAvg",
                 "batch": 20,
-                "in_c": 50,
-                "in_h": 14,
-                "in_w": 14,
-                "ksize": 2,
-                "stride": 2,
-                "padding": 0
+                "in_c": 100,
+                "in_h": 12,
+                "in_w": 12
             },
             {
                 "name": "fc0",
                 "type": "Fc",
                 "batch": 20,
-                "in_dim": 2450,
-                "out_dim": 256,
+                "in_dim": 100,
+                "out_dim": 30,
                 "has_bias": true,
                 "activation":"leaky"
             },
@@ -84,7 +81,7 @@
                 "name": "fc1",
                 "type": "Fc",
                 "batch": 20,
-                "in_dim": 256,
+                "in_dim": 30,
                 "out_dim": 10,
                 "has_bias": true,
                 "activation":"leaky"

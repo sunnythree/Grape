@@ -6,7 +6,7 @@
 #include "grape/op/accuracy_test.h"
 #include "grape/op/mnist_data.h"
 #include "grape/op/pool_max.h"
-#include "grape/op/pool_mean.h"
+#include "grape/op/pool_avg.h"
 #include "grape/op/conv2d.h"
 #include "grape/op/dropout.h"
 #include "grape/log.h"
@@ -107,8 +107,8 @@ namespace Grape
                 opp.stride_,
                 opp.padding_
             );
-        }else if(opp.type_ == STRING_POOL_MEAN_TYPE){
-            bop = std::make_shared<PoolMean>(
+        }else if(opp.type_ == STRING_POOL_AVG_TYPE){
+            bop = std::make_shared<PoolAvg>(
                 opp.name_,
                 opp.batch_,
                 opp.in_c_,

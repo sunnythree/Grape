@@ -5,17 +5,17 @@
 
 
 namespace Grape{
-    class PoolMean : public Op{
+    class PoolAvg : public Op{
     public:
-        PoolMean() = delete;
-        explicit PoolMean(
+        PoolAvg() = delete;
+        explicit PoolAvg(
             std::string name, 
             uint32_t batch_size,
             uint32_t in_c,
             uint32_t in_h,
             uint32_t in_w
             );
-        virtual ~PoolMean();
+        virtual ~PoolAvg();
         void Setup();
         void ForwardCpu(); 
         void BackwardCpu();

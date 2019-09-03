@@ -24,7 +24,7 @@
                 "type": "Fc",
                 "batch": 20,
                 "in_dim": 784,
-                "out_dim": 100,
+                "out_dim": 256,
                 "has_bias": true,
                 "activation":"leaky"
             },
@@ -32,8 +32,8 @@
                 "name": "fc1",
                 "type": "Fc",
                 "batch": 20,
-                "in_dim": 100,
-                "out_dim": 30,
+                "in_dim": 256,
+                "out_dim": 64,
                 "has_bias": true,
                 "activation":"leaky"
             },
@@ -41,14 +41,14 @@
                 "name": "dropout",
                 "type": "Dropout",
                 "batch": 20,
-                "in_dim": 30,
+                "in_dim": 64,
                 "probability": 0.5
             },
             {
                 "name": "fc2",
                 "type": "Fc",
                 "batch": 20,
-                "in_dim": 30,
+                "in_dim": 64,
                 "out_dim": 10,
                 "has_bias": true,
                 "activation":"leaky"
